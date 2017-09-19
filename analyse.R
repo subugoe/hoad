@@ -17,6 +17,7 @@ licence_patterns <- c("creativecommons.org/licenses/",
                       "http://www.elsevier.com/open-access/userlicense/1.0/",
                       "http://www.ieee.org/publications_standards/publications/rights/oapa.pdf")
 #' now add indication to the dataset
+cr_hybrid_df <- rio::import("data/cr_hybrid_df.xlsx")
 cr_hybrid_df <- cr_hybrid_df %>% 
   mutate(hybrid_license = ifelse(grepl(paste(licence_patterns, collapse = "|"), licence_ref), TRUE, FALSE))
 #' 
@@ -31,10 +32,10 @@ p <- ggplot(hybrid_sub, aes(year, prop, fill = licence_ref)) +
   geom_bar(stat = "identity") +
   xlab("Year") + 
   ylab("Proportion Hybrid OA / Journal Output") + 
-  scale_fill_discrete(h =c(0,255),  guide = guide_legend(title = "Licences found")) +
+  viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
   theme_minimal()
 p
-#plotly::ggplotly(p)
+plotly::ggplotly(p)
 #' good
 # tmp
 # 

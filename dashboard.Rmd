@@ -1,0 +1,67 @@
+---
+title: "Hybrid Monitor"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(rio)
+library(ggplot2)
+library(plotly)
+library(dplyr)
+# access to data 
+hybrid_df <- rio::import("data/cr_hybrid_df.xlsx")
+```
+
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+ selectInput("journal", label = h3("Select Journal"), 
+    choices = hybrid_df$issn, 
+    selected = "0947-6539")
+```
+
+
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+my_jn <- reactive(as.character(input$journal))
+
+renderPlotly({
+hybrid_sub <- filter(hybrid_df, issn == my_jn()) %>%
+  mutate(prop = as.numeric(licence_ref_n) / as.numeric(all_published))
+p <- ggplot(hybrid_sub, aes(year, prop, fill = licence_ref)) + 
+  geom_bar(stat = "identity") +
+  xlab("Year") + 
+  ylab("Proportion Hybrid OA / Journal Output") + 
+  viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
+  theme_minimal()
+ggplotly(p)
+})
+```
+
+### Chart C
+
+```{r}
+renderPlotly({
+hybrid_sub <- filter(hybrid_df, issn == "0002-7863") 
+p <- ggplot(hybrid_sub, aes(year, as.numeric(licence_ref_n), fill = licence_ref)) + 
+  geom_bar(stat = "identity") +
+  xlab("Year") + 
+  ylab("Proportion Hybrid OA / Journal Output") + 
+  viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
+  theme_minimal()
+ggplotly(p)
+})
+```
+
