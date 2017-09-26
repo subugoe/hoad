@@ -67,11 +67,14 @@ jn_facets$facets$`type-name`
 #' Relevant facets are also 
 jn_facets$facets$`publisher-name`
 jn_facets$facets$`container-title`
-#' In the first step, get a summary table of articles funded per journal and year
+#' In the first step, get a summary table of articles funded per journal and year.
+#' We only want to examine the four-year period 2013 - 2016
 hybrid_jn <- o_apc %>%
-  group_by(journal_full_title, issn, period) %>%
-  summarise(n = n(), euro = sum(euro, na.rm = TRUE)) %>%
-  arrange(desc(n))
+  group_by(period, issn) %>%
+  summarise(n = n(), euro = sum(euro, na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  tidyr::complete(period, issn, fill = list(n = 0, euro = 0)) %>% 
+  filter(period %in% 2013:2016)
 hybrid_jn
 #' Now let's fetch facet infos (licenses and work published) for every journal 
 #'
