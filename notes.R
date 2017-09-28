@@ -87,7 +87,7 @@ cr_hybrid <-
       end_date <- paste0(x, "-12-31")
       tmp <- rcrossref::cr_journals(
         y,
-        filter = c(from_pub_date = start_date, until_pub_date = end_date),
+        filter = c(from_pub_date = start_date, until_pub_date = end_date, type = "journal-article"),
         works = TRUE,
         limit = 0,
         facet = TRUE
@@ -110,3 +110,4 @@ cr_hybrid <-
 cr_hybrid_df <- purrr::map_df(cr_hybrid, dplyr::as_data_frame)
 #' Backup
 readr::write_csv(cr_hybrid_df, "data/cr_hybrid_df.csv")
+
