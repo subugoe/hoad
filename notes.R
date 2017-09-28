@@ -80,8 +80,8 @@ hybrid_jn
 #'
 cr_hybrid <-
   purrr::map2(
-   hybrid_jn$period,
-   hybrid_jn$issn,
+   2016,
+   "0022-202X",
     .f = plyr::failwith(f = function(x, y) {
       start_date <- paste0(x, "-01-01")
       end_date <- paste0(x, "-12-31")
@@ -101,13 +101,13 @@ cr_hybrid <-
         year = x,
         issn = y,
         all_published = tmp$facets$published$V1,
-        publisher = tmp$facets$`publisher-name`$.id,
-        journal = tmp$facets$`container-title`$.id
+        publisher = tmp$facets$`publisher-name`$.id[[1]],
+        journal = tmp$facets$`container-title`$.id[[1]]
       )
       }
     })
   )
 cr_hybrid_df <- purrr::map_df(cr_hybrid, dplyr::as_data_frame)
 #' Backup
-readr::write_csv(cr_hybrid_df, "data/cr_hybrid_df.csv")
+readr::write_csv(my_df, "data/cr_hybrid_df.csv")
 
