@@ -80,8 +80,8 @@ hybrid_jn
 #'
 cr_hybrid <-
   purrr::map2(
-   2016,
-   "0022-202X",
+   hybrid_jn$period,
+   hybrid_jn$issn,
     .f = plyr::failwith(f = function(x, y) {
       start_date <- paste0(x, "-01-01")
       end_date <- paste0(x, "-12-31")
@@ -101,8 +101,8 @@ cr_hybrid <-
         year = x,
         issn = y,
         all_published = tmp$facets$published$V1,
-        publisher = tmp$facets$`publisher-name`$.id[[1]],
-        journal = tmp$facets$`container-title`$.id[[1]]
+        publisher = tmp$facets$`publisher-name`$.id[1],
+        journal = tmp$facets$`container-title`$.id[1]
       )
       }
     })
