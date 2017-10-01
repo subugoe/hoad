@@ -3,9 +3,15 @@ title: "Open Access Hybrid Journal Monitor"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
+    social: menu
+    source_code: embed
     vertical_layout: fill
-    runtime: shiny
+  runtime: shiny
 ---
+
+Overview
+=================================================================
+
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
@@ -46,7 +52,7 @@ Column {data-width=650}
 
 ### Chart A
 
-```{r}
+```{r, error=FALSE, warning=FALSE}
 jn_f <-
   reactive(jn_filtered()[input$journalinput == "All" |
   jn_filtered()$journal == input$journalinput, ])
@@ -78,3 +84,9 @@ renderPlotly({
 })
 ```
 
+About
+=================================================================
+
+## This is so cool
+
+- it is
