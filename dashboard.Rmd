@@ -19,6 +19,7 @@ library(rio)
 library(ggplot2)
 library(plotly)
 library(dplyr)
+library(scales)
 
 # access to data 
 hybrid_df <- rio::import("data/cr_hybrid_df_indicators.csv") %>%
@@ -48,10 +49,10 @@ observe(updateSelectInput(
 ))
 ```
 
-Column {data-width=650}
+Column {data-width=650 .tabset}
 -----------------------------------------------------------------------
 
-### Chart A
+### Hybrid OA Licenses found (relative)
 
 ```{r}
 jn_f <-
@@ -80,6 +81,42 @@ renderPlotly({
     ylab("Proportion Hybrid OA / Journal Output") +
     viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
     scale_x_discrete(drop = FALSE) +
+    scale_y_continuous(labels = scales::percent) +
+    theme_minimal()
+  plotly::ggplotly(p)
+})
+```
+
+
+### Hybrid OA Licenses found (absolute)
+
+```{r}
+jn_f <-
+  reactive(jn_filtered()[input$journalinput == "All" |
+  jn_filtered()$journal == input$journalinput, ])
+  
+renderPlotly({
+  if (length(unique(jn_f()$publisher)) > 1) {
+    hybrid_sub <- jn_f() %>%
+      group_by(year, licence_ref, year_all) %>%
+      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) 
+  } else if (length(unique(jn_f()$journal)) > 1 &&
+             length(unique(jn_f()$publisher)) == 1) {
+    hybrid_sub <- jn_f() %>%
+      group_by(year, licence_ref, year_publisher_all) %>%
+      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) 
+  } else {
+    hybrid_sub <- jn_f() %>%
+      mutate(licence_n = licence_ref_n)
+  }
+  p <- ggplot(hybrid_sub, aes(year, licence_n, fill = licence_ref)) +
+    geom_bar(stat = "identity") +
+    xlab("Year") +
+    ylab("Hybrid OA Journal Output") +
+    viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
+    scale_x_discrete(drop = FALSE) +
+    scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
+                       breaks= pretty_breaks()) +
     theme_minimal()
   plotly::ggplotly(p)
 })
