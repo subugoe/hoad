@@ -22,7 +22,8 @@ library(dplyr)
 
 # access to data 
 hybrid_df <- rio::import("data/cr_hybrid_df_indicators.csv") %>%
-  filter(hybrid_license == TRUE)
+  filter(hybrid_license == TRUE) %>%
+  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016")))
 ```
 
 Inputs {.sidebar}
@@ -52,7 +53,7 @@ Column {data-width=650}
 
 ### Chart A
 
-```{r, error=FALSE, warning=FALSE}
+```{r}
 jn_f <-
   reactive(jn_filtered()[input$journalinput == "All" |
   jn_filtered()$journal == input$journalinput, ])
@@ -73,12 +74,12 @@ renderPlotly({
     hybrid_sub <- jn_f() %>%
       mutate(prop = as.numeric(licence_ref_n) / as.numeric(all_published))
   }
-  p <- ggplot(hybrid_sub, aes(factor(year), prop, fill = licence_ref)) +
+  p <- ggplot(hybrid_sub, aes(year, prop, fill = licence_ref)) +
     geom_bar(stat = "identity") +
     xlab("Year") +
     ylab("Proportion Hybrid OA / Journal Output") +
     viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
-    scale_x_discrete(limits = as.factor(c(2013:2016))) +
+    scale_x_discrete(drop = FALSE) +
     theme_minimal()
   plotly::ggplotly(p)
 })
