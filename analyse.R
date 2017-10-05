@@ -89,16 +89,3 @@ cr_hybrid_df %>%
   viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
   scale_x_discrete(limits = as.factor(c(2013:2016))) +
   theme_minimal()
-#' good
-# tmp
-# 
-# pp <- ggplot() + 
-#   # all
-#   geom_bar(data = all, aes(year, articles, fill = "All"), stat = "identity") +
-#   # hybrid
-#   geom_bar(data = hybrid_t, aes(year, articles, fill = "hybrid"), stat = "identity") + 
-#   # openapc
-#   geom_bar(data = oapc_, aes(year, articles, fill = "Open APC"), stat = "identity") + 
-#   scale_fill_manual(values = c("#d9eef2", "#8da4cc", "#464a56")) +
-#   theme_minimal()
-# plotly::ggplotly(pp)
