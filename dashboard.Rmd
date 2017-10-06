@@ -1,11 +1,17 @@
 ---
-title: "Hybrid Monitor"
+title: "Open Access Hybrid Journal Monitor"
 output: 
   flexdashboard::flex_dashboard:
-    orientation: columns
+    orientation: rows
+    social: menu
+    source_code: embed
     vertical_layout: fill
-runtime: shiny
+  runtime: shiny
 ---
+
+Overview
+=================================================================
+
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
@@ -13,55 +19,146 @@ library(rio)
 library(ggplot2)
 library(plotly)
 library(dplyr)
+library(scales)
+
 # access to data 
-hybrid_df <- rio::import("data/cr_hybrid_df.xlsx")
+hybrid_df <- rio::import("data/cr_hybrid_df_indicators.csv") %>%
+  filter(hybrid_license == TRUE) %>%
+  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016")))
 ```
 
 Inputs {.sidebar}
 -----------------------------------------------------------------------
 
-```{r}
- selectInput("journal", label = h3("Select Journal"), 
-    choices = hybrid_df$issn, 
-    selected = "0947-6539")
+```{r global_input}
+# from https://stackoverflow.com/questions/42148177/how-can-i-build-multiple-inputs-into-my-shiny-app-with-both-updating-and-multipl
+selectInput("publisherinput", "Publisher", c("All", unique(hybrid_df$publisher)), selected =
+              "All")
+selectInput("journalinput", "Journal", c("All", unique(hybrid_df$journal)), selected =
+              "All")
+
+jn_filtered <-
+  reactive(hybrid_df[input$publisherinput == "All" |
+                       hybrid_df$publisher == input$publisherinput,])
+
+observe(updateSelectInput(
+  session,
+  "journalinput",
+  choices = c("All", unique(jn_filtered()$journal)),
+  selected = "All"
+))
+
+jn_f <-
+  reactive(jn_filtered()[input$journalinput == "All" |
+  jn_filtered()$journal == input$journalinput, ])
+
 ```
 
+Notice that only those hybrid open access journals were included where 
+academic institutions sponsored the publication fee according to the [Open APC initiative](github.com/openapc/openapc-de) 
+and where publishers shared licensing information about fulltext accessibility and re-use rights 
+with [Crossref](https://github.com/CrossRef/rest-api-doc).
 
-
-
-Column {data-width=350}
+Row
 -----------------------------------------------------------------------
 
-### Chart B
+### Publishers selected
 
 ```{r}
-my_jn <- reactive(as.character(input$journal))
-
-renderPlotly({
-hybrid_sub <- filter(hybrid_df, issn == my_jn()) %>%
-  mutate(prop = as.numeric(licence_ref_n) / as.numeric(all_published))
-p <- ggplot(hybrid_sub, aes(year, prop, fill = licence_ref)) + 
-  geom_bar(stat = "identity") +
-  xlab("Year") + 
-  ylab("Proportion Hybrid OA / Journal Output") + 
-  viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
-  theme_minimal()
-ggplotly(p)
+renderValueBox({
+  publisher_n <- length(unique(jn_f()$publisher))
+  valueBox(publisher_n, icon = "fa-pencil")
 })
 ```
 
-### Chart C
+### Journals selected
 
 ```{r}
-renderPlotly({
-hybrid_sub <- filter(hybrid_df, issn == "0002-7863") 
-p <- ggplot(hybrid_sub, aes(year, as.numeric(licence_ref_n), fill = licence_ref)) + 
-  geom_bar(stat = "identity") +
-  xlab("Year") + 
-  ylab("Proportion Hybrid OA / Journal Output") + 
-  viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
-  theme_minimal()
-ggplotly(p)
+renderValueBox({
+  journal_n <- length(unique(jn_f()$issn))
+  valueBox(journal_n, icon = "fa-pencil")
 })
 ```
 
+### Hybrid OA articles indexed
+
+```{r}
+renderValueBox({
+  hybrid_n <- sum(jn_f()$licence_ref_n)
+  valueBox(hybrid_n, icon = "fa-pencil")
+})
+```
+
+
+
+Column {data-width=650 .tabset}
+-----------------------------------------------------------------------
+
+### Hybrid OA Licenses found (relative)
+
+```{r}
+renderPlotly({
+  if (length(unique(jn_f()$publisher)) > 1) {
+    hybrid_sub <- jn_f() %>%
+      group_by(year, licence_ref, year_all) %>%
+      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) %>%
+      mutate(prop = licence_n / year_all)
+  } else if (length(unique(jn_f()$journal)) > 1 &&
+             length(unique(jn_f()$publisher)) == 1) {
+    hybrid_sub <- jn_f() %>%
+      group_by(year, licence_ref, year_publisher_all) %>%
+      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) %>%
+      mutate(prop = licence_n / year_publisher_all)
+  } else {
+    hybrid_sub <- jn_f() %>%
+      mutate(prop = as.numeric(licence_ref_n) / as.numeric(all_published))
+  }
+  p <- ggplot(hybrid_sub, aes(year, prop, fill = licence_ref)) +
+    geom_bar(stat = "identity") +
+    xlab("Year") +
+    ylab("Proportion Hybrid OA / Journal Output") +
+    viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
+    scale_x_discrete(drop = FALSE) +
+    scale_y_continuous(labels = scales::percent) +
+    theme_minimal()
+  plotly::ggplotly(p)
+})
+```
+
+
+### Hybrid OA Licenses found (absolute)
+
+```{r}
+renderPlotly({
+  if (length(unique(jn_f()$publisher)) > 1) {
+    hybrid_sub <- jn_f() %>%
+      group_by(year, licence_ref, year_all) %>%
+      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) 
+  } else if (length(unique(jn_f()$journal)) > 1 &&
+             length(unique(jn_f()$publisher)) == 1) {
+    hybrid_sub <- jn_f() %>%
+      group_by(year, licence_ref, year_publisher_all) %>%
+      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) 
+  } else {
+    hybrid_sub <- jn_f() %>%
+      mutate(licence_n = licence_ref_n)
+  }
+  p <- ggplot(hybrid_sub, aes(year, licence_n, fill = licence_ref)) +
+    geom_bar(stat = "identity") +
+    xlab("Year") +
+    ylab("Hybrid OA Journal Output") +
+    viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
+    scale_x_discrete(drop = FALSE) +
+    scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
+                       breaks= pretty_breaks()) +
+    theme_minimal()
+  plotly::ggplotly(p)
+})
+```
+
+About
+=================================================================
+
+## This is so cool
+
+- it is

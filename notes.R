@@ -49,11 +49,11 @@ o_apc %>%
 #'
 #' <https://github.com/CrossRef/rest-api-doc/#facet-counts>
 #'
-jn_facets <- rcrossref::cr_journals(
-  "1053-8119",
-  filter = c(from_pub_date = "2014-01-01", until_pub_date = "2014-12-31"),
-  works = TRUE,
-  limit = 0,
+jn_facets <- rcrossref::cr_works(
+  filter = c(issn = "0907-4449", 
+             from_pub_date = "2014-01-01", 
+             until_pub_date = "2014-12-31",
+             type = "journal-article"),
   facet = TRUE
 )
 
@@ -85,11 +85,11 @@ cr_hybrid <-
     .f = plyr::failwith(f = function(x, y) {
       start_date <- paste0(x, "-01-01")
       end_date <- paste0(x, "-12-31")
-      tmp <- rcrossref::cr_journals(
-        y,
-        filter = c(from_pub_date = start_date, until_pub_date = end_date, type = "journal-article"),
-        works = TRUE,
-        limit = 0,
+      tmp <- rcrossref::cr_works(
+        filter = c(
+          issn = y,
+          from_pub_date = start_date, until_pub_date = end_date, 
+          type = "journal-article"),
         facet = TRUE
       )
       if(is.null(tmp$facets)) {
