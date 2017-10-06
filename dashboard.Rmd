@@ -2,7 +2,7 @@
 title: "Open Access Hybrid Journal Monitor"
 output: 
   flexdashboard::flex_dashboard:
-    orientation: columns
+    orientation: rows
     social: menu
     source_code: embed
     vertical_layout: fill
@@ -47,7 +47,49 @@ observe(updateSelectInput(
   choices = c("All", unique(jn_filtered()$journal)),
   selected = "All"
 ))
+
+jn_f <-
+  reactive(jn_filtered()[input$journalinput == "All" |
+  jn_filtered()$journal == input$journalinput, ])
+
 ```
+
+Notice that only those hybrid open access journals were included where 
+academic institutions sponsored the publication fee according to the [Open APC initiative](github.com/openapc/openapc-de) 
+and where publishers shared licensing information about fulltext accessibility and re-use rights 
+with [Crossref](https://github.com/CrossRef/rest-api-doc).
+
+Row
+-----------------------------------------------------------------------
+
+### Publishers selected
+
+```{r}
+renderValueBox({
+  publisher_n <- length(unique(jn_f()$publisher))
+  valueBox(publisher_n, icon = "fa-pencil")
+})
+```
+
+### Journals selected
+
+```{r}
+renderValueBox({
+  journal_n <- length(unique(jn_f()$issn))
+  valueBox(journal_n, icon = "fa-pencil")
+})
+```
+
+### Hybrid OA articles indexed
+
+```{r}
+renderValueBox({
+  hybrid_n <- sum(jn_f()$licence_ref_n)
+  valueBox(hybrid_n, icon = "fa-pencil")
+})
+```
+
+
 
 Column {data-width=650 .tabset}
 -----------------------------------------------------------------------
@@ -55,10 +97,6 @@ Column {data-width=650 .tabset}
 ### Hybrid OA Licenses found (relative)
 
 ```{r}
-jn_f <-
-  reactive(jn_filtered()[input$journalinput == "All" |
-  jn_filtered()$journal == input$journalinput, ])
-  
 renderPlotly({
   if (length(unique(jn_f()$publisher)) > 1) {
     hybrid_sub <- jn_f() %>%
@@ -91,10 +129,6 @@ renderPlotly({
 ### Hybrid OA Licenses found (absolute)
 
 ```{r}
-jn_f <-
-  reactive(jn_filtered()[input$journalinput == "All" |
-  jn_filtered()$journal == input$journalinput, ])
-  
 renderPlotly({
   if (length(unique(jn_f()$publisher)) > 1) {
     hybrid_sub <- jn_f() %>%
