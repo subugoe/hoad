@@ -8,7 +8,7 @@ by_year <- my_df %>%
   distinct(year, issn, .keep_all = TRUE) %>%
   group_by(year) %>%
   summarize(year_all = sum(all_published))
-# publsihed by publisher. If there is more than one publisher per year and journal, which is sometimes the case,
+# published by publisher. If there is more than one publisher per year and journal, which is sometimes the case,
 # then the publisher that registered most articles for that period gets all,
 # 
 by_publisher <- my_df %>% 
@@ -44,7 +44,8 @@ licence_patterns <- c("creativecommons.org/licenses/",
 cr_hybrid_df <- hybrid_df %>% 
   mutate(hybrid_license = ifelse(grepl(paste(licence_patterns, collapse = "|"), licence_ref), TRUE, FALSE)) %>%
   # remove trailing backslash
-  mutate(licence_ref = gsub("\\/$", "", licence_ref))
+  mutate(licence_ref = gsub("\\/$", "", licence_ref)) %>%
+  mutate(licence_ref = gsub("https", "http", licence_ref))
 rio::export(cr_hybrid_df, "data/cr_hybrid_df_indicators.csv")
 
 #' 
