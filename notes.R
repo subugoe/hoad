@@ -51,8 +51,8 @@ o_apc %>%
 #'
 jn_facets <- rcrossref::cr_works(
   filter = c(issn = "0907-4449", 
-             from_pub_date = "2014-01-01", 
-             until_pub_date = "2014-12-31",
+             from_pub_date = "2013-01-01", 
+             until_pub_date = "2013-12-31",
              type = "journal-article"),
   facet = TRUE
 )
