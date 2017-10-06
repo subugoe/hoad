@@ -24,7 +24,9 @@ library(scales)
 # access to data 
 hybrid_df <- rio::import("data/cr_hybrid_df_indicators.csv") %>%
   filter(hybrid_license == TRUE) %>%
-  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016")))
+  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016"))) %>%
+  # a quick and dirty appraoch to deal with journals that changed issn within a year
+  distinct(journal, year, licence_ref, .keep_all = TRUE)
 ```
 
 Inputs {.sidebar}
@@ -75,12 +77,12 @@ renderValueBox({
 
 ```{r}
 renderValueBox({
-  journal_n <- length(unique(jn_f()$issn))
+  journal_n <- length(unique(jn_f()$journal))
   valueBox(journal_n, icon = "fa-pencil")
 })
 ```
 
-### Hybrid OA articles indexed
+### Hybrid OA articles indexed in Crossref
 
 ```{r}
 renderValueBox({
