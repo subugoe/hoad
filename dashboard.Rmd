@@ -27,6 +27,8 @@ hybrid_df <- rio::import("data/cr_hybrid_df_indicators.csv") %>%
   mutate(year = factor(year, levels = c("2013", "2014", "2015","2016"))) %>%
   # a quick and dirty appraoch to deal with journals that changed issn within a year
   distinct(journal, year, licence_ref, .keep_all = TRUE)
+o_apc_df <- rio::import("data/oapc_aggregated.csv") %>%
+  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016")))
 ```
 
 Inputs {.sidebar}
@@ -156,6 +158,43 @@ renderPlotly({
     theme_minimal()
   plotly::ggplotly(p)
 })
+```
+
+### Open APC payments
+
+```{r}
+renderPlotly({
+  if (length(unique(jn_f()$publisher)) > 1) {
+    hybrid_sub <- jn_f() %>%
+      group_by(year, licence_ref, year_all) %>%
+      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) 
+  } else if (length(unique(jn_f()$journal)) > 1 &&
+             length(unique(jn_f()$publisher)) == 1) {
+    hybrid_sub <- jn_f() %>%
+      group_by(year, licence_ref, year_publisher_all) %>%
+      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) 
+  } else {
+    hybrid_sub <- jn_f() %>%
+      mutate(licence_n = licence_ref_n)
+  }
+  o_apc_sub <- o_apc_df %>%
+    filter(journal %in% jn_f()$journal, year %in% jn_f()$year) %>%
+     distinct(journal, year, oapc_n_year) %>% 
+    group_by(year) %>% 
+    summarize(oapc_n = sum(oapc_n_year, na.rm = TRUE))
+  p <- ggplot(hybrid_sub, aes(year, licence_n)) +
+    geom_bar(stat = "identity", alpha = 0.2) +
+    xlab("Year") +
+    ylab("Hybrid OA Journal Output") +
+    scale_x_discrete(drop = FALSE) +
+    scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
+                       breaks= pretty_breaks()) +
+    theme_minimal()
+  p <- p + geom_bar(data = o_apc_sub, aes(year, oapc_n), stat = "identity", alpha = 0.8)  
+  plotly::ggplotly(p)
+})
+
+o_apc_df %>% distinct(journal, year, oapc_n_year) %>% group_by(year) %>% summarize(sum(oapc_n_year, na.rm = TRUE))
 ```
 
 About
