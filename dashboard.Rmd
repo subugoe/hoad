@@ -185,7 +185,7 @@ renderPlotly({
   p <- ggplot(hybrid_sub, aes(year, licence_n)) +
     geom_bar(stat = "identity", alpha = 0.2) +
     xlab("Year") +
-    ylab("Hybrid OA Journal Output") +
+    ylab("Articles") +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
                        breaks= pretty_breaks()) +
@@ -193,8 +193,6 @@ renderPlotly({
   p <- p + geom_bar(data = o_apc_sub, aes(year, oapc_n), stat = "identity", alpha = 0.8)  
   plotly::ggplotly(p)
 })
-
-o_apc_df %>% distinct(journal, year, oapc_n_year) %>% group_by(year) %>% summarize(sum(oapc_n_year, na.rm = TRUE))
 ```
 
 About
