@@ -1,0 +1,19 @@
+## Inclusion criteria
+
+According to Björk (2017), there is no standard way of studying the proportion and evolution of articles published in hybrid open access journals. Neither does a comprehensive index of hybrid journals exists nor is it clear how articles in these journals are indicated as open access. Some publishers use open licenses to make access and e-use rights transparent, others simply label the article as openly readable.
+
+- automate ways 
+
+Journals were included if they met the following criteria:
+
+1. The journal is indexed as hybrid OA journal in the Open APC dataset
+
+The Open APC initiative, an open data effort to disclose spending on open access journal articles on a global scale, keeps track on institutional payment for open access charges. The public available dataset, which is curated by Bielefeld University Library, Germany, covers spending for both hybrid and full open access journals. The Open APC initiative also shares information about articles which were made openly available as part of offsetting agreements.
+
+
+2. Journal Article metadata is indexed in Crossref
+
+
+3. Journal Shares open licensing information via Crossref on the article-level
+
+
