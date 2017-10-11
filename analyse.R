@@ -42,6 +42,7 @@ licence_patterns <- c("creativecommons.org/licenses/",
                       "http://www.ieee.org/publications_standards/publications/rights/oapa.pdf")
 #' now add indication to the dataset
 cr_hybrid_df <- hybrid_df %>% 
+  mutate(licence_ref = tolower(licence_ref)) %>%
   mutate(hybrid_license = ifelse(grepl(paste(licence_patterns, collapse = "|"), licence_ref), TRUE, FALSE)) %>%
   # remove trailing backslash
   mutate(licence_ref = gsub("\\/$", "", licence_ref)) %>%
