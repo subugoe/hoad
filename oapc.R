@@ -29,7 +29,7 @@ o_apc <- o_offset %>%
 country_apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions.csv") %>%
   select(institution, country)
 countries <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions_offsetting.csv") %>%
-  bind_rows(country_a) %>%
+  bind_rows(country_apc) %>%
   distinct() %>% 
   mutate(country = gsub("NDL", "NLD", country)) %>%
   mutate(country_name = countrycode::countrycode(country, "iso3c", "country.name"))

@@ -109,5 +109,5 @@ cr_hybrid <-
   )
 cr_hybrid_df <- purrr::map_df(cr_hybrid, dplyr::as_data_frame)
 #' Backup
-readr::write_csv(cr_hybrid_df, "data/cr_hybrid_df.csv")
+readr::write_csv(my_df, "data/cr_hybrid_df.csv")
 
