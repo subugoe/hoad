@@ -41,6 +41,7 @@ selectInput("publisherinput", "Publisher", c("All", unique(hybrid_df$publisher))
 selectInput("journalinput", "Journal", c("All", unique(hybrid_df$journal)), selected =
               "All")
 
+# publisher filter
 jn_filtered <-
   reactive(hybrid_df[input$publisherinput == "All" |
                        hybrid_df$publisher == input$publisherinput,])
@@ -52,9 +53,29 @@ observe(updateSelectInput(
   selected = "All"
 ))
 
+# journal filter
 jn_f <-
   reactive(jn_filtered()[input$journalinput == "All" |
   jn_filtered()$journal == input$journalinput, ])
+# prepare dataset for plotting
+hybrid_sub <- reactive({
+if (length(unique(jn_f()$publisher)) > 1) {
+    hybrid_sub <- jn_f() %>%
+      group_by(year, licence_ref, year_all) %>%
+      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) %>%
+      mutate(prop = licence_n / year_all)
+  } else if (length(unique(jn_f()$journal)) > 1 &&
+             length(unique(jn_f()$publisher)) == 1) {
+    hybrid_sub <- jn_f() %>%
+      group_by(year, licence_ref, year_publisher_all) %>%
+      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) %>%
+      mutate(prop = licence_n / year_publisher_all)
+  } else {
+    hybrid_sub <- jn_f() %>%
+      mutate(prop = as.numeric(licence_ref_n) / as.numeric(all_published)) %>%
+      mutate(licence_n = licence_ref_n)
+  }
+})
 
 ```
 
@@ -102,22 +123,7 @@ Column {data-width=650 .tabset}
 
 ```{r}
 renderPlotly({
-  if (length(unique(jn_f()$publisher)) > 1) {
-    hybrid_sub <- jn_f() %>%
-      group_by(year, licence_ref, year_all) %>%
-      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) %>%
-      mutate(prop = licence_n / year_all)
-  } else if (length(unique(jn_f()$journal)) > 1 &&
-             length(unique(jn_f()$publisher)) == 1) {
-    hybrid_sub <- jn_f() %>%
-      group_by(year, licence_ref, year_publisher_all) %>%
-      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) %>%
-      mutate(prop = licence_n / year_publisher_all)
-  } else {
-    hybrid_sub <- jn_f() %>%
-      mutate(prop = as.numeric(licence_ref_n) / as.numeric(all_published))
-  }
-  p <- ggplot(hybrid_sub, aes(year, prop, fill = licence_ref)) +
+  p <- ggplot(hybrid_sub(), aes(year, prop, fill = licence_ref)) +
     geom_bar(stat = "identity") +
     xlab("Year") +
     ylab("Proportion Hybrid OA / Journal Output") +
@@ -134,20 +140,7 @@ renderPlotly({
 
 ```{r}
 renderPlotly({
-  if (length(unique(jn_f()$publisher)) > 1) {
-    hybrid_sub <- jn_f() %>%
-      group_by(year, licence_ref, year_all) %>%
-      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) 
-  } else if (length(unique(jn_f()$journal)) > 1 &&
-             length(unique(jn_f()$publisher)) == 1) {
-    hybrid_sub <- jn_f() %>%
-      group_by(year, licence_ref, year_publisher_all) %>%
-      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) 
-  } else {
-    hybrid_sub <- jn_f() %>%
-      mutate(licence_n = licence_ref_n)
-  }
-  p <- ggplot(hybrid_sub, aes(year, licence_n, fill = licence_ref)) +
+  p <- ggplot(hybrid_sub(), aes(year, licence_n, fill = licence_ref)) +
     geom_bar(stat = "identity") +
     xlab("Year") +
     ylab("Hybrid OA Journal Output") +
@@ -164,20 +157,7 @@ renderPlotly({
 
 ```{r}
 renderPlotly({
-  if (length(unique(jn_f()$publisher)) > 1) {
-    hybrid_sub <- jn_f() %>%
-      group_by(year, licence_ref, year_all) %>%
-      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) 
-  } else if (length(unique(jn_f()$journal)) > 1 &&
-             length(unique(jn_f()$publisher)) == 1) {
-    hybrid_sub <- jn_f() %>%
-      group_by(year, licence_ref, year_publisher_all) %>%
-      summarize(licence_n = sum(licence_ref_n, na.rm = TRUE)) 
-  } else {
-    hybrid_sub <- jn_f() %>%
-      mutate(licence_n = licence_ref_n)
-  }
-  hybrid_sub <- hybrid_sub %>%
+  hybrid_sub <- hybrid_sub() %>%
     group_by(year) %>%
     summarize(n = sum(licence_n, na.rm = TRUE)) %>%
     mutate(source = "Crossref Hybrid")
@@ -204,9 +184,10 @@ renderPlotly({
 })
 ```
 
+
+
 About
 =================================================================
 
 ## This is so cool
 
-- it is
