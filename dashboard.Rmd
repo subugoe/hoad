@@ -115,8 +115,7 @@ renderValueBox({
 ```
 
 
-
-Column {data-width=650 .tabset}
+Column {data-width=750 .tabset .tabset-fade data-height=650}
 -----------------------------------------------------------------------
 
 ### Hybrid OA Licenses found (relative)
@@ -153,7 +152,10 @@ renderPlotly({
 })
 ```
 
-### Open APC payments
+Row {data-width=400 data-height=350}
+-------------------------------------
+
+### Crossref Indexing Coverage vs Spending Information available via Open APC 
 
 ```{r}
 renderPlotly({
@@ -184,6 +186,40 @@ renderPlotly({
 })
 ```
 
+
+### Institutional spending per country (in percent)
+
+```{r}
+renderPlot({
+tt <- o_apc_df %>%
+    filter(journal %in% jn_f()$journal, year %in% jn_f()$year) %>%
+     distinct(journal, year, oapc_n_year, .keep_all = TRUE) %>% 
+  group_by(country) %>%
+  summarise(n = sum(oapc_n_year, na.rm = TRUE)) %>%
+  mutate(prop = n / sum(n)) %>%
+  mutate(prop = round(prop, 2)) %>%
+  filter(!is.na(country))
+library(scales)
+gg <- ggplot(tt, aes(prop, reorder(country, prop))) + 
+  ggalt::geom_lollipop(point.colour="steelblue", point.size=4, horizontal=TRUE)
+gg <- gg + scale_x_continuous(expand=c(0,0), labels=percent,
+                              breaks=seq(0, 1, by=0.2), limits=c(0, 1))
+gg <- gg + labs(x=NULL, y=NULL, 
+              #  title="Institutional spending on hybrid OA journal articles",
+              #  subtitle="Articles funded per country (in percent)",
+                caption="Data from github.com/openapc/openapc-de")
+gg <- gg + theme_minimal()
+gg <- gg + theme(panel.grid.major.y=element_blank())
+gg <- gg + theme(panel.grid.minor=element_blank())
+gg <- gg + theme(axis.line.y=element_line(color="#2b2b2b", size=0.15))
+gg <- gg + theme(axis.text.y=element_text(margin=margin(r=0, l=0)))
+gg <- gg + theme(plot.margin=unit(rep(30, 4), "pt"))
+gg <- gg + theme(plot.title=element_text(face="bold"))
+gg <- gg + theme(plot.subtitle=element_text(margin=margin(b=10)))
+gg <- gg + theme(plot.caption=element_text(size=8, margin=margin(t=10)))
+gg
+})
+```
 
 
 About

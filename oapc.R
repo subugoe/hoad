@@ -54,5 +54,6 @@ o_apc_df <- rio::import("data/cr_hybrid_df_indicators.csv") %>%
   select(journal, year, issn) %>% 
   left_join(o_apc_ind, by = c("issn" = "issn", "year" = "period")) %>%
   distinct() %>%
+  mutate(continent = countrycode::countrycode(country, "iso3c", "continent")) %>%
   readr::write_csv("data/oapc_aggregated.csv")
   
