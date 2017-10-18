@@ -15,19 +15,20 @@ Overview
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
-library(rio)
+library(readr)
 library(ggplot2)
 library(plotly)
 library(dplyr)
 library(scales)
+library(ggalt)
 
 # access to data 
-hybrid_df <- rio::import("data/cr_hybrid_df_indicators.csv") %>%
+hybrid_df <- readr::read_csv("data/cr_hybrid_df_indicators.csv") %>%
   filter(hybrid_license == TRUE) %>%
   mutate(year = factor(year, levels = c("2013", "2014", "2015","2016"))) %>%
   # a quick and dirty appraoch to deal with journals that changed issn within a year
   distinct(journal, year, licence_ref, .keep_all = TRUE)
-o_apc_df <- rio::import("data/oapc_aggregated.csv") %>%
+o_apc_df <- readr::read_csv("data/oapc_aggregated.csv") %>%
   mutate(year = factor(year, levels = c("2013", "2014", "2015","2016")))
 ```
 
@@ -80,9 +81,15 @@ if (length(unique(jn_f()$publisher)) > 1) {
 ```
 
 Notice that only those hybrid open access journals were included where 
-academic institutions sponsored the publication fee according to the [Open APC initiative](github.com/openapc/openapc-de) 
+academic institutions sponsored the publication fee according to the [Open APC initiative](https://github.com/openapc/openapc-de) 
 and where publishers shared licensing information about fulltext accessibility and re-use rights 
 with [Crossref](https://github.com/CrossRef/rest-api-doc).
+
+Data sources:
+
+<a href="https://github.com/CrossRef/rest-api-doc"><img src="https://assets.crossref.org/logo/metadata-from-crossref-logo-200.svg" width="200" height="68" alt="Metadata from Crossref logo"></a>
+
+<a href= "https://github.com/openapc/openapc-de"><img src="https://www.intact-project.org/public/img/openAPC_01+.png" width="200"  alt="Metadata from open apc logo"></a>
 
 Row
 -----------------------------------------------------------------------
@@ -92,7 +99,7 @@ Row
 ```{r}
 renderValueBox({
   publisher_n <- length(unique(jn_f()$publisher))
-  valueBox(publisher_n, icon = "fa-pencil")
+  valueBox(publisher_n, icon = "fa-filter")
 })
 ```
 
@@ -101,7 +108,7 @@ renderValueBox({
 ```{r}
 renderValueBox({
   journal_n <- length(unique(jn_f()$journal))
-  valueBox(journal_n, icon = "fa-pencil")
+  valueBox(journal_n, icon = "fa-filter")
 })
 ```
 
@@ -110,7 +117,7 @@ renderValueBox({
 ```{r}
 renderValueBox({
   hybrid_n <- sum(jn_f()$licence_ref_n)
-  valueBox(hybrid_n, icon = "fa-pencil")
+  valueBox(hybrid_n, icon = "fa-creative-commons")
 })
 ```
 
@@ -125,7 +132,7 @@ renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, prop, fill = licence_ref)) +
     geom_bar(stat = "identity") +
     xlab("Year") +
-    ylab("Proportion Hybrid OA / Journal Output") +
+    ylab("Hybrid OA / Articles published") +
     viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels = scales::percent) +
@@ -142,7 +149,7 @@ renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, licence_n, fill = licence_ref)) +
     geom_bar(stat = "identity") +
     xlab("Year") +
-    ylab("Hybrid OA Journal Output") +
+    ylab("Hybrid OA Articles") +
     viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
@@ -199,7 +206,6 @@ tt <- o_apc_df %>%
   mutate(prop = n / sum(n)) %>%
   mutate(prop = round(prop, 2)) %>%
   filter(!is.na(country))
-library(scales)
 gg <- ggplot(tt, aes(prop, reorder(country, prop))) + 
   ggalt::geom_lollipop(point.colour="steelblue", point.size=4, horizontal=TRUE)
 gg <- gg + scale_x_continuous(expand=c(0,0), labels=percent,
