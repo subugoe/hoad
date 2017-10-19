@@ -22,7 +22,7 @@ library(dplyr)
 library(scales)
 library(ggalt)
 
-# access to data 
+# access to data t
 hybrid_df <- readr::read_csv("data/cr_hybrid_df_indicators.csv") %>%
   filter(hybrid_license == TRUE) %>%
   mutate(year = factor(year, levels = c("2013", "2014", "2015","2016"))) %>%
