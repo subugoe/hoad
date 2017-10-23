@@ -11,11 +11,12 @@ knitr::opts_chunk$set(
 #'
 #' ### How to retrieve a list of hybrid journals?
 #'
-#' To my knowledge, there's no comprehensive list of hybrid OA journals. However, a list of
-#' hybrid OA journals can be compiled using the Open APC dataset curated by the
-#' [Open APC Initiative](github.com/openapc/openapc-de) initiative. This initiative collects 
-#' and shares institutional spending information for open access publication fees, 
-#' including those spent for publication in hybrid journals.
+#' To my knowledge, there's no comprehensive list of hybrid OA journals. However, 
+#' a list of hybrid OA journals can be compiled using the Open APC dataset curated 
+#' by the [Open APC Initiative](github.com/openapc/openapc-de) initiative. 
+#' This initiative collects  and shares institutional spending information for 
+#' open access publication fees,including those spent for publication in 
+#' hybrid journals.
 #'
 #' Let's retrieve the most current dataset:
 #'
@@ -54,7 +55,9 @@ o_apc %>%
 #'
 #' First, retrieve journal article volume and corresponding licensing information 
 #' for the period  2013 - 2016
-jn_facets <- purrr::map("0001-706X", .f = function(x) {
+o_apc_issn <- o_apc %>% 
+  distinct(issn)
+jn_facets <- purrr::map(o_apc_issn$issn[1:10], .f = purrr::safely(function(x) {
   issn <- x
   tt <- rcrossref::cr_works(
     filter = c(issn = issn, 
@@ -69,6 +72,7 @@ jn_facets <- purrr::map("0001-706X", .f = function(x) {
   #' - Crossref publisher (in case of publisher name change, use the most frequent name)
   #' 
   #' To Do: switch to current potential
+  if (!is.null(tt)) {
   tibble::tibble(
     issn = issn,
     year_published = list(tt$facets$published),
@@ -76,7 +80,10 @@ jn_facets <- purrr::map("0001-706X", .f = function(x) {
     journal_title = tt$facets$`container-title`$.id[1], 
     publisher = tt$facets$publisher$.id[1]
   )
-  })
+  } else {
+    NULL
+  }
+  }))
 
 #' Second, filter out open licenses and check
 #' 
@@ -101,8 +108,9 @@ licence_patterns <- c("creativecommons.org/licenses/",
                       #            "http://www.elsevier.com/open-access/userlicense/1.0/",
                       "http://www.ieee.org/publications_standards/publications/rights/oapa.pdf")
 #' now add indication to the dataset
-hybrid_licenses <- tt %>%
-  select(journal_title, license_refs) %>%
+jn_facets_df <- purrr::map_df(jn_facets, "result")
+hybrid_licenses <- jn_facets_df %>%
+  select(issn, license_refs) %>%
   tidyr::unnest() %>%
   mutate(license_ref = tolower(.id)) %>%
   select(-.id) %>%
@@ -110,12 +118,14 @@ hybrid_licenses <- tt %>%
     paste(licence_patterns, collapse = "|"),
     license_ref
   ), TRUE, FALSE)) %>%
-  filter(hybrid_license == TRUE)
+  filter(hybrid_license == TRUE) %>%
+  left_join(jn_facets_df, by = c("issn" = "issn"))
 #' We now know, whether and which open licenses were used by the journal in the 
-#' period 2013:2016. As a next step we want to validate that these licenses were not 
-#' issued for delayed open access articles by using the self-explanatory 
-#' filter `license.url` and `license.delay`
-tmp <- purrr::map2(hybrid_licenses$license_ref,  function(x, y) {
+#' period 2013:2016. As a next step we want to validate that these 
+#' licenses were not issued for delayed open access articles by 
+#' additionally using  the self-explanatory filter `license.url` and
+#'  `license.delay`
+tmp <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,  .f = purrr::safely(function(x, y) {
   u <- x
   issn <- y
   tmp <- rcrossref::cr_works(filter = c(issn = issn, 
@@ -124,12 +134,15 @@ tmp <- purrr::map2(hybrid_licenses$license_ref,  function(x, y) {
                       type = "journal-article",
                       from_pub_date = "2013-01-01", 
                       until_pub_date = "2016-12-31"),
-           facet = TRUE) 
+           facet = "published") 
   tibble::tibble(
     issn =  issn,
     year_published = list(tmp$facets$published),
     license = u
   )
-})
+}))
 #' into one data frame!
-purrr::map_df(tmp, .f = function(x) tidyr::unnest(x))
+tmp %>% purrr::map_df("result") %>% 
+  tidyr::unnest(year_published) %>%
+  #' some column renaming
+  select(1:2, year = .id, licence_ref_n = V1)
