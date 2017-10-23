@@ -57,7 +57,7 @@ o_apc %>%
 #' for the period  2013 - 2016
 o_apc_issn <- o_apc %>% 
   distinct(issn)
-jn_facets <- purrr::map(o_apc_issn$issn[1:10], .f = purrr::safely(function(x) {
+jn_facets <- purrr::map(o_apc_issn$issn, .f = purrr::safely(function(x) {
   issn <- x
   tt <- rcrossref::cr_works(
     filter = c(issn = issn, 
@@ -109,6 +109,7 @@ licence_patterns <- c("creativecommons.org/licenses/",
                       "http://www.ieee.org/publications_standards/publications/rights/oapa.pdf")
 #' now add indication to the dataset
 jn_facets_df <- purrr::map_df(jn_facets, "result")
+jsonlite::stream_out(jn_facets_df, file("data/jn_facets_df.json"))
 hybrid_licenses <- jn_facets_df %>%
   select(issn, license_refs) %>%
   tidyr::unnest() %>%
@@ -145,4 +146,5 @@ tmp <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,  .f = purr
 tmp %>% purrr::map_df("result") %>% 
   tidyr::unnest(year_published) %>%
   #' some column renaming
-  select(1:2, year = .id, licence_ref_n = V1)
+  select(1:2, year = .id, licence_ref_n = V1) %>%
+  jsonlite::stream_out(file("data/hybrid_license_df"))
