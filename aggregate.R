@@ -189,4 +189,4 @@ hybrid_license_df %>%
   filter(issn %in% flipped_jns$issn & year %in% flipped_jns$year) %>% 
   anti_join(hybrid_license_df, .) %>%
   jsonlite::stream_out(file("data/hybrid_license_df.json"))
-  
+
