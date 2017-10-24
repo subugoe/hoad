@@ -147,4 +147,4 @@ tmp %>% purrr::map_df("result") %>%
   tidyr::unnest(year_published) %>%
   #' some column renaming
   select(1:2, year = .id, licence_ref_n = V1) %>%
-  jsonlite::stream_out(file("data/hybrid_license_df"))
+  jsonlite::stream_out(file("data/hybrid_license_df.json"))
