@@ -60,7 +60,7 @@ o_apc_issn <- o_apc %>%
 jn_facets <- purrr::map(o_apc_issn$issn, .f = purrr::safely(function(x) {
   issn <- x
   tt <- rcrossref::cr_works(
-    filter = c(issn = issn, 
+    filter = c(issn = "2041-1723", 
              from_pub_date = "2013-01-01", 
              until_pub_date = "2016-12-31",
              type = "journal-article"),
@@ -147,4 +147,46 @@ tmp %>% purrr::map_df("result") %>%
   tidyr::unnest(year_published) %>%
   #' some column renaming
   select(1:2, year = .id, licence_ref_n = V1) %>%
-  jsonlite::stream_out(file("data/hybrid_license_df"))
+  jsonlite::stream_out(file("data/hybrid_license_df.json"))
+#' ## Dealing with flipped journals
+#' 
+#' Nature Communication is a prominent example of journals that were
+#' flipped rom toll-access to full open access during the time of our study.
+#' 
+#' To catch these journals, we can match our data with the DOAJ journal
+#' list. The DOAJ is a registry of fully OA journals.
+#' 
+doaj <- readr::read_csv("https://doaj.org/csv")
+#' There are three columns needed:
+#' 
+#' The two ISSN columns
+#' - `Journal ISSN (print version)`
+#' - `Journal EISSN (online version)`
+#' 
+#' and the year, in which the journal started as fully OA journal
+#' 
+#' - `First calendar year journal provided online Open Access content`
+#' 
+#' Let's prepare a look-up table
+doaj_lookup <- doaj %>% 
+  select(issn_print = `Journal ISSN (print version)`,
+         issn_e = `Journal EISSN (online version)`,
+         year_flipped = `First calendar year journal provided online Open Access content`) %>%
+  # we started our analysis in 2013
+  filter(year_flipped > 2012) %>%
+  # gathering issns into one column
+  tidyr::gather(issn_print, issn_e, key = "issn_type", value = "issn") %>%
+  # remove missing values
+  filter(!is.na(issn))
+#' # check with our hybrid license dataset
+hybrid_license_df <- jsonlite::stream_in(file("data/hybrid_license_df.json")) 
+flipped_jns <- hybrid_license_df %>% 
+  inner_join(doaj_lookup, by = "issn") %>% 
+  filter(year_flipped <= year) %>% 
+  select(issn, year)
+# remove rows from hybrid license data set and store into json
+hybrid_license_df %>% 
+  filter(issn %in% flipped_jns$issn & year %in% flipped_jns$year) %>% 
+  anti_join(hybrid_license_df, .) %>%
+  jsonlite::stream_out(file("data/hybrid_license_df.json"))
+  
