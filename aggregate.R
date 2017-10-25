@@ -147,6 +147,7 @@ tmp %>% purrr::map_df("result") %>%
   tidyr::unnest(year_published) %>%
   #' some column renaming
   select(1:2, year = .id, license_ref_n = V1) %>%
+  # TODO: TRAILING SLASH AND HTTP(S)
   jsonlite::stream_out(file("data/hybrid_license_df.json"))
 #' ## Dealing with flipped journals
 #' 
@@ -211,17 +212,20 @@ hybrid_license_df <-
   jsonlite::stream_in(file("data/hybrid_license_df.json")) %>%
   dplyr::as_data_frame() %>%
   inner_join(jn_publishers, by = "issn") %>% 
-  distinct()
+  distinct() %>%
+  select(journal_title, issn, year, license, licence_ref_n)
 jn_indicators <- jsonlite::stream_in(file("data/jn_facets_df.json")) %>%
   dplyr::as_data_frame() %>% 
-  select(journal_title, year_published) %>%
+  select(journal_title, publisher, issn, year_published) %>%
   tidyr::unnest() %>%
-  select(journal_title, year = .id, jn_published = V1) %>%
+  select(journal_title, publisher, issn, year = .id, jn_published = V1) %>%
   # left join because most journals don't have license infos for every year in
   # the period 2013 -2016
   left_join(hybrid_license_df, by = c("journal_title" = "journal_title", "year" = "year")) %>%
   # we only wnat to examine compliant journals
-  filter(journal_title %in% hybrid_license_df$journal_title)
+  filter(journal_title %in% hybrid_license_df$journal_title) %>%
+  # do some reordering
+  select(journal_title, publisher, issn = issn.x, year, license, license_ref_n = licence_ref_n, jn_published)
 #' calculate `year_all`
 by_year <- jn_indicators %>%
   # work with unique journal / year combination to calculate the
