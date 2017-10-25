@@ -1,15 +1,5 @@
 #' ### Hybrid journal output vs what was actually sponsored by academic institutions
-#' 
-#' load indicator set
-cr_df <- readr::read_csv("data/cr_hybrid_df_indicators.csv")
-#' interesting values are
-#' 
-#'- licence_ref_n : number of articles for a licence in a year
-#'- 
-#'- year: year published
-#'- licence_ref: license
-#' 
-#' Open APC
+#'  Get Open APC data
 u <-
   "https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/apc_de.csv"
 o_apc <- readr::read_csv(u) %>%
@@ -37,23 +27,19 @@ countries <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-
 #' 
 o_apc <- o_apc %>%
   left_join(countries, by = "institution")
+#' merge with main indicator data frame
+jn_publishers <-  jsonlite::stream_in(file("data/hybrid_license_indicators.json")) %>%
+  dplyr::as_data_frame() %>%
+  distinct(issn, journal_title, publisher)
 #' create summary table which we want to merge into our indicators dataset 
 o_apc_country <- o_apc %>%
-  group_by(country, issn, period) %>%
+  left_join(jn_publishers, by = "issn") %>%
+  group_by(country, journal_title, period) %>%
   summarize(oapc_n_country = n()) %>%
   filter(period %in% c("2013", "2014", "2015","2016"))
 o_apc_ind <- o_apc_country %>%
-  group_by(period, issn) %>%
+  group_by(period, journal_title) %>%
   summarize(oapc_n_year = sum(oapc_n_country)) %>%
-  right_join(o_apc_country, by = c("issn", "period"))
-#' merge with main indicator data frame
-o_apc_df <- rio::import("data/cr_hybrid_df_indicators.csv") %>%
-  filter(hybrid_license == TRUE) %>%
-  # a quick and dirty appraoch to deal with journals that changed issn within a year
-  distinct(journal, year, licence_ref, .keep_all = TRUE) %>%
-  select(journal, year, issn) %>% 
-  left_join(o_apc_ind, by = c("issn" = "issn", "year" = "period")) %>%
-  distinct() %>%
-  mutate(continent = countrycode::countrycode(country, "iso3c", "continent")) %>%
-  readr::write_csv("data/oapc_aggregated.csv")
-  
+  right_join(o_apc_country, by = c("journal_title", "period")) %>%
+  mutate(continent = countrycode::countrycode(country, "iso3c", "continent"))
+jsonlite::stream_out(o_apc_ind, file("data/oapc_aggregated.json"))
