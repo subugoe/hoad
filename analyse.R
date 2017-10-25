@@ -30,7 +30,7 @@ hybrid_df <- my_df %>%
 #'   license per publisher and year
 #' (replace group_by argument, i.e., journal wehen you want to calculate license per journal)
 #'  
-#'  We will add this list with IEEE's OA license:
+#'  oaDOI added to this list  IEEE's OA license:
 #'  `http://www.ieee.org/publications_standards/publications/rights/oapa.pdf`
 licence_patterns <- c("creativecommons.org/licenses/",
                       "http://koreanjpathol.org/authors/access.php",
