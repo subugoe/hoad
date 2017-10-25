@@ -146,7 +146,7 @@ tmp <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,  .f = purr
 tmp %>% purrr::map_df("result") %>% 
   tidyr::unnest(year_published) %>%
   #' some column renaming
-  select(1:2, year = .id, licence_ref_n = V1) %>%
+  select(1:2, year = .id, license_ref_n = V1) %>%
   jsonlite::stream_out(file("data/hybrid_license_df.json"))
 #' ## Dealing with flipped journals
 #' 
@@ -184,9 +184,59 @@ flipped_jns <- hybrid_license_df %>%
   inner_join(doaj_lookup, by = "issn") %>% 
   filter(year_flipped <= year) %>% 
   select(issn, year)
-# remove rows from hybrid license data set and store into json
+#' remove rows from hybrid license data set and store into json
 hybrid_license_df %>% 
   filter(issn %in% flipped_jns$issn & year %in% flipped_jns$year) %>% 
   anti_join(hybrid_license_df, .) %>%
   jsonlite::stream_out(file("data/hybrid_license_df.json"))
+#' ## Calculating gap indicators
+#' 
+#' The following indicators will be presented through the dashboard. 
+#' 
+#' - `publisher_n`: number of complient hybrid oa publishers
+#' - `journal_n`: number of complient hybrid oa journals
+#'  
+#' - `license_ref_n`: number of articles published under the license `license_ref` in `year`
+#' - `jn_published`: number of articles a journal (`issn`) published in `year`
+#' - `pbl_published`: overall publisher output hybrid oa journals per `year`
+#' - `year_all`: all articles published in oa hybrid oa journals per `year`
+#'  
+#'  First of all, we need to filter out those journals that have met our inclusion criteria,
+#'  licensing info shared via corssref and payment recorded vai open apcö
+#'  
+hybrid_license_df <- 
+  jsonlite::stream_in(file("data/hybrid_license_df.json")) %>%
+  dplyr::as_data_frame()
+jn_publishers <- jsonlite::stream_in(file("data/jn_facets_df.json")) %>%
+  dplyr::as_data_frame() %>%
+  distinct(issn, journal_title, publisher)
+jn_indicators <- jsonlite::stream_in(file("data/jn_facets_df.json")) %>%
+  dplyr::as_data_frame() %>% 
+  select(issn, year_published) %>%
+  tidyr::unnest() %>%
+  select(issn, year = .id, jn_published = V1) %>%
+  # left join because most journals don't have license infos for every year in
+  # the period 2013 -2016
+  left_join(hybrid_license_df, by = c("issn" = "issn", "year" = "year")) %>%
+  # we only wnat to examine compliant journals
+  filter(issn %in% hybrid_license_df$issn) %>%
+  # add journal and publisher names
+  left_join(jn_publishers, by = "issn")
+#' calculate `year_all`
+by_year <- jn_indicators %>%
+  # work with unique journal / year combination to calculate the
+  # the absolute number by year and publisher
+  distinct(year, issn, .keep_all = TRUE) %>%
+  group_by(year) %>%
+  summarize(year_all = sum(jn_published))
+#'calculate `pbl_published`
+by_publisher <- jn_indicators %>% 
+  distinct(year, issn, .keep_all = TRUE) %>%
+  group_by(publisher, year) %>%
+  summarize(year_publisher_all = sum(jn_published))
+#' add indicators
+jn_indicators <- jn_indicators %>% 
+  left_join(by_year, by = c("year" = "year")) %>%
+  left_join(by_publisher, by = c("year" = "year", "publisher" = "publisher")) %>%
+  jsonlite::stream_out(file("data/hybrid_license_indicators.json"))
 
