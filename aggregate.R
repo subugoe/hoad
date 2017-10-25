@@ -201,41 +201,42 @@ hybrid_license_df %>%
 #' - `pbl_published`: overall publisher output hybrid oa journals per `year`
 #' - `year_all`: all articles published in oa hybrid oa journals per `year`
 #'  
-#'  First of all, we need to filter out those journals that have met our inclusion criteria,
+#'  First of all, we need to filter those journals that have met our inclusion criteria,
 #'  licensing info shared via corssref and payment recorded vai open apcö
 #'  
-hybrid_license_df <- 
-  jsonlite::stream_in(file("data/hybrid_license_df.json")) %>%
-  dplyr::as_data_frame()
 jn_publishers <- jsonlite::stream_in(file("data/jn_facets_df.json")) %>%
   dplyr::as_data_frame() %>%
   distinct(issn, journal_title, publisher)
+hybrid_license_df <- 
+  jsonlite::stream_in(file("data/hybrid_license_df.json")) %>%
+  dplyr::as_data_frame() %>%
+  inner_join(jn_publishers, by = "issn") %>% 
+  distinct()
 jn_indicators <- jsonlite::stream_in(file("data/jn_facets_df.json")) %>%
   dplyr::as_data_frame() %>% 
-  select(issn, year_published) %>%
+  select(journal_title, year_published) %>%
   tidyr::unnest() %>%
-  select(issn, year = .id, jn_published = V1) %>%
+  select(journal_title, year = .id, jn_published = V1) %>%
   # left join because most journals don't have license infos for every year in
   # the period 2013 -2016
-  left_join(hybrid_license_df, by = c("issn" = "issn", "year" = "year")) %>%
+  left_join(hybrid_license_df, by = c("journal_title" = "journal_title", "year" = "year")) %>%
   # we only wnat to examine compliant journals
-  filter(issn %in% hybrid_license_df$issn) %>%
-  # add journal and publisher names
-  left_join(jn_publishers, by = "issn")
+  filter(journal_title %in% hybrid_license_df$journal_title)
 #' calculate `year_all`
 by_year <- jn_indicators %>%
   # work with unique journal / year combination to calculate the
   # the absolute number by year and publisher
-  distinct(year, issn, .keep_all = TRUE) %>%
+  # calculate over title because of issn variants in the open apc dataset
+  distinct(year, journal_title, .keep_all = TRUE) %>%
   group_by(year) %>%
   summarize(year_all = sum(jn_published))
 #'calculate `pbl_published`
 by_publisher <- jn_indicators %>% 
-  distinct(year, issn, .keep_all = TRUE) %>%
+  distinct(year, journal_title, .keep_all = TRUE) %>%
   group_by(publisher, year) %>%
   summarize(year_publisher_all = sum(jn_published))
 #' add indicators
-jn_indicators <- jn_indicators %>% 
+jn_indicators %>% 
   left_join(by_year, by = c("year" = "year")) %>%
   left_join(by_publisher, by = c("year" = "year", "publisher" = "publisher")) %>%
   jsonlite::stream_out(file("data/hybrid_license_indicators.json"))
