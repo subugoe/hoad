@@ -1,12 +1,12 @@
 ---
-title: "Open Access Hybrid journal_title Monitor"
+title: "Hybrid OA Journal Monitor"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
     social: menu
     source_code: embed
     vertical_layout: fill
-  runtime: shiny
+runtime: shiny
 ---
 
 Overview
@@ -213,7 +213,7 @@ gg <- gg + scale_x_continuous(expand=c(0,0), labels=percent,
 gg <- gg + labs(x=NULL, y=NULL,
               #  title="Institutional spending on hybrid OA journal_title articles",
               #  subtitle="Articles funded per country (in percent)",
-                caption="Data from github.com/openapc/openapc-de")
+                caption="Data from https://github.com/openapc/openapc-de")
 gg <- gg + theme_minimal()
 gg <- gg + theme(panel.grid.major.y=element_blank())
 gg <- gg + theme(panel.grid.minor=element_blank())
