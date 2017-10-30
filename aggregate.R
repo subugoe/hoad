@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 #' a list of hybrid OA journals can be compiled using the Open APC dataset curated 
 #' by the [Open APC Initiative](github.com/openapc/openapc-de) initiative. 
 #' This initiative collects  and shares institutional spending information for 
-#' open access publication fees,including those spent for publication in 
+#' open access publication fees, including those spent for publication in 
 #' hybrid journals.
 #'
 #' Let's retrieve the most current dataset:
@@ -26,10 +26,10 @@ u <-
   "https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/apc_de.csv"
 o_apc <- readr::read_csv(u) %>%
   filter(is_hybrid == TRUE)
-#' Some summary statistics:
 #'
-#' We also would like to add data from offsetting aggrements, which is also collected
-#' Open APC initiative, but does not include pricing information.
+#' We also would like to add data from offsetting aggrements, which is also 
+#' collected by the Open APC initiative. 
+#' The offsetting data-set does not include pricing information.
 #' 
 o_offset <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/offsetting/offsetting.csv")
 #' Merge with Open APC dataset
@@ -43,24 +43,24 @@ o_apc %>%
   mutate(prop = n / sum(n))
 #' ## How does it relate to the general hybrid output per journal?
 #'
-#' Crossref Metadata API is used to get both license information and number of articles
-#' published per year. The API is accessed via
-#' [rOpenSci's rcrossref client](https://github.com/ropensci/rcrossref).
+#' Crossref Metadata API is used to gather both license information and 
+#' the number of articles published per year for the period 2013 - 2016. 
+#' The API is accessed via [rOpenSci's rcrossref client](https://github.com/ropensci/rcrossref).
 #'
 #' Instead of fetching all articles published, we use facet counts to keep API usage low
 #'
 #' <https://github.com/CrossRef/rest-api-doc/#facet-counts>
 #'
-#' There are two steps:
+#' This invloves two steps:
 #'
-#' First, retrieve journal article volume and corresponding licensing information 
-#' for the period  2013 - 2016
+#' First, we retrieve journal article volume and corresponding licensing information 
+#' for the period  2013 - 2016 for each issn in the Open APC dataset
 o_apc_issn <- o_apc %>% 
   distinct(issn)
 jn_facets <- purrr::map(o_apc_issn$issn, .f = purrr::safely(function(x) {
   issn <- x
   tt <- rcrossref::cr_works(
-    filter = c(issn = "2041-1723", 
+    filter = c(issn = issn, 
              from_pub_date = "2013-01-01", 
              until_pub_date = "2016-12-31",
              type = "journal-article"),
@@ -85,20 +85,22 @@ jn_facets <- purrr::map(o_apc_issn$issn, .f = purrr::safely(function(x) {
   }
   }))
 
-#' Second, filter out open licenses and check
+#' Second, filter out open licenses and check:
 #' 
-#' #' ## Which licenses indicates hybrid OA availability?
+#' Question: Which licenses indicates hybrid OA availability?
 #' 
-#'  [dissemin](https://dissem.in/) compiled a list of licenses used in Crossref,
-#'  which indicate OA availability. [oaDOI](https://oadoi.org) re-uses this list. 
-#'  This list can be found here:
+#' [dissemin](https://dissem.in/) compiled a list of licenses used in Crossref,
+#' which indicate OA availability. [oaDOI](https://oadoi.org) re-uses this list. 
+#' This list can be found here:
 #'  
-#'  <https://github.com/dissemin/dissemin/blob/0aa00972eb13a6a59e1bc04b303cdcab9189406a/backend/crossref.py#L89>
-#'   license per publisher and year
+#' <https://github.com/dissemin/dissemin/blob/0aa00972eb13a6a59e1bc04b303cdcab9189406a/backend/crossref.py#L89>
+#'  license per publisher and year
 #' (replace group_by argument, i.e., journal wehen you want to calculate license per journal)
 #'  
 #'  oaDOI added to this list  IEEE's OA license:
 #'  `http://www.ieee.org/publications_standards/publications/rights/oapa.pdf`
+#'  
+#'  We excluded Elseviers Open Access license, need more evaluation
 licence_patterns <- c("creativecommons.org/licenses/",
                       "http://koreanjpathol.org/authors/access.php",
                       "http://olabout.wiley.com/WileyCDA/Section/id-815641.html",
@@ -126,7 +128,8 @@ hybrid_licenses <- jn_facets_df %>%
 #' licenses were not issued for delayed open access articles by 
 #' additionally using  the self-explanatory filter `license.url` and
 #'  `license.delay`
-tmp <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,  .f = purrr::safely(function(x, y) {
+tmp <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn, 
+                   .f = purrr::safely(function(x, y) {
   u <- x
   issn <- y
   tmp <- rcrossref::cr_works(filter = c(issn = issn, 
@@ -149,10 +152,11 @@ tmp %>% purrr::map_df("result") %>%
   select(1:2, year = .id, license_ref_n = V1) %>%
   # TODO: TRAILING SLASH AND HTTP(S)
   jsonlite::stream_out(file("data/hybrid_license_df.json"))
+#'
 #' ## Dealing with flipped journals
 #' 
 #' Nature Communication is a prominent example of journals that were
-#' flipped rom toll-access to full open access during the time of our study.
+#' flipped from toll-access to full open access during the time of our study.
 #' 
 #' To catch these journals, we can match our data with the DOAJ journal
 #' list. The DOAJ is a registry of fully OA journals.
@@ -244,4 +248,11 @@ jn_indicators %>%
   left_join(by_year, by = c("year" = "year")) %>%
   left_join(by_publisher, by = c("year" = "year", "publisher" = "publisher")) %>%
   jsonlite::stream_out(file("data/hybrid_license_indicators.json"))
-
+#' disambiguate licencing infos
+tmp <- jsonlite::stream_in(file("data/hybrid_license_indicators.json"))
+tmp_ <- tmp %>% 
+  mutate(license = gsub("\\/$", "", license)) %>%
+  mutate(license = gsub("https", "http", license)) %>%
+  group_by(journal_title, publisher, issn, year, license, jn_published, year_all, year_publisher_all) %>%
+  summarise(license_ref_n = sum(license_ref_n))
+jsonlite::stream_out(tmp_, file("data/hybrid_license_indicators.json"))
