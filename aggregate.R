@@ -35,7 +35,9 @@ o_offset <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-d
 #' Merge with Open APC dataset
 o_apc <- o_offset %>% 
   mutate(euro = as.integer(euro)) %>% 
-  bind_rows(o_apc) 
+  bind_rows(o_apc) %>%
+  # restrict to period 2013 - 2017
+  filter(period > 2012)
 #' some summary sttatistics by publishers (top 10)
 o_apc %>%
   mutate(publisher = forcats::fct_lump(publisher, n = 10)) %>%
@@ -62,7 +64,7 @@ jn_facets <- purrr::map(o_apc_issn$issn, .f = purrr::safely(function(x) {
   tt <- rcrossref::cr_works(
     filter = c(issn = issn, 
              from_pub_date = "2013-01-01", 
-             until_pub_date = "2016-12-31",
+             until_pub_date = "2017-12-31",
              type = "journal-article"),
   facet = TRUE)
   #' Parse the relevant information
@@ -137,7 +139,7 @@ tmp <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
                       license.delay = 0,
                       type = "journal-article",
                       from_pub_date = "2013-01-01", 
-                      until_pub_date = "2016-12-31"),
+                      until_pub_date = "2017-12-31"),
            facet = "published") 
   tibble::tibble(
     issn =  issn,
@@ -150,7 +152,6 @@ tmp %>% purrr::map_df("result") %>%
   tidyr::unnest(year_published) %>%
   #' some column renaming
   select(1:2, year = .id, license_ref_n = V1) %>%
-  # TODO: TRAILING SLASH AND HTTP(S)
   jsonlite::stream_out(file("data/hybrid_license_df.json"))
 #'
 #' ## Dealing with flipped journals
