@@ -36,7 +36,7 @@ o_apc_country <- o_apc %>%
   left_join(jn_publishers, by = "issn") %>%
   group_by(country, journal_title, period) %>%
   summarize(oapc_n_country = n()) %>%
-  filter(period %in% c("2013", "2014", "2015","2016"))
+  filter(period %in% c("2013", "2014", "2015","2016", "2017"))
 o_apc_ind <- o_apc_country %>%
   group_by(period, journal_title) %>%
   summarize(oapc_n_year = sum(oapc_n_country)) %>%

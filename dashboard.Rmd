@@ -2,6 +2,8 @@
 title: "Hybrid OA Journal Monitor"
 output: 
   flexdashboard::flex_dashboard:
+    navbar:
+      - { title: "About", href: "https://github.com/openapc", align: right }
     orientation: rows
     social: menu
     source_code: embed
@@ -24,11 +26,11 @@ library(ggalt)
 
 # access to data t
 hybrid_df <- jsonlite::stream_in(file("data/hybrid_license_indicators.json")) %>%
-  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016"))) %>%
+  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016", "2017"))) %>%
   arrange(desc(year_publisher_all))
 
 o_apc_df <- jsonlite::stream_in(file("data/oapc_aggregated.json")) %>%
-  mutate(year = factor(period, levels = c("2013", "2014", "2015","2016")))
+  mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017")))
 ```
 
 Inputs {.sidebar}
@@ -229,9 +231,4 @@ gg
 })
 ```
 
-
-About
-=================================================================
-
-## This is so cool
 
