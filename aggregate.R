@@ -139,7 +139,7 @@ cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
                                                            license.delay = 0,
                                                            type = "journal-article",
                                                            from_pub_date = "2013-01-01", 
-                                                           until_pub_date = "2016-12-31"),
+                                                           until_pub_date = "2017-12-31"),
                                                 facet = "published") 
                      tibble::tibble(
                        issn =  issn,
