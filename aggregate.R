@@ -102,14 +102,14 @@ jn_facets <- purrr::map(o_apc_issn$issn, .f = purrr::safely(function(x) {
 #'  oaDOI added to this list  IEEE's OA license:
 #'  `http://www.ieee.org/publications_standards/publications/rights/oapa.pdf`
 #'  
-#'  We excluded Elseviers Open Access license, need more evaluation
+#'  We include Elseviers Open Access license, needs more evaluation
 licence_patterns <- c("creativecommons.org/licenses/",
                       "http://koreanjpathol.org/authors/access.php",
                       "http://olabout.wiley.com/WileyCDA/Section/id-815641.html",
                       "http://pubs.acs.org/page/policy/authorchoice_ccby_termsofuse.html",
                       "http://pubs.acs.org/page/policy/authorchoice_ccbyncnd_termsofuse.html",
                       "http://pubs.acs.org/page/policy/authorchoice_termsofuse.html",
-                      #            "http://www.elsevier.com/open-access/userlicense/1.0/",
+                      "http://www.elsevier.com/open-access/userlicense/1.0/",
                       "http://www.ieee.org/publications_standards/publications/rights/oapa.pdf")
 #' now add indication to the dataset
 jn_facets_df <- purrr::map_df(jn_facets, "result")
@@ -130,28 +130,29 @@ hybrid_licenses <- jn_facets_df %>%
 #' licenses were not issued for delayed open access articles by 
 #' additionally using  the self-explanatory filter `license.url` and
 #'  `license.delay`
-tmp <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn, 
+cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn, 
                    .f = purrr::safely(function(x, y) {
-  u <- x
-  issn <- y
-  tmp <- rcrossref::cr_works(filter = c(issn = issn, 
-                      license.url = u, 
-                      license.delay = 0,
-                      type = "journal-article",
-                      from_pub_date = "2013-01-01", 
-                      until_pub_date = "2017-12-31"),
-           facet = "published") 
-  tibble::tibble(
-    issn =  issn,
-    year_published = list(tmp$facets$published),
-    license = u
-  )
-}))
+                     u <- x
+                     issn <- y
+                     tmp <- rcrossref::cr_works(filter = c(issn = issn, 
+                                                           license.url = u, 
+                                                           license.delay = 0,
+                                                           type = "journal-article",
+                                                           from_pub_date = "2013-01-01", 
+                                                           until_pub_date = "2016-12-31"),
+                                                facet = "published") 
+                     tibble::tibble(
+                       issn =  issn,
+                       year_published = list(tmp$facets$published),
+                       license = u
+                     )
+                   }))
 #' into one data frame!
-tmp %>% purrr::map_df("result") %>% 
+cr_license %>% purrr::map_df("result") %>% 
   tidyr::unnest(year_published) %>%
   #' some column renaming
   select(1:2, year = .id, license_ref_n = V1) %>%
+  # TODO: TRAILING SLASH AND HTTP(S)
   jsonlite::stream_out(file("data/hybrid_license_df.json"))
 #'
 #' ## Dealing with flipped journals
@@ -190,7 +191,7 @@ flipped_jns <- hybrid_license_df %>%
   inner_join(doaj_lookup, by = "issn") %>% 
   filter(year_flipped <= year) %>% 
   select(issn, year)
-#' remove rows from hybrid license data set and store into json
+#' remove flipped journals from hybrid license data set and store into json
 hybrid_license_df %>% 
   filter(issn %in% flipped_jns$issn & year %in% flipped_jns$year) %>% 
   anti_join(hybrid_license_df, .) %>%
@@ -218,7 +219,7 @@ hybrid_license_df <-
   dplyr::as_data_frame() %>%
   inner_join(jn_publishers, by = "issn") %>% 
   distinct() %>%
-  select(journal_title, issn, year, license, licence_ref_n)
+  select(journal_title, issn, year, license, license_ref_n)
 jn_indicators <- jsonlite::stream_in(file("data/jn_facets_df.json")) %>%
   dplyr::as_data_frame() %>% 
   select(journal_title, publisher, issn, year_published) %>%
@@ -230,7 +231,7 @@ jn_indicators <- jsonlite::stream_in(file("data/jn_facets_df.json")) %>%
   # we only wnat to examine compliant journals
   filter(journal_title %in% hybrid_license_df$journal_title) %>%
   # do some reordering
-  select(journal_title, publisher, issn = issn.x, year, license, license_ref_n = licence_ref_n, jn_published)
+  select(journal_title, publisher, issn = issn.x, year, license, license_ref_n = license_ref_n, jn_published)
 #' calculate `year_all`
 by_year <- jn_indicators %>%
   # work with unique journal / year combination to calculate the
