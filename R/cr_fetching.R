@@ -113,7 +113,7 @@ licence_patterns <- c("creativecommons.org/licenses/",
                       "http://www.ieee.org/publications_standards/publications/rights/oapa.pdf")
 #' now add indication to the dataset
 jn_facets_df <- purrr::map_df(jn_facets, "result")
-jsonlite::stream_out(jn_facets_df, file("data/jn_facets_df.json"))
+jsonlite::stream_out(jn_facets_df, file("../data/jn_facets_df.json"))
 hybrid_licenses <- jn_facets_df %>%
   select(issn, license_refs) %>%
   tidyr::unnest() %>%
@@ -153,7 +153,7 @@ cr_license %>% purrr::map_df("result") %>%
   #' some column renaming
   select(1:2, year = .id, license_ref_n = V1) %>%
   # TODO: TRAILING SLASH AND HTTP(S)
-  jsonlite::stream_out(file("data/hybrid_license_df.json"))
+  jsonlite::stream_out(file("../data/hybrid_license_df.json"))
 #'
 #' ## Dealing with flipped journals
 #' 
@@ -186,7 +186,7 @@ doaj_lookup <- doaj %>%
   # remove missing values
   filter(!is.na(issn))
 #' # check with our hybrid license dataset
-hybrid_license_df <- jsonlite::stream_in(file("data/hybrid_license_df.json")) 
+hybrid_license_df <- jsonlite::stream_in(file("../data/hybrid_license_df.json")) 
 flipped_jns <- hybrid_license_df %>% 
   inner_join(doaj_lookup, by = "issn") %>% 
   filter(year_flipped <= year) %>% 
@@ -195,7 +195,7 @@ flipped_jns <- hybrid_license_df %>%
 hybrid_license_df %>% 
   filter(issn %in% flipped_jns$issn & year %in% flipped_jns$year) %>% 
   anti_join(hybrid_license_df, .) %>%
-  jsonlite::stream_out(file("data/hybrid_license_df.json"))
+  jsonlite::stream_out(file("../data/hybrid_license_df.json"))
 #' ## Calculating gap indicators
 #' 
 #' The following indicators will be presented through the dashboard. 
@@ -211,16 +211,16 @@ hybrid_license_df %>%
 #'  First of all, we need to filter those journals that have met our inclusion criteria,
 #'  licensing info shared via corssref and payment recorded vai open apcö
 #'  
-jn_publishers <- jsonlite::stream_in(file("data/jn_facets_df.json")) %>%
+jn_publishers <- jsonlite::stream_in(file("../data/jn_facets_df.json")) %>%
   dplyr::as_data_frame() %>%
   distinct(issn, journal_title, publisher)
 hybrid_license_df <- 
-  jsonlite::stream_in(file("data/hybrid_license_df.json")) %>%
+  jsonlite::stream_in(file("../data/hybrid_license_df.json")) %>%
   dplyr::as_data_frame() %>%
   inner_join(jn_publishers, by = "issn") %>% 
   distinct() %>%
   select(journal_title, issn, year, license, license_ref_n)
-jn_indicators <- jsonlite::stream_in(file("data/jn_facets_df.json")) %>%
+jn_indicators <- jsonlite::stream_in(file("../data/jn_facets_df.json")) %>%
   dplyr::as_data_frame() %>% 
   select(journal_title, publisher, issn, year_published) %>%
   tidyr::unnest() %>%
@@ -249,18 +249,18 @@ by_publisher <- jn_indicators %>%
 jn_indicators %>% 
   left_join(by_year, by = c("year" = "year")) %>%
   left_join(by_publisher, by = c("year" = "year", "publisher" = "publisher")) %>%
-  jsonlite::stream_out(file("data/hybrid_license_indicators.json"))
+  jsonlite::stream_out(file("../data/hybrid_license_indicators.json"))
 #' disambiguate licencing infos
-tmp <- jsonlite::stream_in(file("data/hybrid_license_indicators.json"))
+tmp <- jsonlite::stream_in(file("../data/hybrid_license_indicators.json"))
 tmp_ <- tmp %>% 
   mutate(license = gsub("\\/$", "", license)) %>%
   mutate(license = gsub("https", "http", license)) %>%
   group_by(journal_title, publisher, issn, year, license, jn_published, year_all, year_publisher_all) %>%
   summarise(license_ref_n = sum(license_ref_n))
-jsonlite::stream_out(tmp_, file("data/hybrid_license_indicators.json"))
+jsonlite::stream_out(tmp_, file("../data/hybrid_license_indicators.json"))
 #' ## csv export
 #' 
 #' readr::read_csv() is much faster that streaming json, 
 #' so we better store data to re-used in the dashboard in csv files
-jsonlite::stream_in(file("data/hybrid_license_indicators.json")) %>%
-  readr::write_csv("data/hybrid_license_indicators.csv")
+jsonlite::stream_in(file("../data/hybrid_license_indicators.json")) %>%
+  readr::write_csv("../data/hybrid_license_indicators.csv")

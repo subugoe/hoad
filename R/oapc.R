@@ -28,7 +28,7 @@ countries <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-
 o_apc <- o_apc %>%
   left_join(countries, by = "institution")
 #' merge with main indicator data frame
-jn_publishers <-  jsonlite::stream_in(file("data/hybrid_license_indicators.json")) %>%
+jn_publishers <-  jsonlite::stream_in(file("../data/hybrid_license_indicators.json")) %>%
   dplyr::as_data_frame() %>%
   distinct(issn, journal_title, publisher)
 #' create summary table which we want to merge into our indicators dataset 
@@ -42,11 +42,11 @@ o_apc_ind <- o_apc_country %>%
   summarize(oapc_n_year = sum(oapc_n_country)) %>%
   right_join(o_apc_country, by = c("journal_title", "period")) %>%
   mutate(continent = countrycode::countrycode(country, "iso3c", "continent"))
-jsonlite::stream_out(o_apc_ind, file("data/oapc_aggregated.json"))
+jsonlite::stream_out(o_apc_ind, file("../data/oapc_aggregated.json"))
 #' ## csv export
 #' 
 #' readr::read_csv() is much faster that streaming json, 
 #' so we better store data to re-used in the dashboard in csv files
-jsonlite::stream_in(file("data/oapc_aggregated.json")) %>%
-  readr::write_csv("data/oapc_aggregated.csv")
+jsonlite::stream_in(file("../data/oapc_aggregated.json")) %>%
+  readr::write_csv("../data/oapc_aggregated.csv")
 
