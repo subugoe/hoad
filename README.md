@@ -24,7 +24,7 @@ rmarkdown::run("dashboard.Rmd")
 
 Methods used are available in the R folder. [`R/cr_fetching.R`](R/cr_fetching.R) describes how licensing and journal metadata were obtained from [Crossref](https://www.crossref.org/), using the [rcrossref](https://github.com/ropensci/rcrossref) client, developed and maintained by the rOpenSci initiative (https://ropensci.org/). [`R/oapc.R`](R/oapc.R) shows how cost information was analysed. 
 
-For a long-form documentation, see [about.md](about.md)
+<!--For a long-form documentation, see [about.md](about.md)-->
 
 ### Data
 
