@@ -126,7 +126,7 @@ renderValueBox({
 ```
 
 
-Column {data-width=750 .tabset .tabset-fade data-height=650}
+Column {.tabset .tabset-fade}
 -----------------------------------------------------------------------
 
 ### Hybrid OA Licenses found (relative)
@@ -141,7 +141,8 @@ renderPlotly({
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels = scales::percent) +
     theme_minimal()
-  plotly::ggplotly(p)
+  plotly::ggplotly(p) %>%
+    layout(showlegend = TRUE, legend = list(font = list(size = 10)))
 })
 ```
 
@@ -159,7 +160,8 @@ renderPlotly({
     scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
                        breaks= pretty_breaks()) +
     theme_minimal()
-  plotly::ggplotly(p)
+  plotly::ggplotly(p) %>%
+    layout(showlegend = TRUE, legend = list(font = list(size = 10)))
 })
 ```
 
