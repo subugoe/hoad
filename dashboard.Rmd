@@ -17,7 +17,7 @@ Overview
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
-library(jsonlite)
+library(readr)
 library(ggplot2)
 library(plotly)
 library(dplyr)
@@ -25,11 +25,11 @@ library(scales)
 library(ggalt)
 
 # access to data t
-hybrid_df <- jsonlite::stream_in(file("data/hybrid_license_indicators.json")) %>%
+hybrid_df <- readr::read_csv("data/hybrid_license_indicators.csv") %>%
   mutate(year = factor(year, levels = c("2013", "2014", "2015","2016", "2017"))) %>%
   arrange(desc(year_publisher_all))
 
-o_apc_df <- jsonlite::stream_in(file("data/oapc_aggregated.json")) %>%
+o_apc_df <- readr::read_csv("data/oapc_aggregated.csv") %>%
   mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017")))
 ```
 

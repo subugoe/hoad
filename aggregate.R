@@ -258,3 +258,9 @@ tmp_ <- tmp %>%
   group_by(journal_title, publisher, issn, year, license, jn_published, year_all, year_publisher_all) %>%
   summarise(license_ref_n = sum(license_ref_n))
 jsonlite::stream_out(tmp_, file("data/hybrid_license_indicators.json"))
+#' ## csv export
+#' 
+#' readr::read_csv() is much faster that streaming json, 
+#' so we better store data to re-used in the dashboard in csv files
+jsonlite::stream_in(file("data/hybrid_license_indicators.json")) %>%
+  readr::write_csv("data/hybrid_license_indicators.csv")

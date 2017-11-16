@@ -43,3 +43,10 @@ o_apc_ind <- o_apc_country %>%
   right_join(o_apc_country, by = c("journal_title", "period")) %>%
   mutate(continent = countrycode::countrycode(country, "iso3c", "continent"))
 jsonlite::stream_out(o_apc_ind, file("data/oapc_aggregated.json"))
+#' ## csv export
+#' 
+#' readr::read_csv() is much faster that streaming json, 
+#' so we better store data to re-used in the dashboard in csv files
+jsonlite::stream_in(file("data/oapc_aggregated.json")) %>%
+  readr::write_csv("data/oapc_aggregated.csv")
+
