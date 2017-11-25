@@ -3,17 +3,15 @@ title: "Hybrid OA Journal Monitor"
 output: 
   flexdashboard::flex_dashboard:
     navbar:
-      - { title: "About", href: "https://github.com/openapc", align: right }
+      - { title: "About", href: "https://github.com/njahn82/hybrid_oa_dashboard/blob/master/about.md"}
     orientation: rows
-    social: menu
-    source_code: embed
+    source_code: "https://github.com/njahn82/hybrid_oa_dashboard/"
     vertical_layout: fill
 runtime: shiny
 ---
 
 Overview
 =================================================================
-
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
@@ -97,6 +95,8 @@ Data sources:
 <a href="https://github.com/CrossRef/rest-api-doc"><img src="https://assets.crossref.org/logo/metadata-from-crossref-logo-200.svg" width="200" height="68" alt="Metadata from Crossref logo"></a>
 
 <a href= "https://github.com/openapc/openapc-de"><img src="https://www.intact-project.org/public/img/openAPC_01+.png" width="200"  alt="Metadata from open apc logo"></a>
+
+Dataset updated: `r file.info("data/hybrid_license_indicators.csv")$mtime`
 
 Row
 -----------------------------------------------------------------------
@@ -216,24 +216,26 @@ tt <- o_apc_df %>%
   mutate(prop = round(prop, 2)) %>%
   filter(!is.na(country))
 gg <- ggplot(tt, aes(prop, reorder(country, prop))) +
-  ggalt::geom_lollipop(point.colour="steelblue", point.size=4, horizontal=TRUE)
-gg <- gg + scale_x_continuous(expand=c(0,0), labels=percent,
-                              breaks=seq(0, 1, by=0.2), limits=c(0, 1))
-gg <- gg + labs(x=NULL, y=NULL,
-              #  title="Institutional spending on hybrid OA journal_title articles",
-              #  subtitle="Articles funded per country (in percent)",
-                caption="Data from https://github.com/openapc/openapc-de")
-gg <- gg + theme_minimal()
-gg <- gg + theme(panel.grid.major.y=element_blank())
-gg <- gg + theme(panel.grid.minor=element_blank())
-gg <- gg + theme(axis.line.y=element_line(color="#2b2b2b", size=0.15))
-gg <- gg + theme(axis.text.y=element_text(margin=margin(r=0, l=0)))
-gg <- gg + theme(plot.margin=unit(rep(30, 4), "pt"))
-gg <- gg + theme(plot.title=element_text(face="bold"))
-gg <- gg + theme(plot.subtitle=element_text(margin=margin(b=10)))
-gg <- gg + theme(plot.caption=element_text(size=8, margin=margin(t=10)))
+  ggalt::geom_lollipop(point.colour="steelblue", point.size=4, horizontal=TRUE) + 
+  scale_x_continuous(expand=c(0,0), labels=percent,
+                              breaks=seq(0, 1, by=0.2), limits=c(0, 1)) + 
+  labs(x=NULL, y=NULL,
+  #  title="Institutional spending on hybrid OA journal_title articles",
+  #  subtitle="Articles funded per country (in percent)",
+  caption="Data from https://github.com/openapc/openapc-de") + 
+  theme_minimal() + 
+  theme(panel.grid.major.y=element_blank()) + 
+  theme(panel.grid.minor=element_blank()) + 
+  theme(axis.line.y=element_line(color="#2b2b2b", size=0.15)) + 
+  theme(axis.text.y=element_text(margin=margin(r=0, l=0))) + 
+  theme(plot.margin=unit(rep(30, 4), "pt")) + 
+  theme(plot.title=element_text(face="bold")) + 
+  theme(plot.subtitle=element_text(margin=margin(b=10))) + 
+  theme(plot.caption=element_text(size=8, margin=margin(t=10)))
 gg
 })
 ```
+
+
 
 
