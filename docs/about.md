@@ -67,7 +67,7 @@ Crossref supports publishers who wish to make licensing metadata available via t
 
 As a publisher to be best represented in this dashboard, make sure to include license URL element `license_ref` and a `start_date` equal to the date of publication. Such workflow complies with ESAC's  recommendations for article workflows and services for offsetting / open access transformation agreements [@Geschuhn_2017].
 
-## Technical overview
+## Technical notes
 
 This [Shiny web application](https://shiny.rstudio.com/) is built using [flexdashboard](http://rmarkdown.rstudio.com/flexdashboard/) package. The app is powered by the excellent graphic packages [plotly](https://github.com/ropensci/plotly), [ggplot2](http://ggplot2.tidyverse.org/) and [ggalt](https://github.com/hrbrmstr/ggalt), as well as  [readr](http://readr.tidyverse.org/) for data import. Data analysis makes use of [dplyr](http://dplyr.tidyverse.org/).
 
