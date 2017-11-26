@@ -3,7 +3,7 @@ title: "Hybrid OA Journal Monitor"
 output: 
   flexdashboard::flex_dashboard:
     navbar:
-      - { title: "About", href: "https://github.com/njahn82/hybrid_oa_dashboard/blob/master/about.md"}
+      - { title: "About", href: "https://njahn82.github.io/hybrid_oa_dashboard/about.html"}
     orientation: rows
     source_code: "https://github.com/njahn82/hybrid_oa_dashboard/"
     vertical_layout: fill
@@ -96,7 +96,6 @@ Data sources:
 
 <a href= "https://github.com/openapc/openapc-de"><img src="https://www.intact-project.org/public/img/openAPC_01+.png" width="200"  alt="Metadata from open apc logo"></a>
 
-Dataset updated: `r file.info("data/hybrid_license_indicators.csv")$mtime`
 
 Row
 -----------------------------------------------------------------------
