@@ -15,12 +15,11 @@ By bringing together openly available datasets about hybrid open access into one
 
 This document gives information about the study design, as well as how to use the dashboard. Because this open source dashboard is built around already existing infrastructure services for scholarly publishing, this doc will also provide guidance about how publishers can properly report hybrid open access journal articles to Crossref in accordance with evolving standards like the [ESAC guidelines](http://esac-initiative.org/its-the-workflows-stupid-what-is-required-to-make-offsetting-work-for-the-open-access-transition/).
 
-## Data and methods
+## Data and methods 
 
-Many publishers offer hybrid open access journals. However, because of non-standardized practices to report open access, it is hard to keep track of how many articles were made immediately available in this way, and to what extent these figures relate to the overall article volume [@Bj_rk_2017].
+Many publishers offer hybrid open access journals. However, because of non-standardized practices to report open access, it is hard to keep track of how many articles were made immediately available in this way, and to what extent these figures relate to the overall article volume. One common problem is to discover articles in subscription-based journals, which were made immediately open access, another is to identify proper licensing information about access and re-use rights [@Laakso_2016; @Bj_rk_2017; @Piwowar_2017]. 
 
-As a start, data from the [Open APC initiative](https://github.com/OpenAPC/openapc-de/) was used.
-This open data initiative crowd-source information about spending on open access journal articles from various international research organisations. [Its openly available dataset](https://github.com/OpenAPC/openapc-de/blob/master/data/apc_de.csv) differentiates expenditure for articles published in hybrid and in full open access journals. It also has a dedicated dataset containing metadata about articles, which were made openly available as part of [offsetting deals](https://github.com/OpenAPC/openapc-de/tree/master/data/offsetting). 
+To reflect these problems in our study design, data from the [Open APC initiative](https://github.com/OpenAPC/openapc-de/) was used for identifying hybrid open access journals where articles were actually made openly available immediatlely after publication. The [Open APC initiative](https://github.com/OpenAPC/openapc-de/) crowd-source information about spending on open access journal articles from various international research organisations. [Its openly available dataset](https://github.com/OpenAPC/openapc-de/blob/master/data/apc_de.csv) differentiates expenditure for articles published in hybrid and in full open access journals. It also has a dedicated dataset containing metadata about articles, which were made openly available as part of [offsetting deals](https://github.com/OpenAPC/openapc-de/tree/master/data/offsetting). 
 
 After obtaining cost data about hybrid open access journal articles from the Open APC initiative, [Crossref's REST API](https://github.com/CrossRef/rest-api-doc) was queried to discover open access articles published in these journals, as well as to retrieve yearly article volumes for the period 2013 - 2017. Using the [rcrossref](https://github.com/ropensci/rcrossref) client, developed and maintained by the [rOpenSci initiative](https://ropensci.org/), the first API call retrieved all licenses URLs available per ISSN. To control possible name changes of publishers or journal titles over the period, only the most frequent facet field name was used. After matching and normalizing  licensing URLs indicating open access articles with the help of the [dissem.in / oaDOI access indicator list](https://github.com/dissemin/dissemin/blob/0aa00972eb13a6a59e1bc04b303cdcab9189406a/backend/crossref.py#L89), a second API call checked licensing metadata to exclude delayed open access articles by using the [Crossref's REST API filters](https://github.com/CrossRef/rest-api-doc#filter-names) `license.url` and `license.delay`. Because journal business models can change from hybrid to full open access over time, the [Directory of Open Access Journals (DOAJ)](https://doaj.org/), a curated list of full open access journals, was finally checked to exclude these journals. 
 
@@ -30,35 +29,25 @@ metadata via the Crossref API, representing 22 % of all publishers included in o
 
 
 
-![](img/licensing_coverage.png)
+![](../img/licensing_coverage.png)
 *Figure: Overview of Crossref licensing coverage per publisher. Yellow dots represent the number of hybrid open access journals disclosed by the Open APC initiative with licensing metadata, blue dots the overall number of hybrid open access journals in our sample.*
 
-Methods are implemented in R and are available in the source code repository of this dashboard hosted on  [GitHub](https://github.com/njahn82/hybrid_oa_dashboard).  [`R/cr_fetching.R`](https://github.com/njahn82/hybrid_oa_dashboard/tree/master/R/cr_fetching.R) describes how licensing and journal metadata were obtained from Crossref. [`R/oapc.R`](https://github.com/njahn82/hybrid_oa_dashboard/tree/master/R/oapc.R) shows how cost information was analysed. 
-
-Data files stored in the [`data/`](https://github.com/njahn82/hybrid_oa_dashboard/tree/master/data/) folder. It includes the indicator dataset available as json [(`data/hybrid_license_indicators.json`)](https://github.com/njahn82/hybrid_oa_dashboard/tree/master/data/hybrid_license_indicators.json) and csv file [(`data/hybrid_license_indicators.csv`)](https://github.com/njahn82/hybrid_oa_dashboard/tree/master/data/hybrid_license_indicators.csv). It is directly used by dashboard and contains the following variables:
-
-|Variable            |Description
-|:-------------------|:------------------------------------------------------------------|
-|`journal_title`     |Journal Title                                                      |
-|`publisher`         |Publisher Name                                                     |
-|`issn`              |ISSN                                                               |
-|`year`              |Publishing year                                                    |
-|`license`           |Open License URL                                                   |
-|`jn_published`      |Yearly article volume per journal                                  |
-|`year_all`          |Yearly article volume of all journals in the dataset               |
-|`year_publisher_all`|Yearly article volume of all journals in the dataset per publisher |                              |
-|`license_ref_n`     |Yearly article volume under the license `license`                  |
-
-
-Licensing information gathered from Crossref is also accessible: [`data/jn_facets_df.json`](https://github.com/njahn82/hybrid_oa_dashboard/tree/master/data/jn_facets_df.json) contains journal article volume and corresponding licensing information for the period  2013 - 2017 for each ISSN found in the Open APC dataset representing a hybrid open access journal. [`data/hybrid_license_df.json`](https://github.com/njahn82/hybrid_oa_dashboard/tree/master/data/jn_facets_df.json) stores information about journals with licensing metadata representing hybrid open access journal articles (excluding delayed OA and licenses that only govern text mining)
+Methods are implemented in R and are openly available in the source code repository of this dashboard hosted on  [GitHub](https://github.com/njahn82/hybrid_oa_dashboard) together with the compiled datasets.
 
 ## Using the dashboard
 
 Choose a publisher or journal via the select boxes in the left sidebar. Publisher names are decreasingly sorted according to the number of hybrid open access articles published. Corresponding journals are filtered conditionally to the publisher selection and are sorted alphabetically.
 
+### Hybrid OA uptake
+
 Information is presented using dynamic graphs. The first tab of the upper graph shows the relational uptake of hybrid open access, the second tab the absolute number of published hybrid open access articles. Bar charts are sub-grouped according to the licensing links found via Crossref.
 
+### Institutional support
+
 The lower left chart compares the number of articles found via Open APC and Crossref for the selection. The lower right chart indicates from which countries the institutional support originated from. The figures are based on the Open APC datasets.
+
+![](../img/screenshot.png)
+*Figure: Screenshot of the Hybrid OA Dashboard*
 
 ## As a publisher, how can I support proper hybrid open access monitoring?
 
@@ -70,6 +59,8 @@ As a publisher to be best represented in this dashboard, make sure to include li
 ## Technical notes
 
 This [Shiny web application](https://shiny.rstudio.com/) is built using [flexdashboard](http://rmarkdown.rstudio.com/flexdashboard/) package. The app is powered by the excellent graphic packages [plotly](https://github.com/ropensci/plotly), [ggplot2](http://ggplot2.tidyverse.org/) and [ggalt](https://github.com/hrbrmstr/ggalt), as well as  [readr](http://readr.tidyverse.org/) for data import. Data analysis makes use of [dplyr](http://dplyr.tidyverse.org/).
+
+The source code repository of this dashboard hosted on [GitHub](https://github.com/njahn82/hybrid_oa_dashboard). 
 
 ## How to contribute?
 
@@ -85,7 +76,7 @@ Please note that this project is released with a [Contributor Code of Conduct](h
 
 Author: Najko Jahn (Scholarly Communication Analyst, [SUB Göttingen](https://www.sub.uni-goettingen.de/)), 2017.
 
-The R Markdown file, which includes the underlying source code for this document, is available [here](https://github.com/njahn82/hybrid_oa_dashboard/blob/master/about.Rmd).
+The R Markdown file, which includes the underlying source code for this document, is available [here](https://github.com/njahn82/hybrid_oa_dashboard/blob/master/docs/about.Rmd).
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 
