@@ -6,7 +6,7 @@
 
 ## Summary 
 
-This open source dashboard presents the uptake of hybrid open access for 2,905 journals from 30 publishers between 2013 - 2017. Hybrid open access journals are included when they meet the following two conditions:
+This open source dashboard presents the uptake of hybrid open access for 2,919 journals from 31 publishers between 2013 - 2017. Hybrid open access journals are included when they meet the following two conditions:
 
 1. academic institutions sponsored the publication fee or have agreed upon an offsetting agreement according to the [Open APC initiative](https://github.com/openapc/openapc-de),
 2. publishers shared licensing information about fulltext accessibility and re-use rights with  [Crossref](https://www.crossref.org/).
@@ -23,7 +23,7 @@ To reflect these problems in our study design, data from the [Open APC initiativ
 
 After obtaining cost data about hybrid open access journal articles from the Open APC initiative, [Crossref's REST API](https://github.com/CrossRef/rest-api-doc) was queried to discover open access articles published in these journals, as well as to retrieve yearly article volumes for the period 2013 - 2017. Using the [rcrossref](https://github.com/ropensci/rcrossref) client, developed and maintained by the [rOpenSci initiative](https://ropensci.org/), the first API call retrieved all licenses URLs available per ISSN. To control possible name changes of publishers or journal titles over the period, only the most frequent facet field name was used. After matching and normalizing  licensing URLs indicating open access articles with the help of the [dissem.in / oaDOI access indicator list](https://github.com/dissemin/dissemin/blob/0aa00972eb13a6a59e1bc04b303cdcab9189406a/backend/crossref.py#L89), a second API call checked licensing metadata to exclude delayed open access articles by using the [Crossref's REST API filters](https://github.com/CrossRef/rest-api-doc#filter-names) `license.url` and `license.delay`. Because journal business models can change from hybrid to full open access over time, the [Directory of Open Access Journals (DOAJ)](https://doaj.org/), a curated list of full open access journals, was finally checked to exclude these journals. 
 
-Although Crossref covers many open access journals, not all publishers share comprehensive metadata about access and re-use including licenses and embargo date via Crossref. In our case, 30 publishers provided licensing
+Although Crossref covers many open access journals, not all publishers share comprehensive metadata about access and re-use including licenses and embargo date via Crossref. In our case, 31 publishers provided licensing
 metadata via the Crossref API, representing 22 % of all publishers included in our study. At the journal-level, 72 % of all hybrid open access journal titles covered by the Open APC initiative share proper licensing metadata with Crossref.
 
 
