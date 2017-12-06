@@ -6,6 +6,7 @@ output:
     toc: yes
     toc_depth: 2
     toc_float: yes
+    df_print: paged
 bibliography: references.bib
 ---
 
@@ -20,26 +21,32 @@ knitr::opts_chunk$set(
   fig.width = 9,
   fig.height = 6
 )
-options(scipen = 999, digits = 0)
+options(scipen = 999, digits = 2)
 knitr::knit_hooks$set(inline = function(x) {
-  prettyNum(x, big.mark = ",")
-})
+      if(is.numeric(x)){
+          return(prettyNum(x, big.mark=","))
+      }else{
+          return(x)
+       }
+   })
 ```
 
 ```{r}
 # load dplyr 
 library(dplyr)
 # load data
-hybrid_df <- jsonlite::stream_in(file("../data/hybrid_license_indicators.json"), verbose = FALSE)
 #' load facets results
 jn_facets <- jsonlite::stream_in(file("../data/jn_facets_df.json"), verbose = FALSE)
 #' get hybrid journals that have open licensing information in the period 2013-17
 hybrid_cr <- jsonlite::stream_in(file("../data/hybrid_license_indicators.json"), verbose = FALSE)
+#' get oapc data
+o_apc_df <- readr::read_csv("../data/oapc_aggregated.csv") %>%
+  mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017")))
 ```
 
 ## Summary 
 
-This open source dashboard presents the uptake of hybrid open access for `r dplyr::n_distinct(hybrid_df$journal_title)` journals from `r dplyr::n_distinct(hybrid_df$publisher)` publishers between 2013 - 2017. Hybrid open access journals are included when they meet the following two conditions:
+This open source dashboard presents the uptake of hybrid open access for `r dplyr::n_distinct(hybrid_cr$journal_title)` different journals from `r dplyr::n_distinct(hybrid_cr$publisher)` publishers between 2013 - 2017. Hybrid open access journals are included when they meet the following two conditions:
 
 1. academic institutions sponsored the publication fee or have agreed upon an offsetting agreement according to the [Open APC initiative](https://github.com/openapc/openapc-de),
 2. publishers shared licensing information about fulltext accessibility and re-use rights with  [Crossref](https://www.crossref.org/).
@@ -50,14 +57,14 @@ This document gives information about the study design, as well as how to use th
 
 ## Data and methods 
 
-Many publishers offer hybrid open access journals. However, because of non-standardized practices to report open access, it is hard to keep track of how many articles were made immediately available in this way, and to what extent these figures relate to the overall article volume. One common problem is to discover articles in subscription-based journals, which were made immediately open access, another is to identify proper licensing information about access and re-use rights [@Laakso_2016; @Bj_rk_2017; @Piwowar_2017]. 
+Many publishers offer hybrid open access journals. However, because of non-standardized practices to report open access, it is hard to keep track of how many articles were made immediately available in this way, and to what extent these figures relate to the overall article volume [@Bj_rk_2017]. In particular, it is challenging to identify those subscription-based journals that already did publish open access articles, as well as proper licensing information about access and re-use rights [@Laakso_2016; @Piwowar_2017]. 
 
-To reflect these problems in our study design, data from the [Open APC initiative](https://github.com/OpenAPC/openapc-de/) was used for identifying hybrid open access journals where articles were actually made openly available immediatlely after publication. The [Open APC initiative](https://github.com/OpenAPC/openapc-de/) crowd-source information about spending on open access journal articles from various international research organisations. [Its openly available dataset](https://github.com/OpenAPC/openapc-de/blob/master/data/apc_de.csv) differentiates expenditure for articles published in hybrid and in full open access journals. It also has a dedicated dataset containing metadata about articles, which were made openly available as part of [offsetting deals](https://github.com/OpenAPC/openapc-de/tree/master/data/offsetting). 
+To reflect the challenge of reporting hybrid open access in our study design, our sample of hybrid open access journals consisted of journals tracked by the [Open APC initiative](https://github.com/OpenAPC/openapc-de/) . This open data initiative crowd-source information about spending on open access journal articles from various international research organisations. [Its openly available dataset](https://github.com/OpenAPC/openapc-de/blob/master/data/apc_de.csv) differentiates expenditure for articles published in hybrid and in full open access journals. It also has a dedicated dataset containing metadata about articles, which were made openly available as part of [offsetting deals](https://github.com/OpenAPC/openapc-de/tree/master/data/offsetting). Using data from  the [Open APC initiative](https://github.com/OpenAPC/openapc-de/), thus, ensured that only those hybrid open access journals were examined, in which articles were actually made openly available immediately after publication.
 
 After obtaining cost data about hybrid open access journal articles from the Open APC initiative, [Crossref's REST API](https://github.com/CrossRef/rest-api-doc) was queried to discover open access articles published in these journals, as well as to retrieve yearly article volumes for the period 2013 - 2017. Using the [rcrossref](https://github.com/ropensci/rcrossref) client, developed and maintained by the [rOpenSci initiative](https://ropensci.org/), the first API call retrieved all licenses URLs available per ISSN. To control possible name changes of publishers or journal titles over the period, only the most frequent facet field name was used. After matching and normalizing  licensing URLs indicating open access articles with the help of the [dissem.in / oaDOI access indicator list](https://github.com/dissemin/dissemin/blob/0aa00972eb13a6a59e1bc04b303cdcab9189406a/backend/crossref.py#L89), a second API call checked licensing metadata to exclude delayed open access articles by using the [Crossref's REST API filters](https://github.com/CrossRef/rest-api-doc#filter-names) `license.url` and `license.delay`. Because journal business models can change from hybrid to full open access over time, the [Directory of Open Access Journals (DOAJ)](https://doaj.org/), a curated list of full open access journals, was finally checked to exclude these journals. 
 
-Although Crossref covers many open access journals, not all publishers share comprehensive metadata about access and re-use including licenses and embargo date via Crossref. In our case, `r n_distinct(hybrid_cr$publisher)` publishers provided licensing
-metadata via the Crossref API, representing `r (n_distinct(hybrid_cr$publisher) / n_distinct(jn_facets$publisher)) * 100` % of all publishers included in our study. At the journal-level, `r (n_distinct(hybrid_df$journal_title) /  n_distinct(jn_facets$journal_title)) * 100` % of all hybrid open access journal titles covered by the Open APC initiative share proper licensing metadata with Crossref.
+Notice that although Crossref covers many open access journals, not all publishers share comprehensive metadata about access and re-use including licenses and embargo date via Crossref. In our case, `r n_distinct(hybrid_cr$publisher)` publishers provided licensing
+metadata via the Crossref API, representing `r (n_distinct(hybrid_cr$publisher) / n_distinct(jn_facets$publisher)) * 100` % of all publishers included in our study. At the journal-level, `r (n_distinct(hybrid_cr$journal_title) /  n_distinct(jn_facets$journal_title)) * 100` % of all hybrid open access journal titles covered by the Open APC initiative share proper licensing metadata with Crossref.
 
 
 ```{r fig.path="../figure/"}
@@ -119,49 +126,116 @@ ggsave(gg, path = "../img/", filename = "licensing_coverage.png", width = 9, hei
 ```
 
 ![](../img/licensing_coverage.png)
+
 *Figure: Overview of Crossref licensing coverage per publisher. Yellow dots represent the number of hybrid open access journals disclosed by the Open APC initiative with licensing metadata, blue dots the overall number of hybrid open access journals in our sample.*
 
-Methods are implemented in R and are openly available in the source code repository of this dashboard hosted on  [GitHub](https://github.com/njahn82/hybrid_oa_dashboard) together with the compiled datasets.
+Data were gathered on `r format(file.info("../data/hybrid_license_indicators.csv")$ctime, "%Y-%m-%d")`. Methods were implemented in R and are openly available in the source code repository of this dashboard hosted on [GitHub](https://github.com/subugoe/hybrid_oa_dashboard) together with the compiled datasets. The [Shiny web application](https://shiny.rstudio.com/) was built using [flexdashboard](http://rmarkdown.rstudio.com/flexdashboard/) package. The app is powered by the excellent graphic packages [plotly](https://github.com/ropensci/plotly), [ggplot2](http://ggplot2.tidyverse.org/) and [ggalt](https://github.com/hrbrmstr/ggalt), as well as  [readr](http://readr.tidyverse.org/) for data import. Data analysis made use of [dplyr](http://dplyr.tidyverse.org/).
 
-## Using the dashboard
 
-Choose a publisher or journal via the select boxes in the left sidebar. Publisher names are decreasingly sorted according to the number of hybrid open access articles published. Corresponding journals are filtered conditionally to the publisher selection and are sorted alphabetically.
+## Results 
+
+Using data from the Open APC initiative and Crossref, we found `r sum(hybrid_cr$license_ref_n, na.rm = TRUE)`  open access articles published in
+`r dplyr::n_distinct(hybrid_cr$journal_title)` subscription-based journals from `r dplyr::n_distinct(hybrid_cr$publisher)` publishers between 2013 - 2017. Results are accessible and browsable through a interactive dashboard using dynamic graphs. Launching the app shows up the overall results. Choose a publisher or journal via the select boxes in the left sidebar. Publisher names are decreasingly sorted according to the number of hybrid open access articles published. Corresponding journals are filtered conditionally to the publisher selection and are sorted alphabetically.
+
+![*Screenshot of the Hybrid OA Dashboard available at <https://najkoja.shinyapps.io/hybridoa/>*](../img/screenshot.png)
 
 ### Hybrid OA uptake
 
-Information is presented using dynamic graphs. The first tab of the upper graph shows the relational uptake of hybrid open access, the second tab the absolute number of published hybrid open access articles. Bar charts are sub-grouped according to the licensing links found via Crossref.
+The upper part of the dashboard lets you explore the absolute and relative growth of hybrid open access publishing between 2013 - 2017. The first tab shows the relational uptake of hybrid open access, the second tab the absolute number of published hybrid open access articles. Bar charts are sub-grouped according to the licensing links found via Crossref.
+
+```{r}
+hybrid_overview <- hybrid_cr %>%
+  group_by(publisher) %>%
+  summarize(`Number of journals` = n_distinct(journal_title), 
+            `Hybrid OA article volume` = sum(license_ref_n, na.rm = TRUE))
+top3 <- hybrid_overview %>%
+  arrange(desc(`Number of journals`)) %>%
+  slice(1:3) 
+```
+
+An additional breakdown by publishers is presented in Table 1, contrasting the number of journals with the number of articles found. It shows that the three publishers Elsevier BV, Springer Nature	and Wiley-Blackwell are the leading publisher in our sample, accounting for the largest proportion of hybrid open access journals (`r round(sum(top3$"Number of journals") / sum(hybrid_overview$"Number of journals") * 100, 2)` %) and open access articles (`r round(sum(top3$"Hybrid OA article volume") / sum(hybrid_overview$"Hybrid OA article volume") * 100, 2)` %) found.
+
+
+```{r}
+hybrid_cr %>%
+  distinct(publisher, year, year_publisher_all) %>%
+  group_by(publisher) %>%
+  summarise(`Article volume` = sum(year_publisher_all, na.rm = TRUE)) %>%
+  left_join(hybrid_overview, by = "publisher") %>%
+  mutate(`OA proportion per publisher (in %)` = round(`Hybrid OA article volume`  / `Article volume` * 100, 2)) %>% 
+  mutate(`Overall OA proportion (in %)` = round(`Hybrid OA article volume`  / sum(`Hybrid OA article volume`) * 100, 2)) %>% 
+  mutate(`Journal proportion (in %)` = round(`Number of journals` / sum(`Number of journals`) * 100, 2)) %>%
+  mutate(`Journals (in %)` = paste0(`Number of journals`, " (" ,`Journal proportion (in %)`, " %)")) %>% 
+  mutate(`Article volume (in %)` = paste0(`Article volume`, " (", round(`Article volume` / sum(`Article volume`) * 100, 2), " %)")) %>%
+  arrange(desc(`Article volume`)) %>%
+  select(Publisher = publisher,`Journals (in %)`, `Article volume (in %)`,4:6)
+```
+
+*Table 1: Hybrid open access journal and article breakdown by publisher.*
 
 ### Institutional support
 
-The lower left chart compares the number of articles found via Open APC and Crossref for the selection. The lower right chart indicates from which countries the institutional support originated from. The figures are based on the Open APC datasets.
+The lower left chart compares the number of articles found via Open APC and Crossref for the selection. The lower right chart indicates from which countries the institutional support were obtained from the Open APC datasets as well. It is very likely that the overall decrease of spending for hybrid open access reported to the Open APC initiative in 2017 is due to a lag between the time that payments were made and expenditures were reported to the initiative. 
 
-![](../img/screenshot.png)
-*Figure: Screenshot of the Hybrid OA Dashboard*
+Comparing the number of articles found via Open APC and Crossref, furthermore, suggests that not all publishers share licensing metadata retrospectively. Take for instance journals published by Springer Nature: between 2013 and 2015 more open access articles were reported to the Open APC initiative than the publisher registered with an open license via Crossref (see Figure 2). 
 
-## As a publisher, how can I support proper hybrid open access monitoring?
+```{r}
+hybrid_cr <- hybrid_cr %>%
+    filter(publisher == "Springer Nature")
 
-Crossref supports publishers who wish to make licensing metadata available via the Crossref APIs:
+  hybrid_sub <- hybrid_cr %>%
+    group_by(year) %>%
+    summarize(n = sum(license_ref_n, na.rm = TRUE)) %>%
+    mutate(source = "Crossref Hybrid")
+
+  o_apc_sub <- o_apc_df %>%
+    filter(journal_title %in%hybrid_cr$journal_title, year %in% hybrid_cr$year) %>%
+     distinct(journal_title, year, oapc_n_year) %>%
+    group_by(year) %>%
+    summarize(n = sum(oapc_n_year, na.rm = TRUE)) %>%
+    mutate(source = "Open APC")
+
+  p <- ggplot(hybrid_sub, aes(year, n, fill = source)) +
+    geom_bar(stat = "identity", position = "dodge") +
+    xlab("Year") +
+    ylab("Articles") +
+    scale_x_discrete(drop = FALSE) +
+    viridis::scale_fill_viridis("Datasets", discrete = TRUE) +
+    scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
+                       breaks= pretty_breaks()) +
+    theme_minimal()
+  p <- p + geom_bar(data = o_apc_sub, aes(year, n, fill = source), stat = "identity", alpha = 0.8)
+  ggsave(p, path = "../img/", filename = "oapc_cr_springer.png", width = 9, height = 4, dpi = 450, device = "png")
+```
+
+![](../img/oapc_cr_springer.png)
+*Figure 2: Comparing Springer Nature hybrid open access journal articles available via Crossref with  disclosed spending information via the Open APC initiative.*
+
+## Discussion and conclusion
+
+This dashboard demonstrates the uptake of hybrid open access publishing for a sample of journals where institutional support facilitated the open access publication of individual articles, and where licensing metadata about the open access status were made available via Crossref. Such study design implements recent proposals to keep track of the transition of subscription-based journal publishing to open access including ESAC’s recommendations for article workflows and services for offsetting / open access transformation agreements [@Geschuhn_2017]. 
+
+Findings are consistent with earlier studies, confirming the growth of hybrid open access publishing. @Laakso_2016 observed a general increase of hybrid opena ccess publishing. They identified 13994 hybrid open access articles that were published in 2714 different journals during 2013. @Bj_rk_2017 reports an increase of hybrid open access articles  since 2014, presumably because centralized funding and aggrements with major publishers. In a recent study also using Crossref metadata, however, @Piwowar_2017 report a much higher share of hybrid open access articles published in 2015 according to which 9,4 % of all journals articles published in this year were provided as hybrid open access. The share of open access, which was free to read on publisher websites, but where the journal was neither listed in the DOAJ nor provided a license was even higher (17,6 %), raising important questions about how to increase standards to discover publisher-driven open access.
+
+Likewise, not all publishers examined shared licensing metadata, although Crossref supports publishers who wish to make licensing metadata available via the Crossref APIs:
 <https://support.crossref.org/hc/en-us/articles/214572423-License-metadata-Access-Indicators->
+As a publisher to be best represented in our tudy design, publishers need to make sure to include license URL element `license_ref` and a `start_date` equal to the date of publication. 
 
-As a publisher to be best represented in this dashboard, make sure to include license URL element `license_ref` and a `start_date` equal to the date of publication. Such workflow complies with ESAC's  recommendations for article workflows and services for offsetting / open access transformation agreements [@Geschuhn_2017].
+Overall findings suggest a gap between spending information available through the Open APC initiative and the total number of hybrid open access articles that have been registered with   Crossref in recent years. A likely reason is that reporting to the Open APC initiative is voluntary [@Jahn_2016]. Therefore, not all institutions contribute cost data or information about central aggrements to this initiative. It is also hard to keep track of already exisiting cost data, which were made openly availabe outside the Open APC initiative because no standardized practise to publish and share these datasets exists. Additionally, not all open access publication were sponsored by institutions, but authors can make use of other resources to publish open access, or fees are waived [@Solomon_2011].
 
-## Technical notes
+Besides the empirical findings, in using open data sources and tools to analyse and present these data, this dashboard demonstrates how monitoring of hybrid open access monitoring can become more transparent and reproducible. Particularly,  the [rcrossref](https://github.com/ropensci/rcrossref) client, developed and maintained by the [rOpenSci initiative](https://ropensci.org/), makes it easy to implement comprehensive API requests needed to query Crossref API for hybrid open access journal articles and article volume. Future work will evaluate our retrieval strategy in terms of precision and recall, and how it can be improved in terms of excluding delayed open access and identifying open licenses. 
 
-This [Shiny web application](https://shiny.rstudio.com/) is built using [flexdashboard](http://rmarkdown.rstudio.com/flexdashboard/) package. The app is powered by the excellent graphic packages [plotly](https://github.com/ropensci/plotly), [ggplot2](http://ggplot2.tidyverse.org/) and [ggalt](https://github.com/hrbrmstr/ggalt), as well as  [readr](http://readr.tidyverse.org/) for data import. Data analysis makes use of [dplyr](http://dplyr.tidyverse.org/).
+## Meta
 
-The source code repository of this dashboard hosted on [GitHub](https://github.com/njahn82/hybrid_oa_dashboard). 
-
-## How to contribute?
+### How to contribute?
 
 This dashboard has been developed in the open using open tools. There are a number of ways you can help make the dashboard better:
 
-- If you don’t understand something, please let me know and [submit an issue](https://github.com/njahn82/hybrid_oa_dashboard/issues).
+- If you don’t understand something, please let me know and [submit an issue](https://github.com/subugoe/hybrid_oa_dashboard/issues).
 
-- Feel free to add new features or fix bugs by sending a [pull request](https://github.com/njahn82/hybrid_oa_dashboard/pulls).
+- Feel free to add new features or fix bugs by sending a [pull request](https://github.com/subugoe/hybrid_oa_dashboard/pulls).
 
-Please note that this project is released with a [Contributor Code of Conduct](https://github.com/njahn82/hybrid_oa_dashboard/CONDUCT.md). By participating in this project you agree to abide by its terms.
-
-## Meta
+Please note that this project is released with a [Contributor Code of Conduct](https://github.com/subugoe/hybrid_oa_dashboard/CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 Author: Najko Jahn (Scholarly Communication Analyst, [SUB Göttingen](https://www.sub.uni-goettingen.de/)), 2017.
 
