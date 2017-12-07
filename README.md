@@ -6,6 +6,10 @@ A live demo is available here:
 
 <https://najkoja.shinyapps.io/hybridoa/>
 
+Summary of methods used and findings:
+
+<https://subugoe.github.io/hybrid_oa_dashboard/about.html>
+
 ![](img/screenshot.png)
 
 ## Requirements
