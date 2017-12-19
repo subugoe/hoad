@@ -112,8 +112,9 @@ gg <- ggplot(cvr_df, aes(y = publisher)) +
   scale_x_continuous(breaks = seq(0, 1500, by = 250)) +
   labs(x = "Number of Hybrid OA Journals", 
        y = NULL,
-       title = "Have publishers registered open license metadata for\nhybrid open access journals at Crossref?",
-       subtitle = "Notice that only those hybrid open access journals were included where\nacademic institutions sponsored the publication fee according to the Open APC initiative"
+       title = "Hybrid Open Access Journals: Are Open Licenses available via Crossref?",
+       subtitle = "Breakdown per publisher",
+       caption = "Journal Source: Open APC initiative"
   ) +
  # geom_text(data=cvr_df, 
  #            aes(x=850, y= "Elsevier BV", label="with Crossref licensing infos"),
@@ -121,13 +122,14 @@ gg <- ggplot(cvr_df, aes(y = publisher)) +
  #  geom_text(data=cvr_df, 
  #            aes(x=900, y= "Elsevier BV", label="All"),
  #           color="#30638E", hjust=0, size=3, nudge_x=10) +
-  scale_color_manual(name = "", values = c("#EDAE49", "#30638E")) + 
+  scale_color_manual(name = "", values = c("#EDAE49", "#30638E"), labels = c("With Open Licenses", "All")) + 
   theme_minimal(base_family="Arial Narrow") +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
   theme(axis.ticks=element_blank()) +
   theme(panel.grid.major.y=element_blank()) +
-  theme(panel.border=element_blank()) 
+  theme(panel.border=element_blank()) +
+  theme(legend.position="top")
 ggsave(gg, path = "../img/", filename = "licensing_coverage.png", width = 9, height = 6, dpi = 450, device = "png")
 ```
 
