@@ -38,6 +38,8 @@ o_apc <- o_offset %>%
   bind_rows(o_apc) %>%
   # restrict to period 2013 - 2017
   filter(period > 2012)
+#' open apc dump 
+readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
 #' some summary sttatistics by publishers (top 10)
 o_apc %>%
   mutate(publisher = forcats::fct_lump(publisher, n = 10)) %>%
