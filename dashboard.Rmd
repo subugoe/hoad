@@ -97,7 +97,7 @@ Data sources:
 
 <a href= "https://github.com/openapc/openapc-de"><img src="https://www.intact-project.org/public/img/openAPC_01+.png" width="200"  alt="Metadata from open apc logo"></a>
 
-Built at [SUB Göttingen](https://www.sub.uni-goettingen.de/sub-aktuell/).
+Built at: <a href= "https://www.sub.uni-goettingen.de/sub-aktuell/"><img src="img/sub_logo.svg" width="200"  alt="SUB Göttingen"></a>.
 
 Row
 -----------------------------------------------------------------------
