@@ -1,19 +1,7 @@
 #' ### Hybrid journal output vs what was actually sponsored by academic institutions
-#'  Get Open APC data
-u <-
-  "https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/apc_de.csv"
-o_apc <- readr::read_csv(u) %>%
-  filter(is_hybrid == TRUE)
-#' Some summary statistics:
-#'
-#' We also would like to add data from offsetting aggrements, which is also collected
-#' Open APC initiative, but does not include pricing information.
-#' 
-o_offset <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/offsetting/offsetting.csv")
-#' Merge with Open APC dataset
-o_apc <- o_offset %>% 
-  mutate(euro = as.integer(euro)) %>% 
-  bind_rows(o_apc) 
+#'  Get Open APC data dump, and distinguish between individual hybrid and offsetting
+o_apc <- readr::read_csv("../data/oapc_hybrid.csv") %>%
+  mutate(hybrid_type = ifelse(!is.na(euro), "Open APC (Hybrid)", "Open APC (Offsetting)"))
 #' Include country information, which are available via Open APC OLAP server: 
 #' <https://github.com/OpenAPC/openapc-olap/blob/master/static/institutions.csv>
 country_apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions.csv") %>%
@@ -34,7 +22,7 @@ jn_publishers <-  jsonlite::stream_in(file("../data/hybrid_license_indicators.js
 #' create summary table which we want to merge into our indicators dataset 
 o_apc_country <- o_apc %>%
   left_join(jn_publishers, by = "issn") %>%
-  group_by(country, journal_title, period) %>%
+  group_by(country, journal_title, period, hybrid_type) %>%
   summarize(oapc_n_country = n()) %>%
   filter(period %in% c("2013", "2014", "2015","2016", "2017"))
 o_apc_ind <- o_apc_country %>%

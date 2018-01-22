@@ -97,7 +97,7 @@ Data sources:
 
 <a href= "https://github.com/openapc/openapc-de"><img src="https://www.intact-project.org/public/img/openAPC_01+.png" width="200"  alt="Metadata from open apc logo"></a>
 
-Built at: <a href= "https://www.sub.uni-goettingen.de/sub-aktuell/"><img src="img/sub_logo.svg" width="200"  alt="SUB Göttingen"></a>.
+Build by: <a href= "https://www.sub.uni-goettingen.de/sub-aktuell/"><img src="img/sub_logo.svg" width="200"  alt="SUB Göttingen"></a>.
 
 Row
 -----------------------------------------------------------------------
@@ -183,8 +183,8 @@ renderPlotly({
 
   o_apc_sub <- o_apc_df %>%
     filter(journal_title %in% jn_f()$journal_title, year %in% jn_f()$year) %>%
-     distinct(journal_title, year, oapc_n_year) %>%
-    group_by(year) %>%
+    distinct(journal_title, year, oapc_n_year, hybrid_type) %>%
+    group_by(year, hybrid_type) %>%
     summarize(n = sum(oapc_n_year, na.rm = TRUE)) %>%
     mutate(source = "Open APC")
 
@@ -197,9 +197,10 @@ renderPlotly({
     scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
                        breaks= pretty_breaks()) +
     theme_minimal()
-  p <- p + geom_bar(data = o_apc_sub, aes(year, n, fill = source), stat = "identity", alpha = 0.8)
+  p <- p + geom_bar(data = o_apc_sub, aes(year, n, fill = hybrid_type), stat = "identity", alpha = 0.8)
 
-  plotly::ggplotly(p)
+  plotly::ggplotly(p) %>%
+    layout(showlegend = TRUE, legend = list(font = list(size = 10)))
 })
 ```
 
