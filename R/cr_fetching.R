@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 #'
 #' Let's retrieve the most current dataset:
 #'
-library(dplyr)
+library(tidyverse)
 #' link to dataset
 u <-
   "https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/apc_de.csv"
