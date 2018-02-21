@@ -40,10 +40,10 @@ Inputs {.sidebar}
 ```{r}
 # from https://stackoverflow.com/questions/42148177/how-can-i-build-multiple-inputs-into-my-shiny-app-with-both-updating-and-multipl
 
-selectInput("publisherinput", "Publisher", c("All", unique(hybrid_df$publisher)), selected =
+shiny::selectizeInput("publisherinput", "Publisher", c("All", unique(hybrid_df$publisher)), selected =
               "All")
-selectInput("journalinput", "Journal", c("All", unique(hybrid_df$journal_title)), selected =
-              "All")
+shiny::selectizeInput("journalinput", "Journal", c("All", unique(hybrid_df$journal_title)), selected =
+              "All", options = list(maxOptions = 5000))
 
 # publisher filter
 jn_filtered <-
