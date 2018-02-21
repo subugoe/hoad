@@ -53,7 +53,7 @@ jn_filtered <-
 observe(updateSelectInput(
   session,
   "journalinput",
-  choices = c("All", unique(jn_filtered()$journal_title)),
+  choices = c("All", sort(unique(jn_filtered()$journal_title))),
   selected = "All"
 ))
 
