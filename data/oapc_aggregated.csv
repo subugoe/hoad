@@ -467,7 +467,6 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2013,Computers & Operations Research,4,AUT,Open APC (Hybrid),4,Europe
 2015,Computers & Structures,2,AUT,Open APC (Hybrid),1,Europe
 2013,Computer Vision and Image Understanding,1,AUT,Open APC (Hybrid),1,Europe
-2014,Concepts in Magnetic Resonance Part B: Magnetic Resonance Engineering,1,AUT,Open APC (Hybrid),1,Europe
 2016,Constitutional Political Economy,5,AUT,Open APC (Offsetting),1,Europe
 2013,Contributions to Mineralogy and Petrology,1,AUT,Open APC (Hybrid),1,Europe
 2015,Contributions to Mineralogy and Petrology,4,AUT,Open APC (Hybrid),1,Europe
@@ -1978,8 +1977,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Zeitschrift für Psychodrama und Soziometrie,2,AUT,Open APC (Offsetting),2,Europe
 2016,Zeitschrift für Rheumatologie,1,AUT,Open APC (Offsetting),1,Europe
 2016,Zeitschrift für Vergleichende Politikwissenschaft,1,AUT,Open APC (Offsetting),1,Europe
-2013,NA,203,AUT,Open APC (Hybrid),141,Europe
-2014,NA,2116,AUT,Open APC (Hybrid),171,Europe
+2013,NA,201,AUT,Open APC (Hybrid),141,Europe
+2014,NA,2116,AUT,Open APC (Hybrid),172,Europe
 2015,NA,2120,AUT,Open APC (Hybrid),201,Europe
 2016,NA,2391,AUT,Open APC (Hybrid),180,Europe
 2016,NA,2391,AUT,Open APC (Offsetting),5,Europe
@@ -1991,6 +1990,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2013,Breast Cancer Research and Treatment,1,CAN,Open APC (Hybrid),1,Americas
 2013,"Child: Care, Health and Development",1,CAN,Open APC (Hybrid),1,Americas
 2014,Child & Family Social Work,1,CAN,Open APC (Hybrid),1,Americas
+2013,"CLEAN - Soil, Air, Water",2,CAN,Open APC (Hybrid),2,Americas
 2014,Cultural Studies of Science Education,1,CAN,Open APC (Hybrid),1,Americas
 2014,Ecological Entomology,1,CAN,Open APC (Hybrid),1,Americas
 2014,Health Economics,4,CAN,Open APC (Hybrid),1,Americas
@@ -2006,7 +2006,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,The Journal of Pediatrics,6,CAN,Open APC (Hybrid),1,Americas
 2013,Veterinary Immunology and Immunopathology,1,CAN,Open APC (Hybrid),1,Americas
 2014,Xenotransplantation,3,CAN,Open APC (Hybrid),1,Americas
-2013,NA,203,CAN,Open APC (Hybrid),5,Americas
+2013,NA,201,CAN,Open APC (Hybrid),3,Americas
 2014,NA,2116,CAN,Open APC (Hybrid),5,Americas
 2015,ACS Applied Materials & Interfaces,8,DEU,Open APC (Hybrid),1,Europe
 2016,Acta Informatica,4,DEU,Open APC (Offsetting),1,Europe
@@ -2322,7 +2322,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Zeitschrift für Didaktik der Naturwissenschaften,1,DEU,Open APC (Hybrid),1,Europe
 2016,Zeitschrift für Erziehungswissenschaft,2,DEU,Open APC (Offsetting),1,Europe
 2017,Zeitschrift für Politikwissenschaft,1,DEU,Open APC (Offsetting),1,Europe
-2013,NA,203,DEU,Open APC (Hybrid),1,Europe
+2013,NA,201,DEU,Open APC (Hybrid),1,Europe
 2014,NA,2116,DEU,Open APC (Hybrid),10,Europe
 2015,NA,2120,DEU,Open APC (Hybrid),10,Europe
 2016,NA,2391,DEU,Open APC (Hybrid),30,Europe
@@ -7478,6 +7478,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,The Asia-Pacific Education Researcher,2,GBR,Open APC (Offsetting),1,Europe
 2014,The Astronomy and Astrophysics Review,2,GBR,Open APC (Hybrid),2,Europe
 2017,The Astronomy and Astrophysics Review,3,GBR,Open APC (Offsetting),1,Europe
+2014,The Astrophysical Journal,1,GBR,Open APC (Hybrid),1,Europe
 2015,The Breast,2,GBR,Open APC (Hybrid),2,Europe
 2015,The British Accounting Review,1,GBR,Open APC (Hybrid),1,Europe
 2013,The Cerebellum,1,GBR,Open APC (Hybrid),1,Europe
@@ -7914,8 +7915,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Zeitschrift für Vergleichende Politikwissenschaft,1,GBR,Open APC (Offsetting),1,Europe
 2016,Zoological Journal of the Linnean Society,1,GBR,Open APC (Hybrid),1,Europe
 2017,Zoonoses and Public Health,1,GBR,Open APC (Hybrid),1,Europe
-2013,NA,203,GBR,Open APC (Hybrid),34,Europe
-2014,NA,2116,GBR,Open APC (Hybrid),1893,Europe
+2013,NA,201,GBR,Open APC (Hybrid),34,Europe
+2014,NA,2116,GBR,Open APC (Hybrid),1892,Europe
 2015,NA,2120,GBR,Open APC (Hybrid),1838,Europe
 2015,NA,2120,GBR,Open APC (Offsetting),6,Europe
 2016,NA,2391,GBR,Open APC (Hybrid),2003,Europe
@@ -10228,7 +10229,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,ZDM,5,SWE,Open APC (Offsetting),2,Europe
 2017,Zeitschrift für angewandte Mathematik und Physik,3,SWE,Open APC (Offsetting),1,Europe
 2017,Zeitschrift für Rheumatologie,1,SWE,Open APC (Offsetting),1,Europe
-2013,NA,203,SWE,Open APC (Hybrid),19,Europe
+2013,NA,201,SWE,Open APC (Hybrid),19,Europe
 2014,NA,2116,SWE,Open APC (Hybrid),34,Europe
 2015,NA,2120,SWE,Open APC (Hybrid),58,Europe
 2016,NA,2391,SWE,Open APC (Hybrid),146,Europe
@@ -10240,5 +10241,5 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Journal of Dairy Science,5,USA,Open APC (Hybrid),2,Americas
 2014,Journal of Superconductivity and Novel Magnetism,1,USA,Open APC (Hybrid),1,Americas
 2013,Science and Engineering Ethics,1,USA,Open APC (Hybrid),1,Americas
-2013,NA,203,USA,Open APC (Hybrid),3,Americas
+2013,NA,201,USA,Open APC (Hybrid),3,Americas
 2014,NA,2116,USA,Open APC (Hybrid),3,Americas
