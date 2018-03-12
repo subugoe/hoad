@@ -81,6 +81,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Allergy,9,AUT,Open APC (Hybrid),8,Europe
 2016,Allergy,5,AUT,Open APC (Hybrid),1,Europe
 2016,Ambio,8,AUT,Open APC (Offsetting),1,Europe
+2013,American Journal of Botany,1,AUT,Open APC (Hybrid),1,Europe
 2015,American Journal of Hematology,3,AUT,Open APC (Hybrid),2,Europe
 2016,American Journal of Primatology,1,AUT,Open APC (Hybrid),1,Europe
 2015,American Journal of Transplantation,4,AUT,Open APC (Hybrid),2,Europe
@@ -97,6 +98,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Analytical Chemistry,18,AUT,Open APC (Hybrid),6,Europe
 2015,Analytical Chemistry,13,AUT,Open APC (Hybrid),5,Europe
 2016,Analytical Chemistry,18,AUT,Open APC (Hybrid),1,Europe
+2015,Analytical Methods,1,AUT,Open APC (Hybrid),1,Europe
+2016,Analytical Methods,3,AUT,Open APC (Hybrid),2,Europe
 2013,Angewandte Chemie,4,AUT,Open APC (Hybrid),4,Europe
 2014,Angewandte Chemie,9,AUT,Open APC (Hybrid),2,Europe
 2015,Angewandte Chemie,10,AUT,Open APC (Hybrid),1,Europe
@@ -338,6 +341,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Catalysis Letters,1,AUT,Open APC (Hybrid),1,Europe
 2015,Catalysis Letters,3,AUT,Open APC (Hybrid),1,Europe
 2016,Catalysis Letters,5,AUT,Open APC (Offsetting),1,Europe
+2015,Catalysis Science & Technology,3,AUT,Open APC (Hybrid),1,Europe
 2016,Catalysis Today,5,AUT,Open APC (Hybrid),2,Europe
 2016,CEAS Aeronautical Journal,1,AUT,Open APC (Offsetting),1,Europe
 2013,Cell,4,AUT,Open APC (Hybrid),2,Europe
@@ -358,6 +362,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Cellular and Molecular Life Sciences,15,AUT,Open APC (Hybrid),1,Europe
 2016,Cellular and Molecular Life Sciences,30,AUT,Open APC (Offsetting),1,Europe
 2016,Cellular Microbiology,6,AUT,Open APC (Hybrid),1,Europe
+2015,Cellular & Molecular Immunology,3,AUT,Open APC (Hybrid),1,Europe
 2015,Cellulose,2,AUT,Open APC (Hybrid),1,Europe
 2016,Cellulose,14,AUT,Open APC (Hybrid),1,Europe
 2016,Cellulose,14,AUT,Open APC (Offsetting),4,Europe
@@ -371,6 +376,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,ChemCatChem,4,AUT,Open APC (Hybrid),1,Europe
 2016,ChemCatChem,2,AUT,Open APC (Hybrid),1,Europe
 2014,ChemElectroChem,1,AUT,Open APC (Hybrid),1,Europe
+2015,Chemical Communications,27,AUT,Open APC (Hybrid),1,Europe
+2016,Chemical Communications,25,AUT,Open APC (Hybrid),2,Europe
 2016,Chemical Geology,5,AUT,Open APC (Hybrid),1,Europe
 2013,Chemical Physics,1,AUT,Open APC (Hybrid),1,Europe
 2015,Chemical Physics,1,AUT,Open APC (Hybrid),1,Europe
@@ -378,6 +385,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Chemical Physics Letters,2,AUT,Open APC (Hybrid),1,Europe
 2015,Chemical Reviews,5,AUT,Open APC (Hybrid),1,Europe
 2014,Chemical Science,5,AUT,Open APC (Hybrid),1,Europe
+2013,Chemical Society Reviews,2,AUT,Open APC (Hybrid),1,Europe
+2014,Chemical Society Reviews,2,AUT,Open APC (Hybrid),1,Europe
 2013,Chemistry - A European Journal,3,AUT,Open APC (Hybrid),3,Europe
 2014,Chemistry - A European Journal,22,AUT,Open APC (Hybrid),8,Europe
 2015,Chemistry - A European Journal,40,AUT,Open APC (Hybrid),7,Europe
@@ -515,6 +524,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Cytokine,2,AUT,Open APC (Hybrid),1,Europe
 2016,Cytokine,4,AUT,Open APC (Hybrid),2,Europe
 2016,Dairy Science & Technology,1,AUT,Open APC (Offsetting),1,Europe
+2015,Dalton Transactions,16,AUT,Open APC (Hybrid),1,Europe
 2013,Decision Support Systems,1,AUT,Open APC (Hybrid),1,Europe
 2014,Dendrochronologia,1,AUT,Open APC (Hybrid),1,Europe
 2015,Dendrochronologia,1,AUT,Open APC (Hybrid),1,Europe
@@ -738,6 +748,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Gastroenterology,3,AUT,Open APC (Hybrid),1,Europe
 2016,Gefässchirurgie,4,AUT,Open APC (Offsetting),4,Europe
 2013,General and Comparative Endocrinology,1,AUT,Open APC (Hybrid),1,Europe
+2016,Gene Therapy,3,AUT,Open APC (Hybrid),1,Europe
+2016,"Geochemistry, Geophysics, Geosystems",6,AUT,Open APC (Hybrid),2,Europe
 2013,Geochimica et Cosmochimica Acta,1,AUT,Open APC (Hybrid),1,Europe
 2015,Geoderma,1,AUT,Open APC (Hybrid),1,Europe
 2013,Geomorphology,2,AUT,Open APC (Hybrid),2,Europe
@@ -759,6 +771,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2013,Glycoconjugate Journal,1,AUT,Open APC (Hybrid),1,Europe
 2016,Glycoconjugate Journal,8,AUT,Open APC (Hybrid),1,Europe
 2014,GPS Solutions,1,AUT,Open APC (Hybrid),1,Europe
+2013,Green Chemistry,1,AUT,Open APC (Hybrid),1,Europe
 2014,Groundwater,2,AUT,Open APC (Hybrid),1,Europe
 2013,Group Decision and Negotiation,1,AUT,Open APC (Hybrid),1,Europe
 2016,Group Decision and Negotiation,5,AUT,Open APC (Offsetting),2,Europe
@@ -808,6 +821,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,IEEE Signal Processing Letters,2,AUT,Open APC (Hybrid),1,Europe
 2013,IEEE Transactions on Automatic Control,1,AUT,Open APC (Hybrid),1,Europe
 2014,IEEE Transactions on Biomedical Engineering,3,AUT,Open APC (Hybrid),1,Europe
+2014,IEEE Transactions on Electron Devices,4,AUT,Open APC (Hybrid),1,Europe
 2013,IEEE Transactions on Information Theory,1,AUT,Open APC (Hybrid),1,Europe
 2016,IEEE Transactions on Information Theory,1,AUT,Open APC (Hybrid),1,Europe
 2013,IEEE Transactions on Plasma Science,1,AUT,Open APC (Hybrid),1,Europe
@@ -1092,6 +1106,10 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Journal of Management & Governance,4,AUT,Open APC (Offsetting),1,Europe
 2015,Journal of Mass Spectrometry,1,AUT,Open APC (Hybrid),1,Europe
 2016,Journal of Material Cycles and Waste Management,2,AUT,Open APC (Offsetting),2,Europe
+2013,Journal of Materials Chemistry A,1,AUT,Open APC (Hybrid),1,Europe
+2015,Journal of Materials Chemistry A,6,AUT,Open APC (Hybrid),1,Europe
+2013,Journal of Materials Chemistry B,1,AUT,Open APC (Hybrid),1,Europe
+2016,Journal of Materials Chemistry C,5,AUT,Open APC (Hybrid),1,Europe
 2016,Journal of Materials Engineering and Performance,8,AUT,Open APC (Offsetting),1,Europe
 2014,Journal of Materials Science,1,AUT,Open APC (Hybrid),1,Europe
 2016,Journal of Materials Science,23,AUT,Open APC (Hybrid),1,Europe
@@ -1135,6 +1153,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Journal of Neural Engineering,1,AUT,Open APC (Hybrid),1,Europe
 2016,Journal of Neural Engineering,3,AUT,Open APC (Hybrid),1,Europe
 2015,Journal of Neurochemistry,5,AUT,Open APC (Hybrid),1,Europe
+2013,Journal of Neuroendocrinology,1,AUT,Open APC (Hybrid),1,Europe
 2013,Journal of Neuroimmunology,1,AUT,Open APC (Hybrid),1,Europe
 2016,Journal of Neuroimmunology,1,AUT,Open APC (Hybrid),1,Europe
 2013,Journal of Neurology,1,AUT,Open APC (Hybrid),1,Europe
@@ -1267,6 +1286,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,"Knee Surgery, Sports Traumatology, Arthroscopy",2,AUT,Open APC (Hybrid),1,Europe
 2016,"Knee Surgery, Sports Traumatology, Arthroscopy",27,AUT,Open APC (Offsetting),2,Europe
 2014,Knowledge-Based Systems,1,AUT,Open APC (Hybrid),1,Europe
+2015,Lab on a Chip,1,AUT,Open APC (Hybrid),1,Europe
 2016,Landscape Ecology,8,AUT,Open APC (Offsetting),2,Europe
 2016,Landslides,2,AUT,Open APC (Offsetting),1,Europe
 2014,Land Use Policy,2,AUT,Open APC (Hybrid),1,Europe
@@ -1282,6 +1302,10 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Learning & Behavior,5,AUT,Open APC (Hybrid),1,Europe
 2016,Letters in Mathematical Physics,9,AUT,Open APC (Offsetting),5,Europe
 2016,Letters in Spatial and Resource Sciences,2,AUT,Open APC (Offsetting),1,Europe
+2013,Leukemia,1,AUT,Open APC (Hybrid),1,Europe
+2014,Leukemia,4,AUT,Open APC (Hybrid),3,Europe
+2015,Leukemia,16,AUT,Open APC (Hybrid),4,Europe
+2016,Leukemia,13,AUT,Open APC (Hybrid),2,Europe
 2013,Leukemia Research,1,AUT,Open APC (Hybrid),1,Europe
 2013,Limnologica - Ecology and Management of Inland Waters,1,AUT,Open APC (Hybrid),1,Europe
 2014,Limnologica - Ecology and Management of Inland Waters,1,AUT,Open APC (Hybrid),1,Europe
@@ -1346,6 +1370,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,memo - Magazine of European Medical Oncology,12,AUT,Open APC (Offsetting),12,Europe
 2016,Metabolic Brain Disease,5,AUT,Open APC (Offsetting),1,Europe
 2014,Metabolic Engineering,2,AUT,Open APC (Hybrid),1,Europe
+2013,Metallomics,2,AUT,Open APC (Hybrid),2,Europe
 2016,Metallurgical and Materials Transactions A,22,AUT,Open APC (Offsetting),1,Europe
 2013,Meteoritics & Planetary Science,1,AUT,Open APC (Hybrid),1,Europe
 2013,Methods,4,AUT,Open APC (Hybrid),4,Europe
@@ -1477,6 +1502,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2013,Neuropsychologia,2,AUT,Open APC (Hybrid),1,Europe
 2014,Neuropsychologia,11,AUT,Open APC (Hybrid),2,Europe
 2015,Neuropsychologia,19,AUT,Open APC (Hybrid),1,Europe
+2013,Neuropsychopharmacology,1,AUT,Open APC (Hybrid),1,Europe
+2014,Neuropsychopharmacology,2,AUT,Open APC (Hybrid),1,Europe
+2015,Neuropsychopharmacology,6,AUT,Open APC (Hybrid),2,Europe
 2013,Neuroscience,2,AUT,Open APC (Hybrid),2,Europe
 2015,Neuroscience,11,AUT,Open APC (Hybrid),3,Europe
 2013,Neuroscience & Biobehavioral Reviews,2,AUT,Open APC (Hybrid),2,Europe
@@ -1523,8 +1551,13 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Oncogene,13,AUT,Open APC (Hybrid),3,Europe
 2016,Operative Orthopädie und Traumatologie,3,AUT,Open APC (Offsetting),3,Europe
 2013,Optics & Laser Technology,1,AUT,Open APC (Hybrid),1,Europe
+2013,Optics Letters,1,AUT,Open APC (Hybrid),1,Europe
+2014,Optics Letters,5,AUT,Open APC (Hybrid),2,Europe
+2015,Optics Letters,1,AUT,Open APC (Hybrid),1,Europe
 2013,Order,1,AUT,Open APC (Hybrid),1,Europe
 2015,Ore Geology Reviews,1,AUT,Open APC (Hybrid),1,Europe
+2014,Organic & Biomolecular Chemistry,6,AUT,Open APC (Hybrid),1,Europe
+2016,Organic & Biomolecular Chemistry,5,AUT,Open APC (Hybrid),1,Europe
 2013,Organic Electronics,3,AUT,Open APC (Hybrid),3,Europe
 2014,Organic Electronics,3,AUT,Open APC (Hybrid),1,Europe
 2015,Organic Electronics,5,AUT,Open APC (Hybrid),2,Europe
@@ -1586,8 +1619,12 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Philosophical Transactions of the Royal Society B: Biological Sciences,39,AUT,Open APC (Hybrid),1,Europe
 2016,Philosophy of Management,1,AUT,Open APC (Offsetting),1,Europe
 2016,Philosophy & Technology,12,AUT,Open APC (Offsetting),2,Europe
+2016,Photochemical & Photobiological Sciences,1,AUT,Open APC (Hybrid),1,Europe
 2013,Phycological Research,1,AUT,Open APC (Hybrid),1,Europe
 2013,Physica D: Nonlinear Phenomena,1,AUT,Open APC (Hybrid),1,Europe
+2014,Physical Chemistry Chemical Physics,12,AUT,Open APC (Hybrid),1,Europe
+2015,Physical Chemistry Chemical Physics,19,AUT,Open APC (Hybrid),2,Europe
+2016,Physical Chemistry Chemical Physics,14,AUT,Open APC (Hybrid),5,Europe
 2013,Physical Review A,2,AUT,Open APC (Hybrid),2,Europe
 2016,Physical Review A,19,AUT,Open APC (Hybrid),3,Europe
 2013,Physical Review B,3,AUT,Open APC (Hybrid),3,Europe
@@ -1619,6 +1656,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Placenta,4,AUT,Open APC (Hybrid),2,Europe
 2015,Planta,5,AUT,Open APC (Hybrid),3,Europe
 2016,Planta,5,AUT,Open APC (Hybrid),1,Europe
+2014,Planta Medica,1,AUT,Open APC (Hybrid),1,Europe
 2013,Plant and Soil,1,AUT,Open APC (Hybrid),1,Europe
 2014,Plant and Soil,6,AUT,Open APC (Hybrid),5,Europe
 2015,Plant and Soil,7,AUT,Open APC (Hybrid),1,Europe
@@ -1642,6 +1680,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Political Behavior,1,AUT,Open APC (Hybrid),1,Europe
 2015,Political Psychology,1,AUT,Open APC (Hybrid),1,Europe
 2013,Polymer,1,AUT,Open APC (Hybrid),1,Europe
+2015,Polymer Chemistry,5,AUT,Open APC (Hybrid),1,Europe
 2016,Population Research and Policy Review,3,AUT,Open APC (Offsetting),1,Europe
 2016,Potential Analysis,6,AUT,Open APC (Offsetting),2,Europe
 2016,Prevention Science,3,AUT,Open APC (Offsetting),1,Europe
@@ -1651,6 +1690,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Production Engineering,1,AUT,Open APC (Offsetting),1,Europe
 2015,Progress in Lipid Research,1,AUT,Open APC (Hybrid),1,Europe
 2015,Progress in Nuclear Magnetic Resonance Spectroscopy,1,AUT,Open APC (Hybrid),1,Europe
+2013,Progress in Particle and Nuclear Physics,1,AUT,Open APC (Hybrid),1,Europe
 2014,Progress in Retinal and Eye Research,1,AUT,Open APC (Hybrid),1,Europe
 2014,Protein Expression and Purification,2,AUT,Open APC (Hybrid),2,Europe
 2015,Protein Expression and Purification,3,AUT,Open APC (Hybrid),1,Europe
@@ -1744,6 +1784,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Social Science & Medicine,16,AUT,Open APC (Hybrid),1,Europe
 2013,Social Science Research,1,AUT,Open APC (Hybrid),1,Europe
 2016,Soft Computing,10,AUT,Open APC (Hybrid),3,Europe
+2015,Soft Matter,6,AUT,Open APC (Hybrid),1,Europe
+2016,Soft Matter,11,AUT,Open APC (Hybrid),1,Europe
 2016,Software Quality Journal,3,AUT,Open APC (Offsetting),1,Europe
 2013,Software & Systems Modeling,2,AUT,Open APC (Hybrid),2,Europe
 2015,Software & Systems Modeling,3,AUT,Open APC (Hybrid),1,Europe
@@ -1816,6 +1858,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,The AAPS Journal,7,AUT,Open APC (Offsetting),1,Europe
 2013,The American Journal of Human Genetics,1,AUT,Open APC (Hybrid),1,Europe
 2013,The American Journal of Pathology,1,AUT,Open APC (Hybrid),1,Europe
+2015,The Analyst,4,AUT,Open APC (Hybrid),1,Europe
+2016,The Analyst,2,AUT,Open APC (Hybrid),2,Europe
 2013,The Australian Educational Researcher,1,AUT,Open APC (Hybrid),1,Europe
 2016,The European Journal of Health Economics,16,AUT,Open APC (Offsetting),1,Europe
 2016,The European Physical Journal Special Topics,11,AUT,Open APC (Offsetting),2,Europe
@@ -1880,6 +1924,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Theoretical Population Biology,1,AUT,Open APC (Hybrid),1,Europe
 2016,Theory in Biosciences,1,AUT,Open APC (Hybrid),1,Europe
 2016,Theory of Computing Systems,6,AUT,Open APC (Hybrid),1,Europe
+2015,The Pharmacogenomics Journal,2,AUT,Open APC (Hybrid),1,Europe
 2013,The Plant Journal,3,AUT,Open APC (Hybrid),2,Europe
 2014,The Plant Journal,5,AUT,Open APC (Hybrid),1,Europe
 2015,The Plant Journal,9,AUT,Open APC (Hybrid),1,Europe
@@ -1892,6 +1937,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Thin Solid Films,5,AUT,Open APC (Hybrid),1,Europe
 2015,Thin Solid Films,2,AUT,Open APC (Hybrid),1,Europe
 2016,Thin Solid Films,2,AUT,Open APC (Hybrid),1,Europe
+2015,Thrombosis and Haemostasis,3,AUT,Open APC (Hybrid),1,Europe
+2016,Thrombosis and Haemostasis,3,AUT,Open APC (Hybrid),1,Europe
 2016,Thrombosis Research,1,AUT,Open APC (Hybrid),1,Europe
 2016,TOP,1,AUT,Open APC (Offsetting),1,Europe
 2016,Topics in Catalysis,17,AUT,Open APC (Hybrid),1,Europe
@@ -1977,11 +2024,13 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Zeitschrift für Psychodrama und Soziometrie,2,AUT,Open APC (Offsetting),2,Europe
 2016,Zeitschrift für Rheumatologie,1,AUT,Open APC (Offsetting),1,Europe
 2016,Zeitschrift für Vergleichende Politikwissenschaft,1,AUT,Open APC (Offsetting),1,Europe
-2013,NA,201,AUT,Open APC (Hybrid),141,Europe
-2014,NA,2116,AUT,Open APC (Hybrid),172,Europe
-2015,NA,2120,AUT,Open APC (Hybrid),201,Europe
-2016,NA,2391,AUT,Open APC (Hybrid),180,Europe
-2016,NA,2391,AUT,Open APC (Offsetting),5,Europe
+2014,Zoologica Scripta,1,AUT,Open APC (Hybrid),1,Europe
+2015,Zoologica Scripta,1,AUT,Open APC (Hybrid),1,Europe
+2013,NA,179,AUT,Open APC (Hybrid),129,Europe
+2014,NA,1988,AUT,Open APC (Hybrid),160,Europe
+2015,NA,1918,AUT,Open APC (Hybrid),179,Europe
+2016,NA,2217,AUT,Open APC (Hybrid),159,Europe
+2016,NA,2217,AUT,Open APC (Offsetting),5,Europe
 2014,Accident Analysis & Prevention,2,CAN,Open APC (Hybrid),1,Americas
 2013,AIChE Journal,1,CAN,Open APC (Hybrid),1,Americas
 2014,Annals of Behavioral Medicine,3,CAN,Open APC (Hybrid),1,Americas
@@ -2006,8 +2055,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,The Journal of Pediatrics,6,CAN,Open APC (Hybrid),1,Americas
 2013,Veterinary Immunology and Immunopathology,1,CAN,Open APC (Hybrid),1,Americas
 2014,Xenotransplantation,3,CAN,Open APC (Hybrid),1,Americas
-2013,NA,201,CAN,Open APC (Hybrid),3,Americas
-2014,NA,2116,CAN,Open APC (Hybrid),5,Americas
+2013,NA,179,CAN,Open APC (Hybrid),3,Americas
+2014,NA,1988,CAN,Open APC (Hybrid),5,Americas
 2015,ACS Applied Materials & Interfaces,8,DEU,Open APC (Hybrid),1,Europe
 2016,Acta Informatica,4,DEU,Open APC (Offsetting),1,Europe
 2015,Acta Materialia,19,DEU,Open APC (Hybrid),1,Europe
@@ -2061,6 +2110,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Biological Cybernetics,2,DEU,Open APC (Offsetting),1,Europe
 2016,Biology & Philosophy,3,DEU,Open APC (Offsetting),1,Europe
 2016,Biomass and Bioenergy,3,DEU,Open APC (Hybrid),1,Europe
+2017,Biomaterials Science,1,DEU,Open APC (Offsetting),1,Europe
 2016,Biopolymers,3,DEU,Open APC (Hybrid),1,Europe
 2016,Boundary-Layer Meteorology,8,DEU,Open APC (Offsetting),2,Europe
 2016,Brain Imaging and Behavior,8,DEU,Open APC (Offsetting),2,Europe
@@ -2073,10 +2123,13 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Calculus of Variations and Partial Differential Equations,10,DEU,Open APC (Offsetting),4,Europe
 2016,Catalysis Letters,5,DEU,Open APC (Offsetting),2,Europe
 2017,Catalysis Letters,12,DEU,Open APC (Offsetting),1,Europe
+2017,Catalysis Science & Technology,2,DEU,Open APC (Offsetting),2,Europe
 2016,Cell and Tissue Research,8,DEU,Open APC (Offsetting),1,Europe
 2017,Cell and Tissue Research,11,DEU,Open APC (Offsetting),1,Europe
 2016,Cellular and Molecular Life Sciences,30,DEU,Open APC (Offsetting),1,Europe
+2017,Chemical Communications,14,DEU,Open APC (Offsetting),11,Europe
 2015,Chemical Geology,6,DEU,Open APC (Hybrid),1,Europe
+2017,Chemical Society Reviews,1,DEU,Open APC (Offsetting),1,Europe
 2016,China-EU Law Journal,3,DEU,Open APC (Offsetting),1,Europe
 2017,China-EU Law Journal,1,DEU,Open APC (Offsetting),1,Europe
 2015,Chromosoma,6,DEU,Open APC (Offsetting),2,Europe
@@ -2093,7 +2146,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Computing and Visualization in Science,1,DEU,Open APC (Offsetting),1,Europe
 2016,Contemporary Educational Psychology,2,DEU,Open APC (Hybrid),2,Europe
 2017,Criminal Law and Philosophy,11,DEU,Open APC (Offsetting),1,Europe
+2017,CrystEngComm,4,DEU,Open APC (Offsetting),4,Europe
 2015,Current Genetics,2,DEU,Open APC (Offsetting),1,Europe
+2017,Dalton Transactions,7,DEU,Open APC (Offsetting),7,Europe
 2017,Data Mining and Knowledge Discovery,3,DEU,Open APC (Offsetting),1,Europe
 2016,Demography,8,DEU,Open APC (Offsetting),2,Europe
 2017,Demography,9,DEU,Open APC (Offsetting),6,Europe
@@ -2114,6 +2169,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Distributed Computing,4,DEU,Open APC (Offsetting),1,Europe
 2017,Electrocatalysis,4,DEU,Open APC (Offsetting),1,Europe
 2014,Energy,5,DEU,Open APC (Hybrid),1,Europe
+2017,Energy & Environmental Science,1,DEU,Open APC (Offsetting),1,Europe
 2016,e-Neuroforum,2,DEU,Open APC (Offsetting),2,Europe
 2016,Environmental Earth Sciences,7,DEU,Open APC (Hybrid),1,Europe
 2016,Environmental Science and Pollution Research,25,DEU,Open APC (Offsetting),2,Europe
@@ -2132,20 +2188,25 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Experimental Brain Research,28,DEU,Open APC (Offsetting),1,Europe
 2017,Experimental Economics,8,DEU,Open APC (Offsetting),1,Europe
 2016,Extremophiles,3,DEU,Open APC (Offsetting),1,Europe
+2017,Faraday Discussions,6,DEU,Open APC (Offsetting),6,Europe
 2017,"Forensische Psychiatrie, Psychologie, Kriminologie",1,DEU,Open APC (Offsetting),1,Europe
 2017,Formal Methods in System Design,5,DEU,Open APC (Offsetting),2,Europe
 2016,Foundations of Physics,9,DEU,Open APC (Offsetting),2,Europe
+2017,Gene Therapy,1,DEU,Open APC (Hybrid),1,Europe
 2017,Geometric and Functional Analysis,6,DEU,Open APC (Offsetting),1,Europe
 2016,Geophysical Research Letters,27,DEU,Open APC (Hybrid),1,Europe
+2017,Green Chemistry,4,DEU,Open APC (Offsetting),4,Europe
 2014,Hepatology,14,DEU,Open APC (Hybrid),1,Europe
 2016,Higher Education,13,DEU,Open APC (Offsetting),1,Europe
 2016,History and Philosophy of the Life Sciences,2,DEU,Open APC (Offsetting),1,Europe
 2017,Homo Oeconomicus,4,DEU,Open APC (Offsetting),1,Europe
 2016,Human Genetics,11,DEU,Open APC (Offsetting),2,Europe
 2017,Human Nature,5,DEU,Open APC (Offsetting),3,Europe
+2014,IEEE Communications Surveys & Tutorials,1,DEU,Open APC (Hybrid),1,Europe
 2016,IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing,1,DEU,Open APC (Hybrid),1,Europe
 2016,IEEE Transactions on Electromagnetic Compatibility,1,DEU,Open APC (Hybrid),1,Europe
 2017,IEEE Transactions on Electromagnetic Compatibility,2,DEU,Open APC (Hybrid),2,Europe
+2016,IEEE Transactions on Power Electronics,5,DEU,Open APC (Hybrid),1,Europe
 2017,IIC - International Review of Intellectual Property and Competition Law,3,DEU,Open APC (Offsetting),1,Europe
 2017,Immunogenetics,11,DEU,Open APC (Offsetting),3,Europe
 2016,International Journal of Computer Vision,13,DEU,Open APC (Offsetting),2,Europe
@@ -2175,6 +2236,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Journal of Immigrant and Minority Health,2,DEU,Open APC (Offsetting),1,Europe
 2016,"Journal of Infrared, Millimeter, and Terahertz Waves",4,DEU,Open APC (Offsetting),1,Europe
 2016,Journal of Low Temperature Physics,9,DEU,Open APC (Offsetting),2,Europe
+2017,Journal of Materials Chemistry A,11,DEU,Open APC (Offsetting),11,Europe
+2017,Journal of Materials Chemistry B,1,DEU,Open APC (Offsetting),1,Europe
+2017,Journal of Materials Chemistry C,6,DEU,Open APC (Offsetting),6,Europe
 2016,Journal of Materials Engineering and Performance,8,DEU,Open APC (Offsetting),1,Europe
 2017,Journal of Materials Science,28,DEU,Open APC (Offsetting),2,Europe
 2017,Journal of Mathematical Biology,17,DEU,Open APC (Offsetting),1,Europe
@@ -2203,6 +2267,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Journal of The American Society for Mass Spectrometry,11,DEU,Open APC (Offsetting),1,Europe
 2015,Journal of the Mechanics and Physics of Solids,1,DEU,Open APC (Hybrid),1,Europe
 2017,Knowledge and Information Systems,4,DEU,Open APC (Offsetting),1,Europe
+2017,Lab on a Chip,3,DEU,Open APC (Offsetting),3,Europe
 2014,Langmuir,13,DEU,Open APC (Hybrid),1,Europe
 2016,Learning and Individual Differences,3,DEU,Open APC (Hybrid),1,Europe
 2016,Learning and Instruction,3,DEU,Open APC (Hybrid),3,Europe
@@ -2213,6 +2278,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Machine Vision and Applications,5,DEU,Open APC (Offsetting),1,Europe
 2016,"Magnetic Resonance Materials in Physics, Biology and Medicine",11,DEU,Open APC (Offsetting),1,Europe
 2016,Managementforschung,1,DEU,Open APC (Offsetting),1,Europe
+2017,Materials Horizons,3,DEU,Open APC (Offsetting),3,Europe
+2015,Materials Today: Proceedings,1,DEU,Open APC (Hybrid),1,Europe
 2017,Mathematical Geosciences,2,DEU,Open APC (Offsetting),1,Europe
 2017,Mathematical Programming,5,DEU,Open APC (Offsetting),1,Europe
 2017,Mathematics in Computer Science,5,DEU,Open APC (Offsetting),2,Europe
@@ -2236,18 +2303,23 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Molecular Neurobiology,10,DEU,Open APC (Offsetting),1,Europe
 2015,Molecular Plant,3,DEU,Open APC (Hybrid),1,Europe
 2016,Multibody System Dynamics,5,DEU,Open APC (Offsetting),1,Europe
+2017,Nanoscale,6,DEU,Open APC (Offsetting),6,Europe
+2017,Nanoscale Horizons,2,DEU,Open APC (Offsetting),2,Europe
 2014,Neuropharmacology,11,DEU,Open APC (Hybrid),1,Europe
+2017,New Journal of Chemistry,1,DEU,Open APC (Offsetting),1,Europe
 2016,"NTM Zeitschrift für Geschichte der Wissenschaften, Technik und Medizin",2,DEU,Open APC (Offsetting),1,Europe
 2017,"NTM Zeitschrift für Geschichte der Wissenschaften, Technik und Medizin",3,DEU,Open APC (Offsetting),1,Europe
 2016,Numerische Mathematik,9,DEU,Open APC (Offsetting),1,Europe
 2017,Numerische Mathematik,6,DEU,Open APC (Offsetting),1,Europe
 2016,Oecologia,13,DEU,Open APC (Offsetting),1,Europe
+2017,Organic & Biomolecular Chemistry,2,DEU,Open APC (Offsetting),2,Europe
 2016,Organic Process Research & Development,3,DEU,Open APC (Hybrid),1,Europe
 2016,"Organisationsberatung, Supervision, Coaching",1,DEU,Open APC (Offsetting),1,Europe
 2015,Origins of Life and Evolution of Biospheres,1,DEU,Open APC (Hybrid),1,Europe
 2016,Parasitology Research,7,DEU,Open APC (Offsetting),1,Europe
 2017,Pflügers Archiv - European Journal of Physiology,11,DEU,Open APC (Offsetting),2,Europe
 2016,Phenomenology and the Cognitive Sciences,5,DEU,Open APC (Offsetting),1,Europe
+2017,Physical Chemistry Chemical Physics,33,DEU,Open APC (Offsetting),33,Europe
 2016,Physical Review Letters,18,DEU,Open APC (Hybrid),2,Europe
 2016,Phytochemistry Reviews,1,DEU,Open APC (Offsetting),1,Europe
 2017,Phytochemistry Reviews,1,DEU,Open APC (Offsetting),1,Europe
@@ -2257,6 +2329,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Plant Molecular Biology,2,DEU,Open APC (Offsetting),1,Europe
 2016,Plant Molecular Biology,7,DEU,Open APC (Offsetting),1,Europe
 2017,Plant Molecular Biology,2,DEU,Open APC (Offsetting),1,Europe
+2017,Polymer Chemistry,5,DEU,Open APC (Offsetting),5,Europe
 2016,Population Research and Policy Review,3,DEU,Open APC (Offsetting),1,Europe
 2017,Potential Analysis,5,DEU,Open APC (Offsetting),1,Europe
 2016,Probability Theory and Related Fields,9,DEU,Open APC (Offsetting),1,Europe
@@ -2277,6 +2350,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Small Business Economics,14,DEU,Open APC (Offsetting),2,Europe
 2017,Small Business Economics,22,DEU,Open APC (Offsetting),1,Europe
 2017,Social Indicators Research,10,DEU,Open APC (Offsetting),1,Europe
+2017,Soft Matter,12,DEU,Open APC (Offsetting),12,Europe
 2015,Software & Systems Modeling,3,DEU,Open APC (Hybrid),1,Europe
 2015,Somnologie - Schlafforschung und Schlafmedizin,1,DEU,Open APC (Offsetting),1,Europe
 2016,Soziale Probleme,1,DEU,Open APC (Offsetting),1,Europe
@@ -2288,6 +2362,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Surveys in Geophysics,6,DEU,Open APC (Offsetting),1,Europe
 2017,Sustainability Science,11,DEU,Open APC (Offsetting),1,Europe
 2016,Tectonophysics,4,DEU,Open APC (Hybrid),1,Europe
+2017,The Analyst,1,DEU,Open APC (Offsetting),1,Europe
 2017,The Astronomy and Astrophysics Review,3,DEU,Open APC (Offsetting),2,Europe
 2015,The European Physical Journal A,2,DEU,Open APC (Offsetting),1,Europe
 2016,The European Physical Journal E,5,DEU,Open APC (Offsetting),2,Europe
@@ -2322,13 +2397,13 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Zeitschrift für Didaktik der Naturwissenschaften,1,DEU,Open APC (Hybrid),1,Europe
 2016,Zeitschrift für Erziehungswissenschaft,2,DEU,Open APC (Offsetting),1,Europe
 2017,Zeitschrift für Politikwissenschaft,1,DEU,Open APC (Offsetting),1,Europe
-2013,NA,201,DEU,Open APC (Hybrid),1,Europe
-2014,NA,2116,DEU,Open APC (Hybrid),10,Europe
-2015,NA,2120,DEU,Open APC (Hybrid),10,Europe
-2016,NA,2391,DEU,Open APC (Hybrid),30,Europe
-2016,NA,2391,DEU,Open APC (Offsetting),5,Europe
-2017,NA,206,DEU,Open APC (Hybrid),5,Europe
-2017,NA,206,DEU,Open APC (Offsetting),147,Europe
+2013,NA,179,DEU,Open APC (Hybrid),1,Europe
+2014,NA,1988,DEU,Open APC (Hybrid),9,Europe
+2015,NA,1918,DEU,Open APC (Hybrid),9,Europe
+2016,NA,2217,DEU,Open APC (Hybrid),29,Europe
+2016,NA,2217,DEU,Open APC (Offsetting),5,Europe
+2017,NA,78,DEU,Open APC (Hybrid),4,Europe
+2017,NA,78,DEU,Open APC (Offsetting),24,Europe
 2015,2D Materials,2,GBR,Open APC (Hybrid),2,Europe
 2016,2D Materials,7,GBR,Open APC (Hybrid),6,Europe
 2017,3D Research,1,GBR,Open APC (Offsetting),1,Europe
@@ -2554,6 +2629,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,American Anthropologist,1,GBR,Open APC (Hybrid),1,Europe
 2015,American Heart Journal,1,GBR,Open APC (Hybrid),1,Europe
 2016,American Heart Journal,1,GBR,Open APC (Hybrid),1,Europe
+2015,American Journal of Botany,1,GBR,Open APC (Hybrid),1,Europe
 2015,American Journal of Hematology,3,GBR,Open APC (Hybrid),1,Europe
 2016,American Journal of Hematology,1,GBR,Open APC (Hybrid),1,Europe
 2014,American Journal of Human Biology,5,GBR,Open APC (Hybrid),5,Europe
@@ -2596,6 +2672,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Analytical Chemistry,13,GBR,Open APC (Hybrid),8,Europe
 2016,Analytical Chemistry,18,GBR,Open APC (Hybrid),17,Europe
 2017,Analytical Chemistry,1,GBR,Open APC (Hybrid),1,Europe
+2014,Analytical Methods,1,GBR,Open APC (Hybrid),1,Europe
+2016,Analytical Methods,3,GBR,Open APC (Hybrid),1,Europe
 2016,Anatomical Science International,1,GBR,Open APC (Offsetting),1,Europe
 2014,Andrology,1,GBR,Open APC (Hybrid),1,Europe
 2016,Andrology,1,GBR,Open APC (Hybrid),1,Europe
@@ -2664,6 +2742,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Annals of the New York Academy of Sciences,9,GBR,Open APC (Hybrid),9,Europe
 2015,Annals of the New York Academy of Sciences,1,GBR,Open APC (Hybrid),1,Europe
 2016,Annals of the New York Academy of Sciences,2,GBR,Open APC (Hybrid),2,Europe
+2014,Anthropology & Education Quarterly,1,GBR,Open APC (Hybrid),1,Europe
 2016,Antipode,1,GBR,Open APC (Hybrid),1,Europe
 2015,Antiviral Research,3,GBR,Open APC (Hybrid),3,Europe
 2016,Antiviral Research,2,GBR,Open APC (Hybrid),2,Europe
@@ -2708,6 +2787,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Applied Magnetic Resonance,3,GBR,Open APC (Offsetting),1,Europe
 2013,Applied Mathematical Modelling,1,GBR,Open APC (Hybrid),1,Europe
 2015,Applied Mathematical Modelling,1,GBR,Open APC (Hybrid),1,Europe
+2017,Applied Mathematics and Mechanics,1,GBR,Open APC (Offsetting),1,Europe
 2016,Applied Mathematics & Optimization,4,GBR,Open APC (Offsetting),4,Europe
 2014,Applied Microbiology and Biotechnology,6,GBR,Open APC (Hybrid),1,Europe
 2015,Applied Microbiology and Biotechnology,18,GBR,Open APC (Offsetting),1,Europe
@@ -3010,6 +3090,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Biomaterials,3,GBR,Open APC (Hybrid),3,Europe
 2015,Biomaterials,3,GBR,Open APC (Hybrid),3,Europe
 2016,Biomaterials,10,GBR,Open APC (Hybrid),9,Europe
+2014,Biomaterials Science,2,GBR,Open APC (Hybrid),2,Europe
+2015,Biomaterials Science,2,GBR,Open APC (Hybrid),2,Europe
 2014,Biomechanics and Modeling in Mechanobiology,3,GBR,Open APC (Hybrid),2,Europe
 2015,Biomechanics and Modeling in Mechanobiology,9,GBR,Open APC (Offsetting),4,Europe
 2016,Biomechanics and Modeling in Mechanobiology,11,GBR,Open APC (Hybrid),1,Europe
@@ -3203,6 +3285,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Cancer Chemotherapy and Pharmacology,4,GBR,Open APC (Offsetting),1,Europe
 2015,Cancer Epidemiology,3,GBR,Open APC (Hybrid),3,Europe
 2016,Cancer Epidemiology,3,GBR,Open APC (Hybrid),3,Europe
+2016,Cancer Gene Therapy,1,GBR,Open APC (Hybrid),1,Europe
 2015,"Cancer Immunology, Immunotherapy",13,GBR,Open APC (Hybrid),1,Europe
 2016,"Cancer Immunology, Immunotherapy",11,GBR,Open APC (Offsetting),2,Europe
 2017,"Cancer Immunology, Immunotherapy",9,GBR,Open APC (Offsetting),6,Europe
@@ -3228,6 +3311,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Catalysis Letters,3,GBR,Open APC (Offsetting),1,Europe
 2016,Catalysis Letters,5,GBR,Open APC (Offsetting),1,Europe
 2017,Catalysis Letters,12,GBR,Open APC (Offsetting),8,Europe
+2014,Catalysis Science & Technology,1,GBR,Open APC (Hybrid),1,Europe
+2015,Catalysis Science & Technology,3,GBR,Open APC (Hybrid),2,Europe
+2016,Catalysis Science & Technology,1,GBR,Open APC (Hybrid),1,Europe
 2014,Catalysis Today,1,GBR,Open APC (Hybrid),1,Europe
 2016,Catalysis Today,5,GBR,Open APC (Hybrid),3,Europe
 2017,CEAS Aeronautical Journal,2,GBR,Open APC (Offsetting),2,Europe
@@ -3281,6 +3367,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Cellular Microbiology,14,GBR,Open APC (Hybrid),14,Europe
 2015,Cellular Microbiology,3,GBR,Open APC (Hybrid),3,Europe
 2016,Cellular Microbiology,6,GBR,Open APC (Hybrid),5,Europe
+2015,Cellular & Molecular Immunology,3,GBR,Open APC (Hybrid),2,Europe
 2014,Cellular Signalling,1,GBR,Open APC (Hybrid),1,Europe
 2015,Cellular Signalling,3,GBR,Open APC (Hybrid),3,Europe
 2016,Cellular Signalling,4,GBR,Open APC (Hybrid),4,Europe
@@ -3301,6 +3388,11 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,ChemCatChem,2,GBR,Open APC (Hybrid),1,Europe
 2015,ChemElectroChem,2,GBR,Open APC (Hybrid),2,Europe
 2016,ChemElectroChem,2,GBR,Open APC (Hybrid),2,Europe
+2013,Chemical Communications,1,GBR,Open APC (Hybrid),1,Europe
+2014,Chemical Communications,16,GBR,Open APC (Hybrid),16,Europe
+2015,Chemical Communications,27,GBR,Open APC (Hybrid),26,Europe
+2016,Chemical Communications,25,GBR,Open APC (Hybrid),23,Europe
+2017,Chemical Communications,14,GBR,Open APC (Hybrid),3,Europe
 2015,Chemical Engineering and Processing: Process Intensification,1,GBR,Open APC (Hybrid),1,Europe
 2014,Chemical Engineering Journal,1,GBR,Open APC (Hybrid),1,Europe
 2015,Chemical Engineering Journal,4,GBR,Open APC (Hybrid),4,Europe
@@ -3323,6 +3415,10 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Chemical Reviews,6,GBR,Open APC (Hybrid),6,Europe
 2013,Chemical Science,3,GBR,Open APC (Hybrid),3,Europe
 2014,Chemical Science,5,GBR,Open APC (Hybrid),4,Europe
+2013,Chemical Society Reviews,2,GBR,Open APC (Hybrid),1,Europe
+2014,Chemical Society Reviews,2,GBR,Open APC (Hybrid),1,Europe
+2015,Chemical Society Reviews,2,GBR,Open APC (Hybrid),2,Europe
+2016,Chemical Society Reviews,2,GBR,Open APC (Hybrid),2,Europe
 2016,Chemico-Biological Interactions,1,GBR,Open APC (Hybrid),1,Europe
 2014,Chemistry - A European Journal,22,GBR,Open APC (Hybrid),14,Europe
 2015,Chemistry - A European Journal,40,GBR,Open APC (Hybrid),33,Europe
@@ -3650,6 +3746,10 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Crystal Growth & Design,7,GBR,Open APC (Hybrid),4,Europe
 2015,Crystal Growth & Design,11,GBR,Open APC (Hybrid),5,Europe
 2016,Crystal Growth & Design,14,GBR,Open APC (Hybrid),10,Europe
+2013,CrystEngComm,1,GBR,Open APC (Hybrid),1,Europe
+2014,CrystEngComm,1,GBR,Open APC (Hybrid),1,Europe
+2015,CrystEngComm,7,GBR,Open APC (Hybrid),7,Europe
+2016,CrystEngComm,3,GBR,Open APC (Hybrid),3,Europe
 2016,Cultural Studies of Science Education,5,GBR,Open APC (Offsetting),3,Europe
 2017,Cultural Studies of Science Education,12,GBR,Open APC (Offsetting),5,Europe
 2016,Culture and Brain,3,GBR,Open APC (Offsetting),3,Europe
@@ -3819,6 +3919,10 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Cytotherapy,2,GBR,Open APC (Hybrid),2,Europe
 2017,Cytotherapy,1,GBR,Open APC (Hybrid),1,Europe
 2015,Dairy Science & Technology,1,GBR,Open APC (Hybrid),1,Europe
+2013,Dalton Transactions,1,GBR,Open APC (Hybrid),1,Europe
+2014,Dalton Transactions,4,GBR,Open APC (Hybrid),4,Europe
+2015,Dalton Transactions,16,GBR,Open APC (Hybrid),15,Europe
+2016,Dalton Transactions,6,GBR,Open APC (Hybrid),6,Europe
 2015,Data Mining and Knowledge Discovery,1,GBR,Open APC (Hybrid),1,Europe
 2016,Data Mining and Knowledge Discovery,1,GBR,Open APC (Offsetting),1,Europe
 2016,Datenbank-Spektrum,2,GBR,Open APC (Offsetting),2,Europe
@@ -4341,12 +4445,16 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Extremes,6,GBR,Open APC (Offsetting),2,Europe
 2015,Extremophiles,4,GBR,Open APC (Hybrid),1,Europe
 2017,Extremophiles,3,GBR,Open APC (Offsetting),3,Europe
+2015,Eye,3,GBR,Open APC (Hybrid),3,Europe
 2016,Facies,3,GBR,Open APC (Offsetting),3,Europe
 2017,Facies,1,GBR,Open APC (Offsetting),1,Europe
 2014,Familial Cancer,1,GBR,Open APC (Hybrid),1,Europe
 2016,Familial Cancer,12,GBR,Open APC (Hybrid),3,Europe
 2016,Familial Cancer,12,GBR,Open APC (Offsetting),3,Europe
 2017,Familial Cancer,6,GBR,Open APC (Offsetting),4,Europe
+2014,Faraday Discussions,2,GBR,Open APC (Hybrid),2,Europe
+2015,Faraday Discussions,3,GBR,Open APC (Hybrid),3,Europe
+2016,Faraday Discussions,3,GBR,Open APC (Hybrid),3,Europe
 2014,Fatigue & Fracture of Engineering Materials & Structures,1,GBR,Open APC (Hybrid),1,Europe
 2016,Fatigue & Fracture of Engineering Materials & Structures,1,GBR,Open APC (Hybrid),1,Europe
 2014,FEBS Journal,8,GBR,Open APC (Hybrid),7,Europe
@@ -4366,6 +4474,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Finance and Stochastics,9,GBR,Open APC (Offsetting),8,Europe
 2014,Financial Accountability & Management,1,GBR,Open APC (Hybrid),1,Europe
 2016,Financial Markets and Portfolio Management,1,GBR,Open APC (Offsetting),1,Europe
+2014,Fire and Materials,1,GBR,Open APC (Hybrid),1,Europe
 2016,Fire Technology,1,GBR,Open APC (Offsetting),1,Europe
 2017,Fire Technology,3,GBR,Open APC (Offsetting),2,Europe
 2014,Fish and Fisheries,1,GBR,Open APC (Hybrid),1,Europe
@@ -4448,7 +4557,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,"Genes, Brain and Behavior",2,GBR,Open APC (Hybrid),2,Europe
 2015,"Genes, Brain and Behavior",2,GBR,Open APC (Hybrid),2,Europe
 2016,"Genes, Brain and Behavior",2,GBR,Open APC (Hybrid),2,Europe
+2016,Genes & Immunity,1,GBR,Open APC (Hybrid),1,Europe
 2016,genesis,1,GBR,Open APC (Hybrid),1,Europe
+2016,Gene Therapy,3,GBR,Open APC (Hybrid),2,Europe
 2014,Genetic Epidemiology,5,GBR,Open APC (Hybrid),5,Europe
 2016,Genetic Epidemiology,3,GBR,Open APC (Hybrid),3,Europe
 2016,Genetic Programming and Evolvable Machines,1,GBR,Open APC (Offsetting),1,Europe
@@ -4456,6 +4567,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Genetic Resources and Crop Evolution,3,GBR,Open APC (Offsetting),2,Europe
 2017,Genetic Resources and Crop Evolution,9,GBR,Open APC (Offsetting),6,Europe
 2015,Genomics,1,GBR,Open APC (Hybrid),1,Europe
+2014,"Geochemistry, Geophysics, Geosystems",9,GBR,Open APC (Hybrid),9,Europe
+2015,"Geochemistry, Geophysics, Geosystems",5,GBR,Open APC (Hybrid),5,Europe
+2016,"Geochemistry, Geophysics, Geosystems",6,GBR,Open APC (Hybrid),4,Europe
 2014,Geochimica et Cosmochimica Acta,6,GBR,Open APC (Hybrid),6,Europe
 2015,Geochimica et Cosmochimica Acta,6,GBR,Open APC (Hybrid),6,Europe
 2016,Geochimica et Cosmochimica Acta,9,GBR,Open APC (Hybrid),9,Europe
@@ -4524,6 +4638,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Granular Matter,7,GBR,Open APC (Offsetting),6,Europe
 2017,Granular Matter,6,GBR,Open APC (Offsetting),6,Europe
 2015,Graphs and Combinatorics,3,GBR,Open APC (Offsetting),2,Europe
+2016,Green Chemistry,2,GBR,Open APC (Hybrid),2,Europe
 2014,Groundwater,2,GBR,Open APC (Hybrid),1,Europe
 2016,Group Decision and Negotiation,5,GBR,Open APC (Offsetting),1,Europe
 2015,Gynecological Surgery,2,GBR,Open APC (Offsetting),1,Europe
@@ -4680,6 +4795,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,IEEE Transactions on Biomedical Engineering,3,GBR,Open APC (Hybrid),2,Europe
 2016,IEEE Transactions on Biomedical Engineering,5,GBR,Open APC (Hybrid),5,Europe
 2016,"IEEE Transactions on Components, Packaging and Manufacturing Technology",1,GBR,Open APC (Hybrid),1,Europe
+2014,IEEE Transactions on Electron Devices,4,GBR,Open APC (Hybrid),3,Europe
+2015,IEEE Transactions on Electron Devices,1,GBR,Open APC (Hybrid),1,Europe
+2016,IEEE Transactions on Electron Devices,1,GBR,Open APC (Hybrid),1,Europe
 2014,IEEE Transactions on Information Theory,1,GBR,Open APC (Hybrid),1,Europe
 2014,IEEE Transactions on Knowledge and Data Engineering,2,GBR,Open APC (Hybrid),2,Europe
 2016,IEEE Transactions on Knowledge and Data Engineering,1,GBR,Open APC (Hybrid),1,Europe
@@ -4697,6 +4815,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,IEEE Transactions on Nuclear Science,1,GBR,Open APC (Hybrid),1,Europe
 2014,IEEE Transactions on Pattern Analysis and Machine Intelligence,1,GBR,Open APC (Hybrid),1,Europe
 2015,IEEE Transactions on Pattern Analysis and Machine Intelligence,1,GBR,Open APC (Hybrid),1,Europe
+2014,IEEE Transactions on Power Electronics,1,GBR,Open APC (Hybrid),1,Europe
+2015,IEEE Transactions on Power Electronics,1,GBR,Open APC (Hybrid),1,Europe
+2016,IEEE Transactions on Power Electronics,5,GBR,Open APC (Hybrid),4,Europe
 2014,IEEE Transactions on Power Systems,4,GBR,Open APC (Hybrid),4,Europe
 2015,IEEE Transactions on Power Systems,3,GBR,Open APC (Hybrid),3,Europe
 2016,IEEE Transactions on Power Systems,5,GBR,Open APC (Hybrid),5,Europe
@@ -4705,6 +4826,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,IEEE Transactions on Signal Processing,7,GBR,Open APC (Hybrid),7,Europe
 2015,IEEE Transactions on Smart Grid,1,GBR,Open APC (Hybrid),1,Europe
 2016,IEEE Transactions on Smart Grid,6,GBR,Open APC (Hybrid),6,Europe
+2014,IEEE Transactions on Software Engineering,2,GBR,Open APC (Hybrid),2,Europe
+2015,IEEE Transactions on Software Engineering,2,GBR,Open APC (Hybrid),2,Europe
+2016,IEEE Transactions on Software Engineering,3,GBR,Open APC (Hybrid),3,Europe
 2014,IEEE Transactions on Sustainable Energy,1,GBR,Open APC (Hybrid),1,Europe
 2016,IEEE Transactions on Sustainable Energy,2,GBR,Open APC (Hybrid),2,Europe
 2015,"IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control",2,GBR,Open APC (Hybrid),2,Europe
@@ -4928,6 +5052,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,International Journal of Multiphase Flow,3,GBR,Open APC (Hybrid),3,Europe
 2015,International Journal of Multiphase Flow,1,GBR,Open APC (Hybrid),1,Europe
 2016,International Journal of Multiphase Flow,1,GBR,Open APC (Hybrid),1,Europe
+2014,International Journal of Obesity,11,GBR,Open APC (Hybrid),11,Europe
+2015,International Journal of Obesity,8,GBR,Open APC (Hybrid),8,Europe
+2016,International Journal of Obesity,5,GBR,Open APC (Hybrid),5,Europe
 2014,International Journal of Paleopathology,1,GBR,Open APC (Hybrid),1,Europe
 2016,International Journal of Parallel Programming,2,GBR,Open APC (Offsetting),2,Europe
 2017,International Journal of Parallel Programming,4,GBR,Open APC (Offsetting),2,Europe
@@ -4973,6 +5100,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,International Journal of the Classical Tradition,2,GBR,Open APC (Offsetting),1,Europe
 2017,International Journal of Theoretical Physics,2,GBR,Open APC (Offsetting),2,Europe
 2017,International Journal of the Sociology of Leisure,2,GBR,Open APC (Offsetting),2,Europe
+2014,International Journal of Urban and Regional Research,4,GBR,Open APC (Hybrid),4,Europe
+2015,International Journal of Urban and Regional Research,1,GBR,Open APC (Hybrid),1,Europe
+2016,International Journal of Urban and Regional Research,3,GBR,Open APC (Hybrid),3,Europe
 2016,International Journal on Digital Libraries,3,GBR,Open APC (Offsetting),2,Europe
 2017,International Journal on Digital Libraries,2,GBR,Open APC (Offsetting),2,Europe
 2015,International Journal on Software Tools for Technology Transfer,5,GBR,Open APC (Offsetting),1,Europe
@@ -5103,6 +5233,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Journal of Applied Physics,6,GBR,Open APC (Hybrid),4,Europe
 2014,Journal of Applied Polymer Science,1,GBR,Open APC (Hybrid),1,Europe
 2015,Journal of Applied Polymer Science,1,GBR,Open APC (Hybrid),1,Europe
+2014,Journal of Applied Social Psychology,1,GBR,Open APC (Hybrid),1,Europe
+2015,Journal of Applied Social Psychology,1,GBR,Open APC (Hybrid),1,Europe
 2014,Journal of Archaeological Method and Theory,1,GBR,Open APC (Hybrid),1,Europe
 2015,Journal of Archaeological Method and Theory,2,GBR,Open APC (Offsetting),1,Europe
 2016,Journal of Archaeological Method and Theory,1,GBR,Open APC (Offsetting),1,Europe
@@ -5581,6 +5713,15 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Journal of Marine Science and Technology,5,GBR,Open APC (Offsetting),3,Europe
 2016,Journal of Maritime Archaeology,1,GBR,Open APC (Offsetting),1,Europe
 2017,Journal of Maritime Archaeology,1,GBR,Open APC (Offsetting),1,Europe
+2014,Journal of Materials Chemistry A,4,GBR,Open APC (Hybrid),4,Europe
+2015,Journal of Materials Chemistry A,6,GBR,Open APC (Hybrid),5,Europe
+2016,Journal of Materials Chemistry A,4,GBR,Open APC (Hybrid),4,Europe
+2014,Journal of Materials Chemistry B,2,GBR,Open APC (Hybrid),2,Europe
+2015,Journal of Materials Chemistry B,4,GBR,Open APC (Hybrid),4,Europe
+2013,Journal of Materials Chemistry C,1,GBR,Open APC (Hybrid),1,Europe
+2014,Journal of Materials Chemistry C,7,GBR,Open APC (Hybrid),7,Europe
+2015,Journal of Materials Chemistry C,9,GBR,Open APC (Hybrid),9,Europe
+2016,Journal of Materials Chemistry C,5,GBR,Open APC (Hybrid),4,Europe
 2014,Journal of Materials Engineering and Performance,1,GBR,Open APC (Hybrid),1,Europe
 2016,Journal of Materials Engineering and Performance,8,GBR,Open APC (Offsetting),5,Europe
 2017,Journal of Materials Engineering and Performance,4,GBR,Open APC (Offsetting),2,Europe
@@ -5677,6 +5818,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Journal of Neurochemistry,3,GBR,Open APC (Hybrid),3,Europe
 2015,Journal of Neurochemistry,5,GBR,Open APC (Hybrid),4,Europe
 2016,Journal of Neurochemistry,6,GBR,Open APC (Hybrid),6,Europe
+2014,Journal of Neuroendocrinology,1,GBR,Open APC (Hybrid),1,Europe
+2015,Journal of Neuroendocrinology,4,GBR,Open APC (Hybrid),4,Europe
+2016,Journal of Neuroendocrinology,5,GBR,Open APC (Hybrid),5,Europe
 2014,Journal of Neurology,11,GBR,Open APC (Hybrid),11,Europe
 2015,Journal of Neurology,13,GBR,Open APC (Hybrid),5,Europe
 2015,Journal of Neurology,13,GBR,Open APC (Offsetting),3,Europe
@@ -6030,6 +6174,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Knowledge and Information Systems,2,GBR,Open APC (Offsetting),1,Europe
 2017,Knowledge and Information Systems,4,GBR,Open APC (Offsetting),2,Europe
 2016,Knowledge-Based Systems,1,GBR,Open APC (Hybrid),1,Europe
+2014,Lab on a Chip,4,GBR,Open APC (Hybrid),4,Europe
 2014,Labour Economics,1,GBR,Open APC (Hybrid),1,Europe
 2016,Labour Economics,3,GBR,Open APC (Hybrid),3,Europe
 2014,Landscape Ecology,1,GBR,Open APC (Hybrid),1,Europe
@@ -6079,6 +6224,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Letters in Mathematical Physics,1,GBR,Open APC (Hybrid),1,Europe
 2016,Letters in Mathematical Physics,9,GBR,Open APC (Offsetting),3,Europe
 2017,Letters in Mathematical Physics,17,GBR,Open APC (Offsetting),12,Europe
+2014,Leukemia,4,GBR,Open APC (Hybrid),1,Europe
+2015,Leukemia,16,GBR,Open APC (Hybrid),12,Europe
+2016,Leukemia,13,GBR,Open APC (Hybrid),11,Europe
 2015,Leukemia Research,1,GBR,Open APC (Hybrid),1,Europe
 2016,Leukemia Research,1,GBR,Open APC (Hybrid),1,Europe
 2014,Life Sciences,1,GBR,Open APC (Hybrid),1,Europe
@@ -6174,6 +6322,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Materials Chemistry and Physics,3,GBR,Open APC (Hybrid),3,Europe
 2015,Materials & Design,4,GBR,Open APC (Hybrid),3,Europe
 2016,Materials & Design,7,GBR,Open APC (Hybrid),7,Europe
+2014,Materials Horizons,2,GBR,Open APC (Hybrid),2,Europe
+2016,Materials Horizons,1,GBR,Open APC (Hybrid),1,Europe
 2014,Materials Letters,1,GBR,Open APC (Hybrid),1,Europe
 2015,Materials Letters,2,GBR,Open APC (Hybrid),2,Europe
 2016,Materials Letters,2,GBR,Open APC (Hybrid),2,Europe
@@ -6185,6 +6335,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Materials Science and Engineering: C,3,GBR,Open APC (Hybrid),3,Europe
 2016,Materials Science and Engineering: C,4,GBR,Open APC (Hybrid),4,Europe
 2015,Materials Science in Semiconductor Processing,4,GBR,Open APC (Hybrid),4,Europe
+2016,Materials Today: Proceedings,1,GBR,Open APC (Hybrid),1,Europe
 2014,Maternal and Child Health Journal,1,GBR,Open APC (Hybrid),1,Europe
 2015,Maternal and Child Health Journal,1,GBR,Open APC (Offsetting),1,Europe
 2016,Maternal and Child Health Journal,4,GBR,Open APC (Offsetting),2,Europe
@@ -6284,6 +6435,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Metabolomics,15,GBR,Open APC (Offsetting),9,Europe
 2016,"Metallography, Microstructure, and Analysis",2,GBR,Open APC (Offsetting),2,Europe
 2017,"Metallography, Microstructure, and Analysis",2,GBR,Open APC (Offsetting),2,Europe
+2014,Metallomics,2,GBR,Open APC (Hybrid),2,Europe
+2016,Metallomics,1,GBR,Open APC (Hybrid),1,Europe
 2015,Metallurgical and Materials Transactions A,8,GBR,Open APC (Hybrid),3,Europe
 2015,Metallurgical and Materials Transactions A,8,GBR,Open APC (Offsetting),2,Europe
 2016,Metallurgical and Materials Transactions A,22,GBR,Open APC (Offsetting),12,Europe
@@ -6335,6 +6488,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Mindfulness,1,GBR,Open APC (Offsetting),1,Europe
 2016,Mindfulness,11,GBR,Open APC (Offsetting),6,Europe
 2017,Mindfulness,24,GBR,Open APC (Offsetting),22,Europe
+2014,Mind & Language,2,GBR,Open APC (Hybrid),2,Europe
+2015,Mind & Language,2,GBR,Open APC (Hybrid),2,Europe
 2017,Minds and Machines,8,GBR,Open APC (Offsetting),7,Europe
 2017,Mineral Economics,5,GBR,Open APC (Offsetting),2,Europe
 2014,Mineralium Deposita,1,GBR,Open APC (Hybrid),1,Europe
@@ -6401,6 +6556,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Molecular Physics,2,GBR,Open APC (Hybrid),2,Europe
 2016,Molecular Plant,2,GBR,Open APC (Hybrid),1,Europe
 2016,Molecular Plant Pathology,1,GBR,Open APC (Hybrid),1,Europe
+2014,Molecular Psychiatry,3,GBR,Open APC (Hybrid),3,Europe
+2015,Molecular Psychiatry,11,GBR,Open APC (Hybrid),11,Europe
+2016,Molecular Psychiatry,4,GBR,Open APC (Hybrid),4,Europe
 2014,Molecular Therapy,1,GBR,Open APC (Hybrid),1,Europe
 2015,Molecular Therapy,4,GBR,Open APC (Hybrid),4,Europe
 2016,Molecular Therapy,4,GBR,Open APC (Hybrid),4,Europe
@@ -6444,6 +6602,10 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,"Nanomedicine: Nanotechnology, Biology and Medicine",4,GBR,Open APC (Hybrid),4,Europe
 2015,Nano Research,2,GBR,Open APC (Hybrid),1,Europe
 2017,Nano Research,1,GBR,Open APC (Offsetting),1,Europe
+2013,Nanoscale,1,GBR,Open APC (Hybrid),1,Europe
+2014,Nanoscale,3,GBR,Open APC (Hybrid),3,Europe
+2015,Nanoscale,3,GBR,Open APC (Hybrid),3,Europe
+2016,Nanoscale,6,GBR,Open APC (Hybrid),6,Europe
 2014,Nanotechnology,9,GBR,Open APC (Hybrid),4,Europe
 2015,Nanotechnology,5,GBR,Open APC (Hybrid),2,Europe
 2016,Nanotechnology,14,GBR,Open APC (Hybrid),9,Europe
@@ -6544,6 +6706,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Neuropsychology,1,GBR,Open APC (Hybrid),1,Europe
 2016,Neuropsychology,1,GBR,Open APC (Hybrid),1,Europe
 2017,Neuropsychology Review,1,GBR,Open APC (Offsetting),1,Europe
+2014,Neuropsychopharmacology,2,GBR,Open APC (Hybrid),1,Europe
+2015,Neuropsychopharmacology,6,GBR,Open APC (Hybrid),4,Europe
+2016,Neuropsychopharmacology,8,GBR,Open APC (Hybrid),7,Europe
 2015,Neuroradiology,8,GBR,Open APC (Hybrid),1,Europe
 2016,Neuroradiology,8,GBR,Open APC (Offsetting),4,Europe
 2017,Neuroradiology,2,GBR,Open APC (Offsetting),2,Europe
@@ -6564,6 +6729,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Neurotherapeutics,4,GBR,Open APC (Offsetting),3,Europe
 2016,NeuroToxicology,1,GBR,Open APC (Hybrid),1,Europe
 2016,New Horizons in Translational Medicine,1,GBR,Open APC (Hybrid),1,Europe
+2016,New Journal of Chemistry,1,GBR,Open APC (Hybrid),1,Europe
 2013,New Phytologist,4,GBR,Open APC (Hybrid),1,Europe
 2014,New Phytologist,7,GBR,Open APC (Hybrid),4,Europe
 2015,New Phytologist,13,GBR,Open APC (Hybrid),5,Europe
@@ -6650,6 +6816,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Optical and Quantum Electronics,8,GBR,Open APC (Offsetting),8,Europe
 2017,Optical and Quantum Electronics,8,GBR,Open APC (Offsetting),8,Europe
 2015,Optical Materials,1,GBR,Open APC (Hybrid),1,Europe
+2014,Optics Letters,5,GBR,Open APC (Hybrid),3,Europe
+2016,Optics Letters,12,GBR,Open APC (Hybrid),12,Europe
 2016,Optimization and Engineering,4,GBR,Open APC (Offsetting),2,Europe
 2014,Optimization Letters,1,GBR,Open APC (Hybrid),1,Europe
 2015,Optimization Letters,3,GBR,Open APC (Hybrid),1,Europe
@@ -6658,6 +6826,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Order,1,GBR,Open APC (Offsetting),1,Europe
 2017,Order,3,GBR,Open APC (Offsetting),2,Europe
 2016,Ore Geology Reviews,1,GBR,Open APC (Hybrid),1,Europe
+2014,Organic & Biomolecular Chemistry,6,GBR,Open APC (Hybrid),5,Europe
+2015,Organic & Biomolecular Chemistry,4,GBR,Open APC (Hybrid),4,Europe
+2016,Organic & Biomolecular Chemistry,5,GBR,Open APC (Hybrid),4,Europe
 2014,Organic Electronics,3,GBR,Open APC (Hybrid),2,Europe
 2015,Organic Electronics,5,GBR,Open APC (Hybrid),3,Europe
 2016,Organic Electronics,2,GBR,Open APC (Hybrid),2,Europe
@@ -6786,6 +6957,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Philosophical Transactions of the Royal Society B: Biological Sciences,28,GBR,Open APC (Hybrid),27,Europe
 2015,Philosophical Transactions of the Royal Society B: Biological Sciences,22,GBR,Open APC (Hybrid),22,Europe
 2016,Philosophical Transactions of the Royal Society B: Biological Sciences,39,GBR,Open APC (Hybrid),37,Europe
+2015,Philosophy Compass,5,GBR,Open APC (Hybrid),5,Europe
+2016,Philosophy Compass,2,GBR,Open APC (Hybrid),2,Europe
 2017,Philosophy of Management,3,GBR,Open APC (Offsetting),1,Europe
 2014,Philosophy & Technology,1,GBR,Open APC (Hybrid),1,Europe
 2016,Philosophy & Technology,12,GBR,Open APC (Offsetting),5,Europe
@@ -6799,6 +6972,10 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Physica D: Nonlinear Phenomena,1,GBR,Open APC (Hybrid),1,Europe
 2015,Physical Biology,1,GBR,Open APC (Hybrid),1,Europe
 2016,Physical Biology,2,GBR,Open APC (Hybrid),2,Europe
+2013,Physical Chemistry Chemical Physics,2,GBR,Open APC (Hybrid),2,Europe
+2014,Physical Chemistry Chemical Physics,12,GBR,Open APC (Hybrid),11,Europe
+2015,Physical Chemistry Chemical Physics,19,GBR,Open APC (Hybrid),17,Europe
+2016,Physical Chemistry Chemical Physics,14,GBR,Open APC (Hybrid),9,Europe
 2014,Physical Review A,4,GBR,Open APC (Hybrid),4,Europe
 2015,Physical Review A,2,GBR,Open APC (Hybrid),2,Europe
 2016,Physical Review A,19,GBR,Open APC (Hybrid),16,Europe
@@ -6887,6 +7064,10 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,Polymer,4,GBR,Open APC (Hybrid),4,Europe
 2016,Polymer,4,GBR,Open APC (Hybrid),4,Europe
 2017,Polymer,1,GBR,Open APC (Hybrid),1,Europe
+2013,Polymer Chemistry,2,GBR,Open APC (Hybrid),2,Europe
+2015,Polymer Chemistry,5,GBR,Open APC (Hybrid),4,Europe
+2016,Polymer Chemistry,2,GBR,Open APC (Hybrid),2,Europe
+2014,Polymer Engineering & Science,1,GBR,Open APC (Hybrid),1,Europe
 2015,Polymer International,1,GBR,Open APC (Hybrid),1,Europe
 2017,Population and Environment,2,GBR,Open APC (Offsetting),2,Europe
 2016,Population Ecology,1,GBR,Open APC (Offsetting),1,Europe
@@ -7287,6 +7468,9 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Soft Computing,10,GBR,Open APC (Hybrid),2,Europe
 2016,Soft Computing,10,GBR,Open APC (Offsetting),4,Europe
 2017,Soft Computing,8,GBR,Open APC (Offsetting),7,Europe
+2014,Soft Matter,1,GBR,Open APC (Hybrid),1,Europe
+2015,Soft Matter,6,GBR,Open APC (Hybrid),5,Europe
+2016,Soft Matter,11,GBR,Open APC (Hybrid),9,Europe
 2016,Software Quality Journal,3,GBR,Open APC (Offsetting),1,Europe
 2017,Software Quality Journal,6,GBR,Open APC (Offsetting),3,Europe
 2016,Software & Systems Modeling,9,GBR,Open APC (Offsetting),1,Europe
@@ -7472,6 +7656,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,The American Journal of Pathology,2,GBR,Open APC (Hybrid),2,Europe
 2016,The American Sociologist,2,GBR,Open APC (Offsetting),2,Europe
 2017,The American Sociologist,2,GBR,Open APC (Offsetting),1,Europe
+2015,The Analyst,4,GBR,Open APC (Hybrid),3,Europe
 2016,The Annals of Regional Science,5,GBR,Open APC (Offsetting),3,Europe
 2017,The Annals of Regional Science,1,GBR,Open APC (Offsetting),1,Europe
 2015,The Asia-Pacific Education Researcher,1,GBR,Open APC (Offsetting),1,Europe
@@ -7508,6 +7693,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,The European Physical Journal Special Topics,11,GBR,Open APC (Offsetting),8,Europe
 2017,The European Physical Journal Special Topics,13,GBR,Open APC (Offsetting),7,Europe
 2014,The Geographical Journal,3,GBR,Open APC (Hybrid),3,Europe
+2015,The Indian Journal of Pediatrics,1,GBR,Open APC (Hybrid),1,Europe
 2014,The International Journal of Advanced Manufacturing Technology,1,GBR,Open APC (Hybrid),1,Europe
 2015,The International Journal of Advanced Manufacturing Technology,5,GBR,Open APC (Hybrid),3,Europe
 2016,The International Journal of Advanced Manufacturing Technology,32,GBR,Open APC (Offsetting),28,Europe
@@ -7647,6 +7833,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Theory and Society,2,GBR,Open APC (Offsetting),2,Europe
 2016,Theory of Computing Systems,6,GBR,Open APC (Offsetting),3,Europe
 2017,Theory of Computing Systems,10,GBR,Open APC (Offsetting),8,Europe
+2014,The Pharmacogenomics Journal,1,GBR,Open APC (Hybrid),1,Europe
+2015,The Pharmacogenomics Journal,2,GBR,Open APC (Hybrid),1,Europe
 2013,The Plant Journal,3,GBR,Open APC (Hybrid),1,Europe
 2014,The Plant Journal,5,GBR,Open APC (Hybrid),4,Europe
 2015,The Plant Journal,9,GBR,Open APC (Hybrid),8,Europe
@@ -7669,6 +7857,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2014,Thin Solid Films,5,GBR,Open APC (Hybrid),4,Europe
 2015,Thin Solid Films,2,GBR,Open APC (Hybrid),1,Europe
 2016,Thin Solid Films,2,GBR,Open APC (Hybrid),1,Europe
+2015,Thrombosis and Haemostasis,3,GBR,Open APC (Hybrid),2,Europe
+2016,Thrombosis and Haemostasis,3,GBR,Open APC (Hybrid),2,Europe
 2015,Thrombosis Research,1,GBR,Open APC (Hybrid),1,Europe
 2014,Ticks and Tick-borne Diseases,1,GBR,Open APC (Hybrid),1,Europe
 2015,Topics in Catalysis,3,GBR,Open APC (Hybrid),1,Europe
@@ -7915,21 +8105,21 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Zeitschrift für Vergleichende Politikwissenschaft,1,GBR,Open APC (Offsetting),1,Europe
 2016,Zoological Journal of the Linnean Society,1,GBR,Open APC (Hybrid),1,Europe
 2017,Zoonoses and Public Health,1,GBR,Open APC (Hybrid),1,Europe
-2013,NA,201,GBR,Open APC (Hybrid),34,Europe
-2014,NA,2116,GBR,Open APC (Hybrid),1892,Europe
-2015,NA,2120,GBR,Open APC (Hybrid),1838,Europe
-2015,NA,2120,GBR,Open APC (Offsetting),6,Europe
-2016,NA,2391,GBR,Open APC (Hybrid),2003,Europe
-2016,NA,2391,GBR,Open APC (Offsetting),15,Europe
-2017,NA,206,GBR,Open APC (Hybrid),26,Europe
-2017,NA,206,GBR,Open APC (Offsetting),15,Europe
+2013,NA,179,GBR,Open APC (Hybrid),24,Europe
+2014,NA,1988,GBR,Open APC (Hybrid),1777,Europe
+2015,NA,1918,GBR,Open APC (Hybrid),1660,Europe
+2015,NA,1918,GBR,Open APC (Offsetting),6,Europe
+2016,NA,2217,GBR,Open APC (Hybrid),1853,Europe
+2016,NA,2217,GBR,Open APC (Offsetting),15,Europe
+2017,NA,78,GBR,Open APC (Hybrid),23,Europe
+2017,NA,78,GBR,Open APC (Offsetting),14,Europe
 2016,Chemistry and Physics of Lipids,2,ITA,Open APC (Hybrid),1,Europe
 2016,European Journal of Clinical Nutrition,4,ITA,Open APC (Hybrid),1,Europe
 2016,Journal of Muscle Research and Cell Motility,3,ITA,Open APC (Hybrid),1,Europe
 2016,Journal of the Mechanical Behavior of Biomedical Materials,10,ITA,Open APC (Hybrid),1,Europe
 2016,Neonatology,1,ITA,Open APC (Hybrid),1,Europe
 2016,Public Health,2,ITA,Open APC (Hybrid),1,Europe
-2016,NA,2391,ITA,Open APC (Hybrid),3,Europe
+2016,NA,2217,ITA,Open APC (Hybrid),3,Europe
 2016,AAPS PharmSciTech,4,NLD,Open APC (Offsetting),1,Europe
 2016,Abdominal Radiology,5,NLD,Open APC (Offsetting),1,Europe
 2015,Acta Analytica,1,NLD,Open APC (Offsetting),1,Europe
@@ -8993,8 +9183,8 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2015,ZDM,6,NLD,Open APC (Offsetting),5,Europe
 2015,Zoomorphology,1,NLD,Open APC (Offsetting),1,Europe
 2016,Zoomorphology,1,NLD,Open APC (Offsetting),1,Europe
-2015,NA,2120,NLD,Open APC (Offsetting),7,Europe
-2016,NA,2391,NLD,Open APC (Offsetting),3,Europe
+2015,NA,1918,NLD,Open APC (Offsetting),7,Europe
+2016,NA,2217,NLD,Open APC (Offsetting),3,Europe
 2016,Energy Conversion and Management,1,NOR,Open APC (Hybrid),1,Europe
 2015,Food Chemistry,4,NOR,Open APC (Hybrid),1,Europe
 2015,Science and Engineering Ethics,15,NOR,Open APC (Hybrid),1,Europe
@@ -9679,6 +9869,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Journal of Genetic Counseling,5,SWE,Open APC (Offsetting),1,Europe
 2016,Journal of Geodesy,6,SWE,Open APC (Offsetting),1,Europe
 2017,Journal of Geodesy,1,SWE,Open APC (Offsetting),1,Europe
+2015,Journal of Geophysical Research: Biogeosciences,1,SWE,Open APC (Hybrid),1,Europe
 2016,Journal of Geophysical Research: Earth Surface,5,SWE,Open APC (Hybrid),1,Europe
 2016,Journal of Geophysical Research: Oceans,6,SWE,Open APC (Hybrid),2,Europe
 2017,Journal of Geovisualization and Spatial Analysis,1,SWE,Open APC (Offsetting),1,Europe
@@ -9910,6 +10101,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2016,Neuropeptides,2,SWE,Open APC (Hybrid),1,Europe
 2017,Neuropeptides,1,SWE,Open APC (Hybrid),1,Europe
 2016,Neuropharmacology,10,SWE,Open APC (Hybrid),1,Europe
+2016,Neuropsychopharmacology,8,SWE,Open APC (Hybrid),1,Europe
 2016,Neuroradiology,8,SWE,Open APC (Offsetting),1,Europe
 2017,Neurotherapeutics,4,SWE,Open APC (Offsetting),1,Europe
 2017,Neurotoxicity Research,1,SWE,Open APC (Offsetting),1,Europe
@@ -10080,6 +10272,7 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,Social Psychiatry and Psychiatric Epidemiology,19,SWE,Open APC (Offsetting),2,Europe
 2016,Soft Computing,10,SWE,Open APC (Offsetting),1,Europe
 2017,Soft Computing,8,SWE,Open APC (Offsetting),1,Europe
+2016,Soft Matter,11,SWE,Open APC (Hybrid),1,Europe
 2016,Software Quality Journal,3,SWE,Open APC (Offsetting),1,Europe
 2017,Software Quality Journal,6,SWE,Open APC (Offsetting),3,Europe
 2016,Software & Systems Modeling,9,SWE,Open APC (Offsetting),2,Europe
@@ -10229,17 +10422,17 @@ period,journal_title,oapc_n_year,country,hybrid_type,oapc_n_country,continent
 2017,ZDM,5,SWE,Open APC (Offsetting),2,Europe
 2017,Zeitschrift für angewandte Mathematik und Physik,3,SWE,Open APC (Offsetting),1,Europe
 2017,Zeitschrift für Rheumatologie,1,SWE,Open APC (Offsetting),1,Europe
-2013,NA,201,SWE,Open APC (Hybrid),19,Europe
-2014,NA,2116,SWE,Open APC (Hybrid),34,Europe
-2015,NA,2120,SWE,Open APC (Hybrid),58,Europe
-2016,NA,2391,SWE,Open APC (Hybrid),146,Europe
-2016,NA,2391,SWE,Open APC (Offsetting),1,Europe
-2017,NA,206,SWE,Open APC (Hybrid),10,Europe
-2017,NA,206,SWE,Open APC (Offsetting),3,Europe
+2013,NA,179,SWE,Open APC (Hybrid),19,Europe
+2014,NA,1988,SWE,Open APC (Hybrid),34,Europe
+2015,NA,1918,SWE,Open APC (Hybrid),57,Europe
+2016,NA,2217,SWE,Open APC (Hybrid),144,Europe
+2016,NA,2217,SWE,Open APC (Offsetting),1,Europe
+2017,NA,78,SWE,Open APC (Hybrid),10,Europe
+2017,NA,78,SWE,Open APC (Offsetting),3,Europe
 2013,Analytical and Bioanalytical Chemistry,2,USA,Open APC (Hybrid),1,Americas
 2014,Clinical Oral Investigations,1,USA,Open APC (Hybrid),1,Americas
 2014,Journal of Dairy Science,5,USA,Open APC (Hybrid),2,Americas
 2014,Journal of Superconductivity and Novel Magnetism,1,USA,Open APC (Hybrid),1,Americas
 2013,Science and Engineering Ethics,1,USA,Open APC (Hybrid),1,Americas
-2013,NA,201,USA,Open APC (Hybrid),3,Americas
-2014,NA,2116,USA,Open APC (Hybrid),3,Americas
+2013,NA,179,USA,Open APC (Hybrid),3,Americas
+2014,NA,1988,USA,Open APC (Hybrid),3,Americas

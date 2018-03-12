@@ -36,7 +36,7 @@ o_offset <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-d
 o_apc <- o_offset %>% 
   mutate(euro = as.integer(euro)) %>% 
   bind_rows(o_apc) %>%
-  # restrict to period 2013 - 2017
+  # start from 2013
   filter(period > 2012)
 #' open apc dump 
 readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
@@ -58,7 +58,7 @@ o_apc %>%
 #' This invloves two steps:
 #'
 #' First, we retrieve journal article volume and corresponding licensing information 
-#' for the period  2013 - 2016 for each issn in the Open APC dataset
+#' for the period  2013 - 2018 for each issn in the Open APC dataset
 o_apc_issn <- o_apc %>% 
   distinct(issn)
 jn_facets <- purrr::map(o_apc_issn$issn, .f = purrr::safely(function(x) {
@@ -66,7 +66,7 @@ jn_facets <- purrr::map(o_apc_issn$issn, .f = purrr::safely(function(x) {
   tt <- rcrossref::cr_works(
     filter = c(issn = issn, 
              from_pub_date = "2013-01-01", 
-             until_pub_date = "2017-12-31",
+             until_pub_date = "2018-12-31",
              type = "journal-article"),
   facet = TRUE)
   #' Parse the relevant information
@@ -128,7 +128,7 @@ hybrid_licenses <- jn_facets_df %>%
   filter(hybrid_license == TRUE) %>%
   left_join(jn_facets_df, by = c("issn" = "issn"))
 #' We now know, whether and which open licenses were used by the journal in the 
-#' period 2013:2016. As a next step we want to validate that these 
+#' period 2013:2018. As a next step we want to validate that these 
 #' licenses were not issued for delayed open access articles by 
 #' additionally using  the self-explanatory filter `license.url` and
 #'  `license.delay`
@@ -141,7 +141,7 @@ cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
                                                            license.delay = 0,
                                                            type = "journal-article",
                                                            from_pub_date = "2013-01-01", 
-                                                           until_pub_date = "2017-12-31"),
+                                                           until_pub_date = "2018-12-31"),
                                                 facet = "published") 
                      tibble::tibble(
                        issn =  issn,
