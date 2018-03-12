@@ -23,11 +23,11 @@ library(ggalt)
 ```{r global}
 # access to data
 hybrid_df <- readr::read_csv("data/hybrid_license_indicators.csv") %>%
-  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016", "2017"))) %>%
+  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) %>%
   arrange(desc(year_publisher_all))
 
 o_apc_df <- readr::read_csv("data/oapc_aggregated.csv") %>%
-  mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017")))
+  mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017", "2018")))
 ```
 
 Overview
