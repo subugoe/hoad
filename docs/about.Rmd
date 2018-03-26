@@ -39,7 +39,8 @@ library(dplyr)
 #' load facets results
 jn_facets <- jsonlite::stream_in(file("../data/jn_facets_df.json"), verbose = FALSE)
 #' get hybrid journals that have open licensing information in the period 2013-18
-hybrid_cr <- jsonlite::stream_in(file("../data/hybrid_license_indicators.json"), verbose = FALSE)
+hybrid_cr <- jsonlite::stream_in(file("../data/hybrid_license_indicators.json"), verbose = FALSE) %>%
+  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016", "2017", "2018")))
 #' get oapc data
 o_apc_df <- readr::read_csv("../data/oapc_aggregated.csv") %>%
   mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017", "2018")))
