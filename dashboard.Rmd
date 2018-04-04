@@ -146,7 +146,7 @@ renderPlotly({
     scale_y_continuous(labels = scales::percent) +
     theme_minimal()
   plotly::ggplotly(p) %>%
-    layout(showlegend = TRUE, legend = list(font = list(size = 10)))
+    layout(showlegend = TRUE, legend = list(font = list(size = 9)))
 })
 ```
 
@@ -165,7 +165,7 @@ renderPlotly({
                        breaks= pretty_breaks()) +
     theme_minimal()
   plotly::ggplotly(p) %>%
-    layout(showlegend = TRUE, legend = list(font = list(size = 10)))
+    layout(showlegend = TRUE, legend = list(font = list(size = 9)))
 })
 ```
 
