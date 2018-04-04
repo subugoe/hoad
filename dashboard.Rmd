@@ -180,27 +180,43 @@ renderPlotly({
     group_by(year) %>%
     summarize(n = sum(license_n, na.rm = TRUE)) %>%
     mutate(source = "Crossref Hybrid")
-
+  
   o_apc_sub <- o_apc_df %>%
-    filter(journal_title %in% jn_f()$journal_title, year %in% jn_f()$year) %>%
+    filter(journal_title %in% jn_f()$journal_title,
+           year %in% jn_f()$year) %>%
     distinct(journal_title, year, oapc_n_year, hybrid_type) %>%
     group_by(year, hybrid_type) %>%
-    summarize(n = sum(oapc_n_year, na.rm = TRUE)) %>%
+    summarize(n_oa = sum(oapc_n_year, na.rm = TRUE)) %>%
     mutate(source = "Open APC")
-
-  p <- ggplot(hybrid_sub, aes(year, n, fill = source)) +
+  
+  p <-
+    ggplot(hybrid_sub, aes(year, n, fill = source, text = paste("Crossref:", n))) +
     geom_bar(stat = "identity", position = "dodge") +
     xlab("Year") +
     ylab("Articles") +
     scale_x_discrete(drop = FALSE) +
     viridis::scale_fill_viridis("Datasets", discrete = TRUE) +
-    scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
-                       breaks= pretty_breaks()) +
+    scale_y_continuous(
+      labels = function(x)
+        format(x, big.mark = " ", scientific = FALSE),
+      breaks = pretty_breaks()
+    ) +
     theme_minimal()
-  p <- p + geom_bar(data = o_apc_sub, aes(year, n, fill = hybrid_type), stat = "identity", alpha = 0.8)
-
-  plotly::ggplotly(p) %>%
+  p <-
+    p + geom_bar(
+      data = o_apc_sub,
+      aes(year, n_oa, fill = hybrid_type, text = NULL),
+      stat = "identity",
+      alpha = 0.8
+    )
+  
+  tt <- plotly::ggplotly(p, tooltip = "text") %>%
     layout(showlegend = TRUE, legend = list(font = list(size = 10)))
+  tt$x$data[[2]]$text <-
+    paste(tt$x$data[[2]]$name, ":", tt$x$data[[2]]$y, sep = ": ")
+  tt$x$data[[3]]$text <-
+    paste(tt$x$data[[3]]$name, tt$x$data[[3]]$y, sep = ": ")
+  tt
 })
 ```
 
