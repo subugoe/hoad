@@ -190,8 +190,8 @@ renderPlotly({
     mutate(source = "Open APC")
   
   p <-
-    ggplot(hybrid_sub, aes(year, n, fill = source, text = paste("Crossref:", n))) +
-    geom_bar(stat = "identity", position = "dodge") +
+    ggplot(hybrid_sub, aes(year, n, fill = source)) +
+    geom_bar(stat = "identity") +
     xlab("Year") +
     ylab("Articles") +
     scale_x_discrete(drop = FALSE) +
@@ -205,17 +205,17 @@ renderPlotly({
   p <-
     p + geom_bar(
       data = o_apc_sub,
-      aes(year, n_oa, fill = hybrid_type, text = NULL),
+      aes(year, n_oa, fill = hybrid_type),
       stat = "identity",
       alpha = 0.8
     )
   
-  tt <- plotly::ggplotly(p, tooltip = "text") %>%
+  tt <- plotly::ggplotly(p, tooltip = c("y")) %>%
     layout(showlegend = TRUE, legend = list(font = list(size = 10)))
-  tt$x$data[[2]]$text <-
-    paste(tt$x$data[[2]]$name, ":", tt$x$data[[2]]$y, sep = ": ")
-  tt$x$data[[3]]$text <-
-    paste(tt$x$data[[3]]$name, tt$x$data[[3]]$y, sep = ": ")
+  tt$x$data <- lapply(tt$x$data, function(x) {
+    x$text <- paste(x$name, x$y, sep = ": ")
+    x
+  })
   tt
 })
 ```
@@ -227,31 +227,30 @@ renderPlotly({
 renderPlot({
 tt <- o_apc_df %>%
     filter(journal_title %in% jn_f()$journal_title, year %in% jn_f()$year) %>%
-     distinct(journal_title, year, oapc_n_year, .keep_all = TRUE) %>%
+    distinct(journal_title, year, oapc_n_year, .keep_all = TRUE) %>%
   group_by(country) %>%
   summarise(n = sum(oapc_n_year, na.rm = TRUE)) %>%
   mutate(prop = n / sum(n)) %>%
   mutate(prop = round(prop, 2)) %>%
   filter(!is.na(country))
 gg <- ggplot(tt, aes(prop, reorder(country, prop))) +
-  ggalt::geom_lollipop(point.colour="steelblue", point.size=4, horizontal=TRUE) + 
+  ggalt::geom_lollipop(point.colour="steelblue", point.size=4, horizontal=TRUE) +
   scale_x_continuous(expand=c(0,0), labels=percent,
-                              breaks=seq(0, 1, by=0.2), limits=c(0, 1)) + 
+                              breaks=seq(0, 1, by=0.2), limits=c(0, 1)) +
   labs(x=NULL, y=NULL,
   #  title="Institutional spending on hybrid OA journal_title articles",
   #  subtitle="Articles funded per country (in percent)",
-  caption="Data from https://github.com/openapc/openapc-de") + 
-  theme_minimal() + 
-  theme(panel.grid.major.y=element_blank()) + 
-  theme(panel.grid.minor=element_blank()) + 
-  theme(axis.line.y=element_line(color="#2b2b2b", size=0.15)) + 
-  theme(axis.text.y=element_text(margin=margin(r=0, l=0))) + 
-  theme(plot.margin=unit(rep(30, 4), "pt")) + 
-  theme(plot.title=element_text(face="bold")) + 
-  theme(plot.subtitle=element_text(margin=margin(b=10))) + 
+  caption="Data from https://github.com/openapc/openapc-de") +
+  theme_minimal() +
+  theme(panel.grid.major.y=element_blank()) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.line.y=element_line(color="#2b2b2b", size=0.15)) +
+  theme(axis.text.y=element_text(margin=margin(r=0, l=0))) +
+  theme(plot.margin=unit(rep(30, 4), "pt")) +
+  theme(plot.title=element_text(face="bold")) +
+  theme(plot.subtitle=element_text(margin=margin(b=10))) +
   theme(plot.caption=element_text(size=8, margin=margin(t=10)))
-gg
-})
+gg})
 ```
 
 
