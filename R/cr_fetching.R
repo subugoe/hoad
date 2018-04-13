@@ -242,7 +242,7 @@ jn_indicators <- jsonlite::stream_in(file("../data/jn_facets_df.json")) %>%
   tidyr::unnest() %>%
   select(journal_title, publisher, issn, year = .id, jn_published = V1) %>%
   # left join because most journals don't have license infos for every year in
-  # the period 2013 -2016
+  # the period 2013 -2018
   left_join(hybrid_license_df, by = c("journal_title" = "journal_title", "year" = "year")) %>%
   # we only wnat to examine compliant journals
   filter(journal_title %in% hybrid_license_df$journal_title) %>%
@@ -271,6 +271,7 @@ tmp <- jsonlite::stream_in(file("../data/hybrid_license_indicators.json"))
 tmp_ <- tmp %>% 
   mutate(license = gsub("\\/$", "", license)) %>%
   mutate(license = gsub("https", "http", license)) %>%
+  distinct(journal_title, publisher, year, license, .keep_all = TRUE) %>%
   group_by(journal_title, publisher, issn, year, license, jn_published, year_all, year_publisher_all) %>%
   summarise(license_ref_n = sum(license_ref_n))
 jsonlite::stream_out(tmp_, file("../data/hybrid_license_indicators.json"))
