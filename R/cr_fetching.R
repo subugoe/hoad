@@ -40,22 +40,17 @@ o_apc <- o_offset %>%
   filter(period > 2012)
 #' open apc dump 
 readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
-#' some summary sttatistics by publishers (top 10)
-o_apc %>%
-  mutate(publisher = forcats::fct_lump(publisher, n = 10)) %>%
-  count(publisher) %>%
-  mutate(prop = n / sum(n))
 #' ## How does it relate to the general hybrid output per journal?
 #'
 #' Crossref Metadata API is used to gather both license information and 
-#' the number of articles published per year for the period 2013 - 2016. 
-#' The API is accessed via [rOpenSci's rcrossref client](https://github.com/ropensci/rcrossref).
+#' the number of articles published per year for the period 2013 - 2018. 
+#' The API is accessed with [rOpenSci's rcrossref client](https://github.com/ropensci/rcrossref).
 #'
 #' Instead of fetching all articles published, we use facet counts to keep API usage low
 #'
 #' <https://github.com/CrossRef/rest-api-doc/#facet-counts>
 #'
-#' This invloves two steps:
+#' This involves two steps:
 #'
 #' First, we retrieve journal article volume and corresponding licensing information 
 #' for the period  2013 - 2018 for each issn in the Open APC dataset
@@ -88,7 +83,9 @@ jn_facets <- purrr::map(o_apc_issn$issn, .f = purrr::safely(function(x) {
     NULL
   }
   }))
-
+#' Dump:
+jn_facets_df <- purrr::map_df(jn_facets, "result")
+jsonlite::stream_out(jn_facets_df, file("../data/jn_facets_df.json"))
 #' Second, filter out open licenses and check:
 #' 
 #' Question: Which licenses indicates hybrid OA availability?
@@ -112,10 +109,12 @@ licence_patterns <- c("creativecommons.org/licenses/",
                       "http://pubs.acs.org/page/policy/authorchoice_ccbyncnd_termsofuse.html",
                       "http://pubs.acs.org/page/policy/authorchoice_termsofuse.html",
                       "http://www.elsevier.com/open-access/userlicense/1.0/",
-                      "http://www.ieee.org/publications_standards/publications/rights/oapa.pdf")
+                      "http://www.ieee.org/publications_standards/publications/rights/oapa.pdf",
+                      # we also add @ioverka suggestions:
+                      # https://github.com/Impactstory/oadoi/issues/49 :
+                      "http://aspb.org/publications/aspb-journals/open-articles",
+                      "https://doi.org/10.1364/OA_License_v1")
 #' now add indication to the dataset
-jn_facets_df <- purrr::map_df(jn_facets, "result")
-jsonlite::stream_out(jn_facets_df, file("../data/jn_facets_df.json"))
 hybrid_licenses <- jn_facets_df %>%
   select(issn, license_refs) %>%
   tidyr::unnest() %>%
@@ -131,26 +130,41 @@ hybrid_licenses <- jn_facets_df %>%
 #' period 2013:2018. As a next step we want to validate that these 
 #' licenses were not issued for delayed open access articles by 
 #' additionally using  the self-explanatory filter `license.url` and
-#'  `license.delay`
-cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn, 
-                   .f = purrr::safely(function(x, y) {
-                     u <- x
-                     issn <- y
-                     tmp <- rcrossref::cr_works(filter = c(issn = issn, 
-                                                           license.url = u, 
-                                                           license.delay = 0,
-                                                           type = "journal-article",
-                                                           from_pub_date = "2013-01-01", 
-                                                           until_pub_date = "2018-12-31"),
-                                                facet = "published") 
-                     tibble::tibble(
-                       issn =  issn,
-                       year_published = list(tmp$facets$published),
-                       license = u
-                     )
-                   }))
+#'  `license.delay`. We also obtain parsed metadata for these hybrid open
+#'  access articles stored as list-column.
+cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
+                          .f = purrr::safely(function(x, y) {
+                            u <- x
+                            issn <- y
+                            tmp <- rcrossref::cr_works(filter = c(issn = issn, 
+                                                                  license.url = u, 
+                                                                  license.delay = 0,
+                                                                  type = "journal-article",
+                                                                  from_pub_date = "2013-01-01", 
+                                                                  until_pub_date = "2018-12-31"),
+                                                       facet = "published",
+                                                       , limit = 1000) 
+                            tibble::tibble(
+                              issn =  issn,
+                              year_published = list(tmp$facets$published),
+                              license = u,
+                              md = list(tmp$data)
+                            )
+                          }))
 #' into one data frame!
+#' dump it
+cr_license_df <- cr_license %>% 
+  purrr::map_df("result") 
+# all, results into a large file, which won't be tracked with GIT
+bind_rows(cr_license_df$md) %>% 
+  jsonlite::stream_out(file("../data/hybrid_license_md.json"))
+# only DOIs and how we retrieved them
+map(cr_license_df$md, "DOI") %>%
+  data_frame(dois = ., issn = cr_license_df$issn, license = cr_license_df$license) %>%
+  jsonlite::stream_out(file("../data/hybrid_license_dois.json"))
+#' prpeare indicator set
 cr_license %>% purrr::map_df("result") %>% 
+  select(-md) %>%
   tidyr::unnest(year_published) %>%
   #' some column renaming
   select(1:2, year = .id, license_ref_n = V1) %>%
