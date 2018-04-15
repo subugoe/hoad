@@ -106,7 +106,7 @@ distinct_combs <- o_apc_issn %>%
   distinct(publisher, journal_full_title)
 #' create multiple issn filters
 issns_list <-
-  purrr::map2(distinct_combs$publisher[1:10], distinct_combs$journal_full_title[1:10], function(x, y) {
+  purrr::map2(distinct_combs$publisher, distinct_combs$journal_full_title, function(x, y) {
     issns <- o_apc_issn %>%
       filter(publisher == x, journal_full_title == y) %>%
       .$issn
