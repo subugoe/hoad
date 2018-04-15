@@ -37,7 +37,16 @@ o_apc <- o_offset %>%
   mutate(euro = as.integer(euro)) %>% 
   bind_rows(o_apc) %>%
   # start from 2013
-  filter(period > 2012)
+  filter(period > 2012) %>%
+  # data cleaning
+  # 1. wrong journal title for 10.1136/svn-2016-000035
+  mutate(journal_full_title = ifelse(issn %in% "2059-8688", "Stroke and Vascular Neurology", journal_full_title)) %>%
+  # 2. map all Angewandte Chemie articles to the international edition
+  mutate(issn = ifelse(issn %in% "0044-8249", "1433-7851", issn)) %>%
+  # also change DOIs accordingly 
+  mutate(doi = str_replace(doi, "10.1002/ange.", "10.1002/anie.")) %>%
+  # use Springer Nature
+  mutate(publisher = ifelse(publisher %in% "Springer Science + Business Media", "Springer Nature", publisher))
 #' open apc dump 
 readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
 #' ## How does it relate to the general hybrid output per journal?
@@ -53,9 +62,24 @@ readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
 #' This involves two steps:
 #'
 #' First, we retrieve journal article volume and corresponding licensing information 
-#' for the period  2013 - 2018 for each issn in the Open APC dataset
-o_apc_issn <- o_apc %>% 
-  distinct(issn)
+#' for the period  2013 - 2018 for all issns per journal in the Open APC dataset.
+#' 
+#' Let's gather the issn's
+o_apc %>% 
+  distinct(issn, issn_print, issn_electronic, journal_full_title, publisher) %>%
+  gather(issn, issn_print, issn_electronic, key = "issn_type", value = "issn") %>%
+  filter(!is.na(issn)) %>%
+  distinct(issn, .keep_all = TRUE) -> o_apc_issn
+#' Show journals with more than two issns
+o_apc_issn %>% 
+  group_by(journal_full_title, publisher) %>% 
+  filter(n() > 2) %>% 
+  arrange(journal_full_title)
+#' next, we will retrieve the yearly publication volume for each journal.
+#' we want to apply mutliple filters on issn, which results in an OR search
+
+
+
 jn_facets <- purrr::map(o_apc_issn$issn, .f = purrr::safely(function(x) {
   issn <- x
   tt <- rcrossref::cr_works(
