@@ -6,16 +6,16 @@ knitr::opts_chunk$set(
   message = FALSE
 )
 #' # Data agregation
-#' 
+#'
 #' ## What's published in hybrid journals?
 #'
 #' ### How to retrieve a list of hybrid journals?
 #'
-#' To my knowledge, there's no comprehensive list of hybrid OA journals. However, 
-#' a list of hybrid OA journals can be compiled using the Open APC dataset curated 
-#' by the [Open APC Initiative](github.com/openapc/openapc-de) initiative. 
-#' This initiative collects  and shares institutional spending information for 
-#' open access publication fees, including those spent for publication in 
+#' To my knowledge, there's no comprehensive list of hybrid OA journals. However,
+#' a list of hybrid OA journals can be compiled using the Open APC dataset curated
+#' by the [Open APC Initiative](github.com/openapc/openapc-de) initiative.
+#' This initiative collects  and shares institutional spending information for
+#' open access publication fees, including those spent for publication in
 #' hybrid journals.
 #'
 #' Let's retrieve the most current dataset:
@@ -27,32 +27,47 @@ u <-
 o_apc <- readr::read_csv(u) %>%
   filter(is_hybrid == TRUE)
 #'
-#' We also would like to add data from offsetting aggrements, which is also 
-#' collected by the Open APC initiative. 
+#' We also would like to add data from offsetting aggrements, which is also
+#' collected by the Open APC initiative.
 #' The offsetting data-set does not include pricing information.
-#' 
-o_offset <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/offsetting/offsetting.csv")
+#'
+o_offset <-
+  readr::read_csv(
+    "https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/offsetting/offsetting.csv"
+  )
 #' Merge with Open APC dataset
-o_apc <- o_offset %>% 
-  mutate(euro = as.integer(euro)) %>% 
+o_apc <- o_offset %>%
+  mutate(euro = as.integer(euro)) %>%
   bind_rows(o_apc) %>%
   # start from 2013
   filter(period > 2012) %>%
   # data cleaning
   # 1. wrong journal title for 10.1136/svn-2016-000035
-  mutate(journal_full_title = ifelse(issn %in% "2059-8688", "Stroke and Vascular Neurology", journal_full_title)) %>%
+  mutate(
+    journal_full_title = ifelse(
+      issn %in% "2059-8688",
+      "Stroke and Vascular Neurology",
+      journal_full_title
+    )
+  ) %>%
   # 2. map all Angewandte Chemie articles to the international edition
   mutate(issn = ifelse(issn %in% "0044-8249", "1433-7851", issn)) %>%
-  # also change DOIs accordingly 
+  # also change DOIs accordingly
   mutate(doi = str_replace(doi, "10.1002/ange.", "10.1002/anie.")) %>%
   # use Springer Nature
-  mutate(publisher = ifelse(publisher %in% "Springer Science + Business Media", "Springer Nature", publisher))
-#' open apc dump 
+  mutate(
+    publisher = ifelse(
+      publisher %in% "Springer Science + Business Media",
+      "Springer Nature",
+      publisher
+    )
+  )
+#' open apc dump
 readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
 #' ## How does it relate to the general hybrid output per journal?
 #'
-#' Crossref Metadata API is used to gather both license information and 
-#' the number of articles published per year for the period 2013 - 2018. 
+#' Crossref Metadata API is used to gather both license information and
+#' the number of articles published per year for the period 2013 - 2018.
 #' The API is accessed with [rOpenSci's rcrossref client](https://github.com/ropensci/rcrossref).
 #'
 #' Instead of fetching all articles published, we use facet counts to keep API usage low
@@ -61,52 +76,76 @@ readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
 #'
 #' This involves two steps:
 #'
-#' First, we retrieve journal article volume and corresponding licensing information 
+#' First, we retrieve journal article volume and corresponding licensing information
 #' for the period  2013 - 2018 for all issns per journal in the Open APC dataset.
-#' 
+#'
 #' Let's gather the issn's
-o_apc %>% 
-  distinct(issn, issn_print, issn_electronic, journal_full_title, publisher) %>%
-  gather(issn, issn_print, issn_electronic, key = "issn_type", value = "issn") %>%
+o_apc %>%
+  distinct(issn,
+           issn_print,
+           issn_electronic,
+           journal_full_title,
+           publisher) %>%
+  gather(issn,
+         issn_print,
+         issn_electronic,
+         key = "issn_type",
+         value = "issn") %>%
   filter(!is.na(issn)) %>%
   distinct(issn, .keep_all = TRUE) -> o_apc_issn
 #' Show journals with more than two issns
-o_apc_issn %>% 
-  group_by(journal_full_title, publisher) %>% 
-  filter(n() > 2) %>% 
+o_apc_issn %>%
+  group_by(journal_full_title, publisher) %>%
+  filter(n() > 2) %>%
   arrange(journal_full_title)
-#' next, we will retrieve the yearly publication volume for each journal.
-#' we want to apply mutliple filters on issn, which results in an OR search
-
-
-
-jn_facets <- purrr::map(o_apc_issn$issn, .f = purrr::safely(function(x) {
-  issn <- x
+#' Next, we will retrieve the yearly publication volume for each journal.
+#' We want to apply mutliple filters on issn, which results in an OR search
+#'
+#' create a data frame wiht distinc journal_title and publisher names
+distinct_combs <- o_apc_issn %>%
+  distinct(publisher, journal_full_title)
+#' create multiple issn filters
+issns_list <-
+  purrr::map2(distinct_combs$publisher[1:10], distinct_combs$journal_full_title[1:10], function(x, y) {
+    issns <- o_apc_issn %>%
+      filter(publisher == x, journal_full_title == y) %>%
+      .$issn
+    names(issns) <- rep("issn", length(issns))
+    as.list(issns)
+  })
+#' search crossref
+jn_facets <- purrr::map(issns_list, .f = purrr::safely(function(x) {
   tt <- rcrossref::cr_works(
-    filter = c(issn = issn, 
-             from_pub_date = "2013-01-01", 
-             until_pub_date = "2018-12-31",
-             type = "journal-article"),
-  facet = TRUE)
+    filter = c(
+      x,
+      from_pub_date = "2013-01-01",
+      until_pub_date = "2018-12-31",
+      type = "journal-article"
+    ),
+    facet = TRUE,
+    # less api traffic
+    select = "DOI"
+  )
   #' Parse the relevant information
-  #' - published volume per year
-  #' - licenses
-  #' - Crossref journal title (in case of journal name change, use the most frequent name)
-  #' - Crossref publisher (in case of publisher name change, use the most frequent name)
-  #' 
+  #' - `issn` - issns  found in open apc data set
+  #' - `year_published` - published volume per year (Earliest year of publication)
+  #' - `license_refs` - facet counts for license URIs of work
+  #' - `journal_title` - Crossref journal title (in case of journal name change, we use the most frequent name)
+  #' - `publisher` - Crossref publisher (in case of publisher name change, we use the most frequent name)
+  #'
   #' To Do: switch to current potential
   if (!is.null(tt)) {
-  tibble::tibble(
-    issn = issn,
-    year_published = list(tt$facets$published),
-    license_refs = list(tt$facets$license), 
-    journal_title = tt$facets$`container-title`$.id[1], 
-    publisher = tt$facets$publisher$.id[1]
-  )
+    tibble::tibble(
+      issn = list(x),
+      year_published = list(tt$facets$published),
+      license_refs = list(tt$facets$license),
+      journal_title = tt$facets$`container-title`$.id[1],
+      publisher = tt$facets$publisher$.id[1]
+    )
   } else {
     NULL
   }
-  }))
+}))
 #' Dump:
 jn_facets_df <- purrr::map_df(jn_facets, "result")
 jsonlite::stream_out(jn_facets_df, file("../data/jn_facets_df.json"))
