@@ -205,8 +205,8 @@ cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
                                                                   type = "journal-article",
                                                                   from_pub_date = "2013-01-01", 
                                                                   until_pub_date = "2018-12-31"),
-                                                       facet = "published",
-                                                       , limit = 1000) 
+                                                       cursor = "*", cursor_max = 5000L, 
+                                                       limit = 1000L) 
                             tibble::tibble(
                               issn =  list(issn),
                               year_published = list(tmp$facets$published),
