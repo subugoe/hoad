@@ -179,7 +179,7 @@ licence_patterns <- c("creativecommons.org/licenses/",
                       "https://doi.org/10.1364/OA_License_v1")
 #' now add indication to the dataset
 hybrid_licenses <- jn_facets_df %>%
-  select(issn, license_refs) %>%
+  select(journal_title, publisher, license_refs) %>%
   tidyr::unnest() %>%
   mutate(license_ref = tolower(.id)) %>%
   select(-.id) %>%
@@ -188,7 +188,7 @@ hybrid_licenses <- jn_facets_df %>%
     license_ref
   ), TRUE, FALSE)) %>%
   filter(hybrid_license == TRUE) %>%
-  left_join(jn_facets_df, by = c("issn" = "issn"))
+  left_join(jn_facets_df, by = c("journal_title" = "journal_title", "publisher" = "publisher"))
 #' We now know, whether and which open licenses were used by the journal in the 
 #' period 2013:2018. As a next step we want to validate that these 
 #' licenses were not issued for delayed open access articles by 
@@ -199,7 +199,7 @@ cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
                           .f = purrr::safely(function(x, y) {
                             u <- x
                             issn <- y
-                            tmp <- rcrossref::cr_works(filter = c(issn = issn, 
+                            tmp <- rcrossref::cr_works(filter = c(issn, 
                                                                   license.url = u, 
                                                                   license.delay = 0,
                                                                   type = "journal-article",
@@ -208,7 +208,7 @@ cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
                                                        facet = "published",
                                                        , limit = 1000) 
                             tibble::tibble(
-                              issn =  issn,
+                              issn =  list(issn),
                               year_published = list(tmp$facets$published),
                               license = u,
                               md = list(tmp$data)
