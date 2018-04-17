@@ -1,5 +1,6 @@
 #' evaluate coverage oa / pub volumen
-
+library(tidyverse)
+library(jsonlite)
 #' full data set
 license_df <- jsonlite::stream_in(file("~/Downloads/hybrid_license_md.json")) %>%
   as_data_frame() %>%
@@ -19,7 +20,7 @@ license_df %>%
   arrange(desc(n))
 #' create a tidy dataset
 license_df %>%
-  select(DOI, ISSN, issued, li) %>%
+  select(DOI, ISSN, issued) %>%
   # to year
   mutate_at(vars(issued), funs(lubridate::parse_date_time(., c('y', 'ymd', 'ym')))) %>%
   mutate_at(vars(issued), funs(lubridate::year(.))) %>%
@@ -114,6 +115,7 @@ hybrid_oa_df %>%
   group_by(journal_title, publisher, license, issued) %>%
   summarize(license_ref_n = n_distinct(doi_oa)) %>% 
   left_join(yearly_volume, by = c("journal_title", "publisher", "issued" = "year")) -> indicator_df
+#' yearly 
 #' get journals that are probably flipped, defined as prop > 0.95 in at least two years
 indicator_df %>% 
   group_by(journal_title, publisher, issued, yearly_jn_volume) %>% 
@@ -123,3 +125,14 @@ indicator_df %>%
   ungroup() %>%
   group_by(journal_title, publisher) %>%
   filter(n() > 1) -> prob_flipped
+#' export and exclude them
+readr::write_csv(prob_flipped, "../data/flipped_jns.csv")
+anti_join(indicator_df, prob_flipped,  by = c("journal_title", "publisher", "issued")) -> indicator_df
+#' ### match with open apc dataset
+hybrid_dois <- hybrid_oa_df %>%
+  # issn not needed
+  select(-issn_type, -issn) %>%
+  right_join(indicator_df, by = c("journal_title", "publisher", "license", "issued")) %>% 
+  distinct()
+#' load oapc dataset
+o_apc <- readr::read_csv("../data/oapc_aggregated.csv")
