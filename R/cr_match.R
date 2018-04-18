@@ -2,7 +2,7 @@
 library(tidyverse)
 library(jsonlite)
 #' full data set
-license_df <- jsonlite::stream_in(file("~/Downloads/hybrid_license_md.json")) %>%
+license_df <- jsonlite::stream_in(file("../data/hybrid_license_md.json")) %>%
   as_data_frame() %>%
   select(-title,-`clinical-trial-number`, -subtitle, -archive, -abstract, -archive_ , -NA.)
 #' get duplicate dois
@@ -10,7 +10,7 @@ license_df %>%
   select(DOI, container.title, publisher) %>% 
   group_by(DOI) %>% 
   filter(n() > 1)
-#' which jorunals and publishers are affected
+#' which journals and publishers are affected
 license_df %>% 
   select(DOI, container.title, publisher) %>% 
   group_by(DOI) %>% 
@@ -38,7 +38,8 @@ jn_df <- issn %>%
   mutate(year_published = map(jn_all, c("year_published"))) %>%
   mutate(license_refs = map(jn_all, c("license_refs"))) %>%
   mutate(license_refs = map(license_refs, bind_rows)) %>%
-  gather(issn, issn.1, issn.2, issn.3, key = "issn_type", value = "issn")
+  gather(issn, issn.1, issn.2, issn.3, key = "issn_type", value = "issn") %>%
+  filter(!is.na(issn))
 jn_df %>%
   mutate(year_published = map(year_published, bind_rows)) -> jn_df
 #' load doi set
@@ -53,20 +54,20 @@ map_df(dois, "issn") %>%
 tmp <- inner_join(dois_df, jn_df, by = c("issn" = "issn")) %>% 
   distinct(journal_title, publisher, license, .keep_all = TRUE)
 #' analytics
-#' yearly journal article volume
-yearly_volume <- tmp %>%
-  select(journal_title, publisher, year_published) %>%
-  distinct() %>% 
-  unnest(year_published) %>%
-  select(1:3, year = .id, yearly_jn_volume = V1) %>%
-  mutate(year = lubridate::parse_date_time(year, 'y')) %>%
-  mutate(year = lubridate::year(year))
+#' #' yearly journal article volume
+#' yearly_volume <- tmp %>%
+#'   select(journal_title, publisher, year_published) %>%
+#'   distinct() %>% 
+#'   unnest(year_published) %>%
+#'   select(1:3, year = .id, yearly_jn_volume = V1) %>%
+#'   mutate(year = lubridate::parse_date_time(year, 'y')) %>%
+#'   mutate(year = lubridate::year(year))
 #' create hybrid oa data set
 hybrid_oa_df <- tmp %>% 
-  select(1:2, journal_title, publisher) %>% 
+  select(1:2, journal_title, publisher, year_published) %>% 
   # remove delayed licenses 
   filter(map(doi_oa, length) > 0) %>%
-  unnest(doi_oa) %>%
+  unnest(doi_oa, .preserve = year_published) %>%
   distinct(doi_oa, .keep_all = TRUE) %>% 
   left_join(tidy_oahybrid_df, by = c("doi_oa" = "DOI"))
 #' check for DOAJ
@@ -104,21 +105,33 @@ doaj_lookup <- doaj %>%
 #' # check with our hybrid license dataset
 hybrid_oa_df %>% 
   inner_join(doaj_lookup, by = "issn") %>% 
-  filter(year_flipped <= issued) %>% 
-  select(issn, issued) -> flipped_jns
+  filter(year_flipped <= issued) -> flipped_jns
 #' remove flipped journals from hybrid license data set and store into json
 hybrid_oa_df %>% 
-  filter(issn %in% flipped_jns$issn & issued %in% flipped_jns$issued) %>% 
-  anti_join(hybrid_oa_df, .) -> hybrid_oa_df
+  filter(!doi_oa %in% flipped_jns$doi_oa) %>%
+  # clean license URIS
+  mutate(license = gsub("\\/$", "", license)) %>%
+  mutate(license = gsub("https", "http", license)) -> hybrid_oa_df
 #' yearly license_uri volume -> indicator set
 hybrid_oa_df %>%
   group_by(journal_title, publisher, license, issued) %>%
   summarize(license_ref_n = n_distinct(doi_oa)) %>% 
-  left_join(yearly_volume, by = c("journal_title", "publisher", "issued" = "year")) -> indicator_df
+  ungroup() -> indicator_df
+# yearly journal volume
+hybrid_oa_df %>%
+  select(journal_title, publisher, year_published) %>%
+  distinct() %>%
+  unnest(year_published) %>%
+  select(1:3, year = .id, yearly_jn_volume = V1) %>%
+  mutate(year = lubridate::parse_date_time(year, 'y')) %>%
+  mutate(year = lubridate::year(year)) %>%
+  left_join(indicator_df, by = c("journal_title", "publisher", "year" = "issued")) -> indicator_df
+
+
 #' yearly 
 #' get journals that are probably flipped, defined as prop > 0.95 in at least two years
 indicator_df %>% 
-  group_by(journal_title, publisher, issued, yearly_jn_volume) %>% 
+  group_by(journal_title, publisher, year, yearly_jn_volume) %>% 
   summarise(n_year = sum(license_ref_n)) %>% 
   mutate(prop = n_year / yearly_jn_volume) %>% 
   filter(prop > 0.95) %>% 
@@ -127,12 +140,58 @@ indicator_df %>%
   filter(n() > 1) -> prob_flipped
 #' export and exclude them
 readr::write_csv(prob_flipped, "../data/flipped_jns.csv")
-anti_join(indicator_df, prob_flipped,  by = c("journal_title", "publisher", "issued")) -> indicator_df
+anti_join(indicator_df, prob_flipped,  by = c("journal_title", "publisher", "year")) -> indicator_df
+#' calculate publishers article volume and add this info to the dataset
+indicator_df %>% 
+  distinct(journal_title, publisher, year,.keep_all = TRUE) %>%
+  group_by(publisher, year) %>%
+  summarise(yearly_publisher_volume = sum(yearly_jn_volume)) -> year_publisher
+# merge
+left_join(indicator_df, year_publisher, by = c("publisher", "year")) -> indicator_df
 #' ### match with open apc dataset
 hybrid_dois <- hybrid_oa_df %>%
+  # remove flipped journals 
+  anti_join(prob_flipped,  by = c("journal_title", "publisher", "issued" = "year")) %>%
+  # make sure dois are lower case
+  mutate(doi_oa = tolower(doi_oa)) %>%
+  distinct(doi_oa, .keep_all = TRUE) %>%
   # issn not needed
-  select(-issn_type, -issn) %>%
-  right_join(indicator_df, by = c("journal_title", "publisher", "license", "issued")) %>% 
-  distinct()
-#' load oapc dataset
-o_apc <- readr::read_csv("../data/oapc_aggregated.csv")
+  select(-issn_type, -issn, -year_published) %>%
+  left_join(indicator_df, by = c("journal_title", "publisher", "license", "issued" = "year"))
+
+#' ### Hybrid journal output vs what was actually sponsored by academic institutions
+#'  Get Open APC data dump, and distinguish between individual hybrid and offsetting
+o_apc <- readr::read_csv("../data/oapc_hybrid.csv") %>%
+  mutate(hybrid_type = ifelse(!is.na(euro), "Open APC (Hybrid)", "Open APC (Offsetting)"))
+#' Include country information, which are available via Open APC OLAP server: 
+#' <https://github.com/OpenAPC/openapc-olap/blob/master/static/institutions.csv>
+country_apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions.csv") %>%
+  select(institution, country)
+countries <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions_offsetting.csv") %>%
+  bind_rows(country_apc) %>%
+  distinct() %>% 
+  # mutate(country = gsub("NDL", "NLD", country)) %>%
+  mutate(country_name = countrycode::countrycode(country, "iso3c", "country.name"))
+#' merge with open apc dataset
+#' 
+o_apc <- o_apc %>%
+  left_join(countries, by = "institution") %>%
+  # make sure dois are lowercase
+  mutate(doi = tolower(doi)) %>%
+  # select columns needed
+  select(1, 20:21, 2:4, 19)
+
+#' merge with hybrid_dois data set
+hybrid_dois %>%
+  left_join(o_apc, by = c("doi_oa" = "doi")) -> my_data
+
+
+#' oa stats for springer
+my_data %>% 
+  filter(publisher == "Springer Nature") %>%
+  group_by(issued, license, yearly_publisher_volume) %>%
+  summarise(n = n_distinct(doi_oa)) %>%
+  mutate(prop = n / yearly_publisher_volume) %>%
+  ggplot(aes(issued, prop, fill = license)) + 
+  geom_bar(stat = "identity")
+  

@@ -1,8 +1,6 @@
-journal_title,publisher,issued,yearly_jn_volume,n_year,prop
+journal_title,publisher,year,yearly_jn_volume,n_year,prop
 Electronic Notes in Theoretical Computer Science,Elsevier BV,2017,29,29,1
 Electronic Notes in Theoretical Computer Science,Elsevier BV,2018,11,11,1
-Gynecological Surgery,Springer Nature,2017,29,28,0.9655172413793104
-Gynecological Surgery,Springer Nature,2018,8,8,1
 Health Expectations,Wiley-Blackwell,2017,127,125,0.984251968503937
 Health Expectations,Wiley-Blackwell,2018,29,29,1
 Integrating Materials and Manufacturing Innovation,Springer Nature,2013,5,5,1
