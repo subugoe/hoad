@@ -4,6 +4,7 @@ output:
   flexdashboard::flex_dashboard:
     navbar:
       - { title: "About", href: "https://subugoe.github.io/hybrid_oa_dashboard/about.html"}
+      - { title: "Data", href: "https://github.com/subugoe/hybrid_oa_dashboard/tree/master/data"}
     orientation: rows
     source_code: "https://github.com/subugoe/hybrid_oa_dashboard/"
     vertical_layout: fill
@@ -12,21 +13,19 @@ runtime: shiny
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
-library(readr)
-library(ggplot2)
+library(tidyverse)
 library(plotly)
-library(dplyr)
 library(scales)
 library(ggalt)
 ```
 
 ```{r global}
 # access to data
-hybrid_df <- readr::read_csv("data/hybrid_license_indicators.csv") %>%
-  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) %>%
-  arrange(desc(year_publisher_all))
+hybrid_df <- readr::read_csv("data/hybrid_publications.csv") %>%
+  mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) %>%
+  arrange(desc(yearly_publisher_volume))
 
-o_apc_df <- readr::read_csv("data/oapc_aggregated.csv") %>%
+o_apc_df <- readr::read_csv("data/oapc_hybrid.csv") %>% 
   mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017", "2018")))
 ```
 
@@ -65,22 +64,20 @@ jn_f <-
 hybrid_sub <- reactive({
 if (length(unique(jn_f()$publisher)) > 1) {
     hybrid_sub <- jn_f() %>%
-      group_by(year, license, year_all) %>%
-      summarize(license_n = sum(license_ref_n, na.rm = TRUE)) %>% 
-      mutate(prop = license_n / year_all) %>%
-      filter(!is.na(license))
+      group_by(year, yearly_all, license) %>%
+      count() %>%
+      mutate(prop = n / yearly_all)
   } else if (length(unique(jn_f()$journal_title)) > 1 &&
              length(unique(jn_f()$publisher)) == 1) {
     hybrid_sub <- jn_f() %>%
-      group_by(year, license, year_publisher_all) %>%
-      summarize(license_n = sum(license_ref_n, na.rm = TRUE)) %>%
-      mutate(prop = license_n / year_publisher_all) %>%
-      filter(!is.na(license))
+      group_by(year, license, yearly_publisher_volume) %>%
+      count() %>%  
+      mutate(prop = n / yearly_publisher_volume)
   } else {
     hybrid_sub <- jn_f() %>%
-      mutate(prop = as.numeric(license_ref_n) / as.numeric(jn_published)) %>%
-      mutate(license_n = license_ref_n) %>%
-      filter(!is.na(license))
+      group_by(year, license, yearly_jn_volume) %>%
+      count() %>%  
+      mutate(prop = n / yearly_jn_volume)
   }
 })
 
@@ -124,7 +121,7 @@ renderValueBox({
 
 ```{r}
 renderValueBox({
-  hybrid_n <- sum(jn_f()$license_ref_n, na.rm = TRUE)
+  hybrid_n <- nrow(jn_f())
   valueBox(hybrid_n, icon = "fa-creative-commons")
 })
 ```
@@ -145,7 +142,7 @@ renderPlotly({
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels = scales::percent) +
     theme_minimal()
-  plotly::ggplotly(p) %>%
+ plotly::ggplotly(p) %>%
     layout(showlegend = TRUE, legend = list(font = list(size = 9)))
 })
 ```
@@ -155,7 +152,7 @@ renderPlotly({
 
 ```{r}
 renderPlotly({
-  p <- ggplot(hybrid_sub(), aes(year, license_n, fill = license)) +
+  p <- ggplot(hybrid_sub(), aes(year, n, fill = license)) +
     geom_bar(stat = "identity") +
     xlab("Year") +
     ylab("Hybrid OA Articles") +
@@ -177,17 +174,13 @@ Row {data-width=400 data-height=350}
 ```{r}
 renderPlotly({
   hybrid_sub <- hybrid_sub() %>%
-    group_by(year) %>%
-    summarize(n = sum(license_n, na.rm = TRUE)) %>%
+    group_by(year) %>% 
+    summarise(n = sum(n)) %>%
     mutate(source = "Crossref Hybrid")
   
   o_apc_sub <- o_apc_df %>%
-    filter(journal_title %in% jn_f()$journal_title,
-           year %in% jn_f()$year) %>%
-    distinct(journal_title, year, oapc_n_year, hybrid_type) %>%
-    group_by(year, hybrid_type) %>%
-    summarize(n_oa = sum(oapc_n_year, na.rm = TRUE)) %>%
-    mutate(source = "Open APC")
+    filter(journal_full_title %in% jn_f()$journal_title, period %in% jn_f()$year) %>%
+    count(year, hybrid_type)
   
   p <-
     ggplot(hybrid_sub, aes(year, n, fill = source)) +
@@ -205,7 +198,7 @@ renderPlotly({
   p <-
     p + geom_bar(
       data = o_apc_sub,
-      aes(year, n_oa, fill = hybrid_type),
+      aes(year, n, fill = hybrid_type),
       stat = "identity",
       alpha = 0.8
     )
@@ -221,26 +214,21 @@ renderPlotly({
 ```
 
 
-### Institutional spending per country (in percent)
+### Institutional Spending per Country (in percent)
 
 ```{r}
 renderPlot({
 tt <- o_apc_df %>%
-    filter(journal_title %in% jn_f()$journal_title, year %in% jn_f()$year) %>%
-    distinct(journal_title, year, oapc_n_year, .keep_all = TRUE) %>%
-  group_by(country) %>%
-  summarise(n = sum(oapc_n_year, na.rm = TRUE)) %>%
-  mutate(prop = n / sum(n)) %>%
-  mutate(prop = round(prop, 2)) %>%
-  filter(!is.na(country))
+    filter(journal_full_title %in% jn_f()$journal_title, period %in% jn_f()$year) %>%
+    count(country) %>% 
+  mutate(prop = n / sum(n))
 gg <- ggplot(tt, aes(prop, reorder(country, prop))) +
   ggalt::geom_lollipop(point.colour="steelblue", point.size=4, horizontal=TRUE) +
   scale_x_continuous(expand=c(0,0), labels=percent,
                               breaks=seq(0, 1, by=0.2), limits=c(0, 1)) +
-  labs(x=NULL, y=NULL,
+  labs(x = NULL, y = NULL) +
   #  title="Institutional spending on hybrid OA journal_title articles",
   #  subtitle="Articles funded per country (in percent)",
-  caption="Data from https://github.com/openapc/openapc-de") +
   theme_minimal() +
   theme(panel.grid.major.y=element_blank()) +
   theme(panel.grid.minor=element_blank()) +
