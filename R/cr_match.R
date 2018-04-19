@@ -148,6 +148,8 @@ indicator_df %>%
   summarise(yearly_publisher_volume = sum(yearly_jn_volume)) -> year_publisher
 # merge
 left_join(indicator_df, year_publisher, by = c("publisher", "year")) -> indicator_df
+#' backup 
+readr::write_csv(indicator_df, "../data/indicator.csv")
 #' ### match with open apc dataset
 hybrid_dois <- hybrid_oa_df %>%
   # remove flipped journals 
@@ -184,7 +186,8 @@ o_apc <- o_apc %>%
 #' merge with hybrid_dois data set
 hybrid_dois %>%
   left_join(o_apc, by = c("doi_oa" = "doi")) -> my_data
-
+#' backup licensing data set
+readr::write_csv(my_data, "../data/hybrid_publications.csv")
 
 #' oa stats for springer
 my_data %>% 

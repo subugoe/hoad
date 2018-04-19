@@ -1,0 +1,146 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  echo = TRUE)
+```
+
+# Datasets
+
+## Dataset used for the dashboard
+
+#### [`hybrid_publications.csv`](hybrid_publications.csv)
+
+Documentation:
+
+|Variable                   |Description
+|:--------------------------|:------------------------------------------------------------------|
+|`license`                  |Open License URI (semi-normalised)                                 |
+|`journal_title`            |Most frequent journal title used by Crossref                       |
+|`publisher`                |Most frequent publisher name used by Crossref                      |
+|`doi_oa`                   |DOI of the hybrid open access article                              |
+|`issued`                   |Earliest publication year                                          |            
+|`yearly_jn_volume`         |Yearly article volume per journal                                  |
+|`license_ref_n`            |Yearly article volume under the license `license`                  |
+|`yearly_publisher_volume`  |Yearly article volume of all journals in the dataset per publisher |   
+|`institution`              |Top-level organisation which reported article to Open APC          |
+|`country`                  |Country of origin (iso3c)                                          |
+|`country_name`             |Country of origin (name)                                           |
+|`period`                   |Year of reporting to Open APC                                      |
+|`euro`                     |The amount that was paid in EURO. Includes VAT and additional fees |
+|`hybrid_type`              |Open APC hybrid open access collection (individual or offsetting)  |
+
+Tibble view in R:
+
+```{r}
+library(readr)
+readr::read_csv("hybrid_publications.csv")
+```
+
+## Re-used data sources
+
+Open data from the Open APC Initiative and Crossref were used to identify hybrid open access journals, as well as to obtain information about the publication activities of these journals.
+
+### Open APC Initiative
+
+#### [`oapc_hybrid.csv`](oapc_hybrid.csv)
+
+This dataset is obtained from the [Open APC Initiative](https://github.com/openapc/openapc-de) and was used to determine hybrid open access journals. It also includes data about offsetting aggrements, which has no pricing information.
+
+Data schema: <https://github.com/OpenAPC/openapc-de/wiki/schema>
+
+Tibble view in R:
+
+```{r}
+library(readr)
+readr::read_csv("oapc_hybrid.csv")
+```
+
+### Crossref
+
+#### [`jn_facets_df.json`](jn_facets_df.json)
+
+JSON-ND file. Includes the following metadata from Crossref:
+
+|Variable                     |Description                                                        |
+|:----------------------------|:------------------------------------------------------------------|
+|`issn`                       |ISSNs obtained from Open APC dataset used to query Crossref API    |
+|`year_published`             |Lists yearly journal volume obtained from Crossref API facets      |
+|`license_refs`               |Obtained Licence URIs                                              |
+|`journal_title`              |Most frequent journal title                                        |
+|`publisher`                  |Most frequent publisher name                                       |
+
+How to load into R?
+
+```{r eval=FALSE}
+library(jsonlite)
+jsonlite::stream_in(file("jn_facets_df.json"), simplifyDataFrame = FALSE)
+```
+
+#### [`hybrid_license_dois.json`](hybrid_license_dois.json)
+
+JSON-ND file documenting articles found for every journal and open license URI.
+
+Variable                    |Description
+|:--------------------------|:--------------------------------------------------------------|
+|`dois`                     |List fo DOIs                                                   |
+|`issn`                     |ISSN obtained from Open APC dataset used to query Crossref API |
+|`license`                  |Open License URI (non-normalised)                              |
+
+#### `hybrid_license_md.json`
+
+`data/hybrid_license_md.json`contains full metadata of all open access articles found as it was parsed by the `rcrossref::cr_works()` function. Unfortunately, this data file is simply too large to be shared via GitHub. Please contact me, if you want access to it.
+
+Tibble view in R:
+
+```{r}
+library(jsonlite)
+library(dplyr)
+jsonlite::stream_in(file("../data/hybrid_license_md.json"), verbose = FALSE) %>%
+  dplyr::as_data_frame()
+```
+
+## Count data
+
+#### [`indicator.csv`](indicator.csv)
+
+[`indicator.csv`](indicator.csv) contains count data about the examined yearly journal volume. 
+
+Coding scheme:
+
+|Variable                    |Description
+|:--------------------------|:------------------------------------------------------------------|
+|`journal_title`            |Most frequent journal title used by Crossref                       |
+|`publisher`                |Most frequent publisher name used by Crossref                      |
+|`year`                     |Earliest publishing year                                           |
+|`yearly_jn_volume`         |Yearly article volume per journal                                  |
+|`license`                  |Open License URI (semi-normalised)                                 |
+|`license_ref_n`            |Yearly article volume under the license `license`                  |
+|`yearly_publisher_volume`  |Yearly article volume of all journals in the dataset per publisher |   
+
+
+Tibble view in R:
+
+```{r}
+library(readr)
+readr::read_csv("indicator.csv")
+```
+
+## Flipped journals
+
+To detect fully open acces journals, the [Directory of Open Access Journals](https://doaj.org/) was checked. [`flipped_jns_doaj.csv`](flipped_jns_doaj.csv) contains the so detected articles published in fully open access journals.
+
+Furthermore, [`flipped_jns.csv`](flipped_jns_doaj.csv) contains journals that are probably flipped, indicated by a proportion of open access article volume larger than 0.95 in at least two years.
+
+
+## Data re-use and licenses
+
+Datasets are released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or distribute these materials in any form, for any purpose, commercial or non-commercial, and by any means.
+
+Crossref asserts no claims of ownership to individual items of bibliographic metadata and associated Digital Object Identifiers (DOIs) acquired through the use of the Crossref Free Services. Individual items of bibliographic metadata and associated DOIs may be cached and incorporated into the user's content and systems.
+
+Open APC Data are made available under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in individual contents of the database are licensed under the Database Contents License: http://opendatacommons.org/licenses/dbcl/1.0/.
