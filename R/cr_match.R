@@ -53,16 +53,7 @@ map_df(dois, "issn") %>%
 #' join article datasets
 tmp <- inner_join(dois_df, jn_df, by = c("issn" = "issn")) %>% 
   distinct(journal_title, publisher, license, .keep_all = TRUE)
-#' analytics
-#' #' yearly journal article volume
-#' yearly_volume <- tmp %>%
-#'   select(journal_title, publisher, year_published) %>%
-#'   distinct() %>% 
-#'   unnest(year_published) %>%
-#'   select(1:3, year = .id, yearly_jn_volume = V1) %>%
-#'   mutate(year = lubridate::parse_date_time(year, 'y')) %>%
-#'   mutate(year = lubridate::year(year))
-#' create hybrid oa data set
+
 hybrid_oa_df <- tmp %>% 
   select(1:2, journal_title, publisher, year_published) %>% 
   # remove delayed licenses 
@@ -106,6 +97,9 @@ doaj_lookup <- doaj %>%
 hybrid_oa_df %>% 
   inner_join(doaj_lookup, by = "issn") %>% 
   filter(year_flipped <= issued) -> flipped_jns
+# export 
+select(flipped_jns, -year_published) %>%
+  readr::write_csv("../data/flipped_jns_doaj.csv")
 #' remove flipped journals from hybrid license data set and store into json
 hybrid_oa_df %>% 
   filter(!doi_oa %in% flipped_jns$doi_oa) %>%
@@ -172,20 +166,32 @@ country_apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openap
 countries <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions_offsetting.csv") %>%
   bind_rows(country_apc) %>%
   distinct() %>% 
-  # mutate(country = gsub("NDL", "NLD", country)) %>%
   mutate(country_name = countrycode::countrycode(country, "iso3c", "country.name"))
 #' merge with open apc dataset
 #' 
 o_apc <- o_apc %>%
-  left_join(countries, by = "institution") %>%
+  left_join(countries, by = "institution")
+# export with country infos
+readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
+
+o_apc <- o_apc %>%
   # make sure dois are lowercase
   mutate(doi = tolower(doi)) %>%
   # select columns needed
-  select(1, 20:21, 2:4, 19)
+  select(1:4, 19:21)
 
 #' merge with hybrid_dois data set
 hybrid_dois %>%
   left_join(o_apc, by = c("doi_oa" = "doi")) -> my_data
+#' include yearly volumes 
+my_data %>% 
+  distinct(issued, publisher, yearly_publisher_volume) %>% 
+  group_by(issued) %>% 
+  summarise(yearly_all = sum(yearly_publisher_volume)) %>%
+  right_join(my_data, by = c("issued")) %>%
+  # some sorting of columns
+  select(3:6, issued, 7:9, yearly_all, 11:15) -> my_data
+
 #' backup licensing data set
 readr::write_csv(my_data, "../data/hybrid_publications.csv")
 

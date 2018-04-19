@@ -2,9 +2,11 @@
 
 # Datasets
 
-## Dataset used for the dashboard
+## Hybrid Open Access Article Dataset
 
-#### [`hybrid_publications.csv`](hybrid_publications.csv)
+#### [`hybrid_publications.csv`](hybrid_publications.csv) 
+
+[`hybrid_publications.csv`](hybrid_publications.csv) contains all hybrid open access articles found via Crossref, information about the overall publication volume, and, if available, cost information from the Open APC Initiative.
 
 Documentation:
 
@@ -17,7 +19,8 @@ Documentation:
 |`issued`                   |Earliest publication year                                          |            
 |`yearly_jn_volume`         |Yearly article volume per journal                                  |
 |`license_ref_n`            |Yearly article volume under the license `license`                  |
-|`yearly_publisher_volume`  |Yearly article volume of all journals in the dataset per publisher |   
+|`yearly_publisher_volume`  |Yearly article volume of all journals in the dataset per publisher |
+|`yearly_all`               |Yearly article volume investigated                                 |
 |`institution`              |Top-level organisation which reported article to Open APC          |
 |`country`                  |Country of origin (iso3c)                                          |
 |`country_name`             |Country of origin (name)                                           |
@@ -45,8 +48,8 @@ readr::read_csv("hybrid_publications.csv")
 #>  9 http://creat… Soft Computing Springer… 10.1007…   2016              466
 #> 10 http://creat… Soft Computing Springer… 10.1007…   2015              428
 #> # ... with 104,164 more rows, and 8 more variables: license_ref_n <int>,
-#> #   yearly_publisher_volume <int>, institution <chr>, country <chr>,
-#> #   country_name <chr>, period <int>, euro <dbl>, hybrid_type <chr>
+#> #   yearly_publisher_volume <int>, yearly_all <int>, period <int>,
+#> #   euro <dbl>, hybrid_type <chr>, country <chr>, country_name <chr>
 ```
 
 ## Re-used data sources
@@ -57,7 +60,7 @@ Open data from the Open APC Initiative and Crossref were used to identify hybrid
 
 #### [`oapc_hybrid.csv`](oapc_hybrid.csv)
 
-This dataset is obtained from the [Open APC Initiative](https://github.com/openapc/openapc-de) and was used to determine hybrid open access journals. It also includes data about offsetting aggrements, which has no pricing information.
+This dataset is obtained from the [Open APC Initiative](https://github.com/openapc/openapc-de) and was used to determine hybrid open access journals. It also includes data about offsetting aggrements, which has no pricing information, as well as country information.
 
 Data schema: <https://github.com/OpenAPC/openapc-de/wiki/schema>
 
@@ -67,7 +70,7 @@ Tibble view in R:
 ```r
 library(readr)
 readr::read_csv("oapc_hybrid.csv")
-#> # A tibble: 39,365 x 18
+#> # A tibble: 39,365 x 21
 #>    institution  period euro  doi     is_hybrid publisher journal_full_tit…
 #>    <chr>         <int> <chr> <chr>   <lgl>     <chr>     <chr>            
 #>  1 Aberystwyth…   2015 <NA>  10.100… T         Springer… Soft Computing   
@@ -80,10 +83,11 @@ readr::read_csv("oapc_hybrid.csv")
 #>  8 Anglia Rusk…   2016 <NA>  10.100… T         Springer… Experimental Bra…
 #>  9 Anglia Rusk…   2016 <NA>  10.100… T         Springer… Morphology       
 #> 10 Anglia Rusk…   2016 <NA>  10.100… T         Springer… The Internationa…
-#> # ... with 39,355 more rows, and 11 more variables: issn <chr>,
+#> # ... with 39,355 more rows, and 14 more variables: issn <chr>,
 #> #   issn_print <chr>, issn_electronic <chr>, issn_l <chr>,
 #> #   license_ref <chr>, indexed_in_crossref <lgl>, pmid <int>, pmcid <chr>,
-#> #   ut <chr>, url <chr>, doaj <lgl>
+#> #   ut <chr>, url <chr>, doaj <lgl>, hybrid_type <chr>, country <chr>,
+#> #   country_name <chr>
 ```
 
 ### Crossref

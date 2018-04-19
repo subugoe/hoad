@@ -9,9 +9,11 @@ knitr::opts_chunk$set(
 
 # Datasets
 
-## Dataset used for the dashboard
+## Hybrid Open Access Article Dataset
 
-#### [`hybrid_publications.csv`](hybrid_publications.csv)
+#### [`hybrid_publications.csv`](hybrid_publications.csv) 
+
+[`hybrid_publications.csv`](hybrid_publications.csv) contains all hybrid open access articles found via Crossref, information about the overall publication volume, and, if available, cost information from the Open APC Initiative.
 
 Documentation:
 
@@ -24,7 +26,8 @@ Documentation:
 |`issued`                   |Earliest publication year                                          |            
 |`yearly_jn_volume`         |Yearly article volume per journal                                  |
 |`license_ref_n`            |Yearly article volume under the license `license`                  |
-|`yearly_publisher_volume`  |Yearly article volume of all journals in the dataset per publisher |   
+|`yearly_publisher_volume`  |Yearly article volume of all journals in the dataset per publisher |
+|`yearly_all`               |Yearly article volume investigated                                 |
 |`institution`              |Top-level organisation which reported article to Open APC          |
 |`country`                  |Country of origin (iso3c)                                          |
 |`country_name`             |Country of origin (name)                                           |
@@ -47,7 +50,7 @@ Open data from the Open APC Initiative and Crossref were used to identify hybrid
 
 #### [`oapc_hybrid.csv`](oapc_hybrid.csv)
 
-This dataset is obtained from the [Open APC Initiative](https://github.com/openapc/openapc-de) and was used to determine hybrid open access journals. It also includes data about offsetting aggrements, which has no pricing information.
+This dataset is obtained from the [Open APC Initiative](https://github.com/openapc/openapc-de) and was used to determine hybrid open access journals. It also includes data about offsetting aggrements, which has no pricing information, as well as country information.
 
 Data schema: <https://github.com/OpenAPC/openapc-de/wiki/schema>
 
