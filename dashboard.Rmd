@@ -179,7 +179,7 @@ renderPlotly({
     mutate(source = "Crossref Hybrid")
   
   o_apc_sub <- o_apc_df %>%
-    filter(journal_full_title %in% jn_f()$journal_title, period %in% jn_f()$year) %>%
+    filter(journal_full_title %in% jn_f()$journal_title) %>%
     count(year, hybrid_type)
   
   p <-
@@ -219,7 +219,7 @@ renderPlotly({
 ```{r}
 renderPlot({
 tt <- o_apc_df %>%
-    filter(journal_full_title %in% jn_f()$journal_title, period %in% jn_f()$year) %>%
+    filter(journal_full_title %in% jn_f()$journal_title) %>%
     count(country) %>% 
   mutate(prop = n / sum(n))
 gg <- ggplot(tt, aes(prop, reorder(country, prop))) +
