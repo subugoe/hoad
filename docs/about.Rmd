@@ -39,16 +39,17 @@ library(dplyr)
 #' load facets results
 jn_facets <- jsonlite::stream_in(file("../data/jn_facets_df.json"), verbose = FALSE)
 #' get hybrid journals that have open licensing information in the period 2013-18
-hybrid_cr <- jsonlite::stream_in(file("../data/hybrid_license_indicators.json"), verbose = FALSE) %>%
-  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016", "2017", "2018")))
-#' get oapc data
-o_apc_df <- readr::read_csv("../data/oapc_aggregated.csv") %>%
+hybrid_cr <- readr::read_csv("../data/hybrid_publications.csv") %>%
+  mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) %>%
+  arrange(desc(yearly_publisher_volume))
+
+o_apc_df <- readr::read_csv("../data/oapc_hybrid.csv") %>% 
   mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017", "2018")))
 ```
 
 ## Summary 
 
-[This open source dashboard](https://najkoja.shinyapps.io/hybridoa/) presents the uptake of hybrid open access for `r dplyr::n_distinct(hybrid_cr$journal_title)` different journals from `r dplyr::n_distinct(hybrid_cr$publisher)` publishers between 2013 - 2018. During this six years period, `r sum(hybrid_cr$license_ref_n, na.rm = TRUE)` articles were made openly available immediately in these subscription-based journals, representing `r unlist(sum(hybrid_cr$license_ref_n, na.rm = TRUE) / (hybrid_cr %>% distinct(year, year_all) %>% summarize(sum(year_all))) * 100)`% of the total article volume studied.
+[This open source dashboard](https://najkoja.shinyapps.io/hybridoa/) presents the uptake of hybrid open access for `r dplyr::n_distinct(hybrid_cr$journal_title)` different journals from `r dplyr::n_distinct(hybrid_cr$publisher)` publishers between 2013 - 2018. During this six years period, `r dplyr::n_distinct(hybrid_cr$doi_oa)` articles were made openly available immediately in these subscription-based journals, representing `r unlist(dplyr::n_distinct(hybrid_cr$doi_oa) / (hybrid_cr %>% distinct(issued, yearly_all) %>% summarize(prop = sum(yearly_all))) * 100)`% of the total article volume studied.
 
 Hybrid open access journals are included when they meet the following two conditions:
 
@@ -139,13 +140,13 @@ ggsave(gg, path = "../img/", filename = "licensing_coverage.png", width = 9, hei
 
 *Figure: Overview of Crossref licensing coverage per publisher. Yellow dots represent the number of hybrid open access journals disclosed by the Open APC initiative with licensing metadata, blue dots the overall number of hybrid open access journals in our sample.*
 
-Data were gathered on `r format(file.info("../data/hybrid_license_indicators.csv")$ctime, "%Y-%m-%d")`. Methods were implemented in R and were made openly available in the source code repository of this project hosted on [GitHub](https://github.com/subugoe/hybrid_oa_dashboard) together with the compiled datasets. A [Shiny web application](https://shiny.rstudio.com/) was built to present the results using [flexdashboard](http://rmarkdown.rstudio.com/flexdashboard/) package. The app is powered by the graphic packages [plotly](https://github.com/ropensci/plotly), [ggplot2](http://ggplot2.tidyverse.org/) and [ggalt](https://github.com/hrbrmstr/ggalt), as well as  [readr](http://readr.tidyverse.org/) for data import. Data analysis made use of [dplyr](http://dplyr.tidyverse.org/).
+Data were gathered on `r format(file.info("../data/hybrid_license_dois.json")$ctime, "%Y-%m-%d")`. Methods were implemented in R and were made openly available in the source code repository of this project hosted on [GitHub](https://github.com/subugoe/hybrid_oa_dashboard) together with the compiled datasets. A [Shiny web application](https://shiny.rstudio.com/) was built to present the results using [flexdashboard](http://rmarkdown.rstudio.com/flexdashboard/) package. The app is powered by the graphic packages [plotly](https://github.com/ropensci/plotly), [ggplot2](http://ggplot2.tidyverse.org/) and [ggalt](https://github.com/hrbrmstr/ggalt), as well as  [readr](http://readr.tidyverse.org/) for data import. Data analysis made use of [dplyr](http://dplyr.tidyverse.org/).
 
 
 ## Results 
 
-Using data from Open APC and Crossref, we found `r sum(hybrid_cr$license_ref_n, na.rm = TRUE)`  open access articles published in
-`r dplyr::n_distinct(hybrid_cr$journal_title)` subscription-based journals from `r dplyr::n_distinct(hybrid_cr$publisher)` publishers between 2013 - 2018. These articles accounted for about `r unlist(sum(hybrid_cr$license_ref_n, na.rm = TRUE) / (hybrid_cr %>% distinct(year, year_all) %>% summarize(sum(year_all))) * 100)`% of the overall journal article volume investigated.
+Using data from Open APC and Crossref, we found `r n_distinct(hybrid_cr$doi_oa)`  open access articles published in
+`r dplyr::n_distinct(hybrid_cr$journal_title)` subscription-based journals from `r dplyr::n_distinct(hybrid_cr$publisher)` publishers between 2013 - 2018. These articles accounted for about `r unlist(dplyr::n_distinct(hybrid_cr$doi_oa) / (hybrid_cr %>% distinct(issued, yearly_all) %>% summarize(prop = sum(yearly_all))) * 100)`% of the overall journal article volume investigated.
 
 Results at the publisher and journal level are accessible and browsable through an [interactive dashboard using dynamic graphs](https://najkoja.shinyapps.io/hybridoa/). Launching the app shows up the overall results that can be subsetted by publisher or journal via the select boxes in the left sidebar. Publisher names are decreasingly sorted according to the number of hybrid open access articles published. Corresponding journals are filtered conditionally to the publisher selection and are sorted alphabetically.
 
@@ -153,14 +154,14 @@ Results at the publisher and journal level are accessible and browsable through 
 
 ### Hybrid OA uptake
 
-The upper part of the dashboard allows to explore the annual development of hybrid open access publishing between 2013 - 2018. The first tab shows the relative uptake of hybrid open access, the second tab the absolute number of published hybrid open access articles on a yearly basis. Bar charts are sub-grouped according to the licensing links found via Crossref. Overall results indicate that the number and proportion of hybrid open access journal articles rose between 2013 (`r hybrid_cr %>% filter(year == 2013) %>% summarize(n = sum(license_ref_n, na.rm = TRUE)) %>% .$n` articles, OA share: `r hybrid_cr %>% filter(year == 2013) %>% summarize(n = sum(license_ref_n, na.rm = TRUE), year_all = min(year_all)) %>% mutate(prop = n / year_all * 100) %>% .$prop` %) and 2017  (`r hybrid_cr %>% filter(year == 2017) %>% summarize(n = sum(license_ref_n, na.rm = TRUE)) %>% .$n` articles, OA share: `r hybrid_cr %>% filter(year == 2017) %>% summarize(n = sum(license_ref_n, na.rm = TRUE), year_all = min(year_all)) %>% mutate(prop = n / year_all * 100) %>% .$prop` %).
+The upper part of the dashboard allows to explore the annual development of hybrid open access publishing between 2013 - 2018. The first tab shows the relative uptake of hybrid open access, the second tab the absolute number of published hybrid open access articles on a yearly basis. Bar charts are sub-grouped according to the licensing links found via Crossref. Overall results indicate that the number and proportion of hybrid open access journal articles rose between 2013 (`r hybrid_cr %>% filter(year == 2013) %>% n_distinct(hybrid_cr$doi_oa)` articles, OA share: `r unlist((hybrid_cr %>% filter(year == 2013) %>% n_distinct(hybrid_cr$yearly_all) / hybrid_cr %>% filter(year == 2013) %>% distinct(yearly_all)) * 100)` %) and 2017  (`r hybrid_cr %>% filter(year == 2017) %>% n_distinct(hybrid_cr$yearly_all)` articles, OA share: `r unlist((hybrid_cr %>% filter(year == 2017) %>% n_distinct(hybrid_cr$yearly_all) / hybrid_cr %>% filter(year == 2017) %>% distinct(yearly_all)) * 100)` %).
 
 
 ```{r}
 hybrid_overview <- hybrid_cr %>%
   group_by(publisher) %>%
   summarize(`Number of journals` = n_distinct(journal_title), 
-            `Hybrid OA article volume` = sum(license_ref_n, na.rm = TRUE))
+            `Hybrid OA article volume` = n_distinct(doi_oa))
 top3 <- hybrid_overview %>%
   arrange(desc(`Number of journals`)) %>%
   slice(1:3) 
@@ -171,9 +172,9 @@ Table 1 presents an additional breakdown by publishers, contrasting the number o
 
 ```{r}
 hybrid_cr %>%
-  distinct(publisher, year, year_publisher_all) %>%
+  distinct(publisher, year, yearly_publisher_volume) %>%
   group_by(publisher) %>%
-  summarise(`Article volume` = sum(year_publisher_all, na.rm = TRUE)) %>%
+  summarise(`Article volume` = sum(yearly_publisher_volume, na.rm = TRUE)) %>%
   left_join(hybrid_overview, by = "publisher") %>%
   mutate(`OA proportion per publisher (in %)` = round(`Hybrid OA article volume`  / `Article volume` * 100, 2)) %>% 
   mutate(`Overall OA proportion (in %)` = round(`Hybrid OA article volume`  / sum(`Hybrid OA article volume`) * 100, 2)) %>% 
@@ -190,10 +191,10 @@ hybrid_cr %>%
 library(tidyverse)
 my_df <- hybrid_cr %>%
   filter(!is.na(license)) %>%
-  filter(year == 2016) %>%
+  filter(year == 2017) %>%
   group_by(publisher, journal_title) %>%
   summarize(oa = sum(license_ref_n, na.rm = TRUE),
-            all = sum(jn_published)) %>%
+            all = sum(yearly_jn_volume)) %>%
   mutate(prop = oa / all) %>%
   ungroup() %>%
   mutate(publisher = forcats::as_factor(publisher)) %>%
@@ -201,7 +202,7 @@ my_df <- hybrid_cr %>%
   mutate(publisher = forcats::fct_other(publisher, keep = levels(publisher)[1:5]))
 ```
 
-Numbers and proportion of hybrid open access journal articles varies across publishers and journals. In the year 2016, for example, the mean open access proportion per Springer Nature journal was `r my_df %>% filter(publisher == "Springer Nature") %>% .$prop %>% mean() * 100` % (SD = `r my_df %>% filter(publisher == "Springer Nature") %>% .$prop %>% sd() * 100` %), whereas the  mean open access articles proportion per journal published by Elsevier BV was `r my_df %>% filter(publisher == "Elsevier BV") %>% .$prop %>% mean() * 100` % (SD = `r my_df %>% filter(publisher == "Elsevier BV") %>% .$prop %>% sd() * 100` %). Figure 3 shows the variations for the five publishers with the largest number of hybrid open access journals in 2016 according to our data.
+Numbers and proportion of hybrid open access journal articles varies across publishers and journals. In the year 2017, for example, the mean open access proportion per Springer Nature journal was `r my_df %>% filter(publisher == "Springer Nature") %>% .$prop %>% mean() * 100` % (SD = `r my_df %>% filter(publisher == "Springer Nature") %>% .$prop %>% sd() * 100` %), whereas the  mean open access articles proportion per journal published by Elsevier BV was `r my_df %>% filter(publisher == "Elsevier BV") %>% .$prop %>% mean() * 100` % (SD = `r my_df %>% filter(publisher == "Elsevier BV") %>% .$prop %>% sd() * 100` %). Figure 3 shows the variations for the five publishers with the largest number of hybrid open access journals in 2017 according to our data.
 
 ```{r}
 library(scales)
@@ -210,7 +211,7 @@ q <- ggplot(my_df, aes(publisher, prop)) +
   coord_flip() +
   scale_x_discrete(limits = rev(levels(my_df$publisher))) +
   scale_y_continuous(labels = scales::percent, limit = c(0,1)) +
-  labs(y = "Hybrid OA share per journal in 2016", x = "Publishers (Top 5)",
+  labs(y = "Hybrid OA share per journal in 2017", x = "Publishers (Top 5)",
        title = "What is the share of open access articles provided by subscription-based journals?",
        subtitle = "Notice that only those hybrid open access journals were included where academic institutions\nsponsored the publication fee according to the Open APC initiative and Crossref licensing metadata was found") +
   # mimicking github.com/hrbrmstr/hrbrthemes 
@@ -225,7 +226,7 @@ ggsave(q, path = "../img/", filename = "oa_variation.png", width = 9, height = 4
 
 ![](../img/oa_variation.png)
 
-*Figure 3: Box plot characterizing spread and differences of the share of open access articles provided by subscription-based journal per publisher in 2016 using five summary statistics (the median, the 25th and 75th percentiles, and 1.5 times the inter-quartile range between the first and third quartiles), and visualizing all outlying points individually.*
+*Figure 3: Box plot characterizing spread and differences of the share of open access articles provided by subscription-based journal per publisher in 2017 using five summary statistics (the median, the 25th and 75th percentiles, and 1.5 times the inter-quartile range between the first and third quartiles), and visualizing all outlying points individually.*
 
 ### Institutional support
 
@@ -240,14 +241,13 @@ hybrid_springer <- hybrid_cr %>%
 
   hybrid_sub <- hybrid_springer %>%
     group_by(year) %>%
-    summarize(n = sum(license_ref_n, na.rm = TRUE)) %>%
+    summarize(n = n_distinct(doi_oa)) %>%
     mutate(source = "Crossref Hybrid")
 
   o_apc_sub <- o_apc_df %>%
-    filter(journal_title %in%hybrid_springer$journal_title, year %in% hybrid_springer$year) %>%
-     distinct(journal_title, year, oapc_n_year) %>%
+    filter(journal_full_title %in% hybrid_springer$journal_title, period %in% hybrid_springer$year) %>%
     group_by(year) %>%
-    summarize(n = sum(oapc_n_year, na.rm = TRUE)) %>%
+    summarize(n = n()) %>%
     mutate(source = "Open APC")
 
   p <- ggplot(hybrid_sub, aes(year, n, fill = source)) +
