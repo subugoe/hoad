@@ -54,14 +54,16 @@ o_apc <- o_offset %>%
   mutate(issn = ifelse(issn %in% "0044-8249", "1433-7851", issn)) %>%
   # also change DOIs accordingly
   mutate(doi = str_replace(doi, "10.1002/ange.", "10.1002/anie.")) %>%
-  # use Springer Nature
+  # 3. use Springer Nature
   mutate(
     publisher = ifelse(
       publisher %in% "Springer Science + Business Media",
       "Springer Nature",
       publisher
     )
-  )
+  ) %>%
+  # 4. remove all publications from fully OA publisher copernicus   
+  filter(!publisher %in% "Copernicus GmbH")
 #' open apc dump
 readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
 #' ## How does it relate to the general hybrid output per journal?

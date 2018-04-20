@@ -103,6 +103,8 @@ select(flipped_jns, -year_published) %>%
 #' remove flipped journals from hybrid license data set and store into json
 hybrid_oa_df %>% 
   filter(!doi_oa %in% flipped_jns$doi_oa) %>%
+  # manually remove Copernicus GmbH, which is a fully oa publisher
+  filter(!publisher %in% "Copernicus GmbH") %>%
   # clean license URIS
   mutate(license = gsub("\\/$", "", license)) %>%
   mutate(license = gsub("https", "http", license)) -> hybrid_oa_df
@@ -170,7 +172,8 @@ countries <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-
 #' merge with open apc dataset
 #' 
 o_apc <- o_apc %>%
-  left_join(countries, by = "institution")
+  left_join(countries, by = "institution") %>%
+  filter(!publisher %in% "Copernicus GmbH")
 # export with country infos
 readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
 
