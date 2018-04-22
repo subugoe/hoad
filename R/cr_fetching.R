@@ -63,7 +63,21 @@ o_apc <- o_offset %>%
     )
   ) %>%
   # 4. remove all publications from fully OA publisher copernicus   
-  filter(!publisher %in% "Copernicus GmbH")
+  filter(!publisher %in% "Copernicus GmbH") %>%
+  # 5. distinguish between individual hybrid and offsetting
+  mutate(hybrid_type = ifelse(!is.na(euro), "Open APC (Hybrid)", "Open APC (Offsetting)"))
+#' Include country information, which are available via Open APC OLAP server: 
+#' <https://github.com/OpenAPC/openapc-olap/blob/master/static/institutions.csv>
+country_apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions.csv") %>%
+  select(institution, country)
+countries <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions_offsetting.csv") %>%
+  bind_rows(country_apc) %>%
+  distinct() %>% 
+  mutate(country_name = countrycode::countrycode(country, "iso3c", "country.name"))
+#' merge with open apc dataset
+#' 
+o_apc <- o_apc %>%
+  left_join(countries, by = "institution")
 #' open apc dump
 readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
 #' ## How does it relate to the general hybrid output per journal?
