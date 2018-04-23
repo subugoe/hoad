@@ -6,7 +6,7 @@
 
 #### [`hybrid_publications.csv`](hybrid_publications.csv) 
 
-[`hybrid_publications.csv`](hybrid_publications.csv) contains all hybrid open access articles found via Crossref, information about the overall publication volume, and, if available, cost information from the Open APC Initiative.
+[`hybrid_publications.csv`](hybrid_publications.csv) contains hybrid open access articles found via Crossref, information about the overall publication volume, and, if available, cost information from the Open APC Initiative.
 
 Documentation:
 
@@ -122,6 +122,12 @@ Variable                    |Description
 |`issn`                     |ISSN obtained from Open APC dataset used to query Crossref API |
 |`license`                  |Open License URI (non-normalised)                              |
 
+
+```r
+library(jsonlite)
+jsonlite::stream_in(file("hybrid_license_dois.json"), simplifyDataFrame = FALSE)
+```
+
 #### `hybrid_license_md.json`
 
 `data/hybrid_license_md.json`contains full metadata of all open access articles found as it was parsed by the `rcrossref::cr_works()` function. Unfortunately, this data file is simply too large to be shared via GitHub. Please contact me, if you want access to it.
@@ -204,7 +210,50 @@ readr::read_csv("indicator.csv")
 
 To detect fully open acces journals, the [Directory of Open Access Journals](https://doaj.org/) was checked. [`flipped_jns_doaj.csv`](flipped_jns_doaj.csv) contains the so detected articles published in fully open access journals.
 
-Furthermore, [`flipped_jns.csv`](flipped_jns_doaj.csv) contains journals that are probably flipped, indicated by a proportion of open access article volume larger than 0.95 in at least two years.
+
+```r
+library(readr)
+readr::read_csv("flipped_jns_doaj.csv")
+#> # A tibble: 4,984 x 9
+#>    license     journal_title  publisher  doi_oa   issued issn_type.x issn 
+#>    <chr>       <chr>          <chr>      <chr>     <int> <chr>       <chr>
+#>  1 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
+#>  2 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
+#>  3 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
+#>  4 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
+#>  5 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
+#>  6 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
+#>  7 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
+#>  8 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
+#>  9 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
+#> 10 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
+#> # ... with 4,974 more rows, and 2 more variables: year_flipped <int>,
+#> #   issn_type.y <chr>
+```
+
+Furthermore, [`flipped_jns.csv`](flipped_jns.csv) contains journals that are probably flipped, indicated by a proportion of open access article volume larger than 0.95 in at least two years.
+
+
+```r
+library(readr)
+readr::read_csv("flipped_jns.csv")
+#> # A tibble: 13 x 6
+#>    journal_title       publisher        year yearly_jn_volume n_year  prop
+#>    <chr>               <chr>           <int>            <int>  <int> <dbl>
+#>  1 Electronic Notes i… Elsevier BV      2017               29     29 1.00 
+#>  2 Electronic Notes i… Elsevier BV      2018               29     29 1.00 
+#>  3 Health Expectations Wiley-Blackwell  2017              127    125 0.984
+#>  4 Health Expectations Wiley-Blackwell  2018               31     31 1.00 
+#>  5 Integrating Materi… Springer Nature  2013                5      5 1.00 
+#>  6 Integrating Materi… Springer Nature  2014               26     25 0.962
+#>  7 Integrating Materi… Springer Nature  2016               14     14 1.00 
+#>  8 Investigative Opth… Association fo…  2016              929    929 1.00 
+#>  9 Investigative Opth… Association fo…  2017              785    785 1.00 
+#> 10 Investigative Opth… Association fo…  2018              245    245 1.00 
+#> 11 Translational Visi… Association fo…  2016               87     87 1.00 
+#> 12 Translational Visi… Association fo…  2017               88     88 1.00 
+#> 13 Translational Visi… Association fo…  2018               39     39 1.00
+```
 
 
 ## Data re-use and licenses

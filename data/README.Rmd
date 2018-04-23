@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 
 #### [`hybrid_publications.csv`](hybrid_publications.csv) 
 
-[`hybrid_publications.csv`](hybrid_publications.csv) contains all hybrid open access articles found via Crossref, information about the overall publication volume, and, if available, cost information from the Open APC Initiative.
+[`hybrid_publications.csv`](hybrid_publications.csv) contains hybrid open access articles found via Crossref, information about the overall publication volume, and, if available, cost information from the Open APC Initiative.
 
 Documentation:
 
@@ -92,6 +92,11 @@ Variable                    |Description
 |`issn`                     |ISSN obtained from Open APC dataset used to query Crossref API |
 |`license`                  |Open License URI (non-normalised)                              |
 
+```{r eval=FALSE}
+library(jsonlite)
+jsonlite::stream_in(file("hybrid_license_dois.json"), simplifyDataFrame = FALSE)
+```
+
 #### `hybrid_license_md.json`
 
 `data/hybrid_license_md.json`contains full metadata of all open access articles found as it was parsed by the `rcrossref::cr_works()` function. Unfortunately, this data file is simply too large to be shared via GitHub. Please contact me, if you want access to it.
@@ -135,7 +140,17 @@ readr::read_csv("indicator.csv")
 
 To detect fully open acces journals, the [Directory of Open Access Journals](https://doaj.org/) was checked. [`flipped_jns_doaj.csv`](flipped_jns_doaj.csv) contains the so detected articles published in fully open access journals.
 
-Furthermore, [`flipped_jns.csv`](flipped_jns_doaj.csv) contains journals that are probably flipped, indicated by a proportion of open access article volume larger than 0.95 in at least two years.
+```{r}
+library(readr)
+readr::read_csv("flipped_jns_doaj.csv")
+```
+
+Furthermore, [`flipped_jns.csv`](flipped_jns.csv) contains journals that are probably flipped, indicated by a proportion of open access article volume larger than 0.95 in at least two years.
+
+```{r}
+library(readr)
+readr::read_csv("flipped_jns.csv")
+```
 
 
 ## Data re-use and licenses
