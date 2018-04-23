@@ -50,7 +50,7 @@ Open data from the Open APC Initiative and Crossref were used to identify hybrid
 
 #### [`oapc_hybrid.csv`](oapc_hybrid.csv)
 
-This dataset is obtained from the [Open APC Initiative](https://github.com/openapc/openapc-de) and was used to determine hybrid open access journals. It also includes data about offsetting aggrements, which has no pricing information, as well as country information.
+This dataset was obtained from the [Open APC Initiative](https://github.com/openapc/openapc-de) and was used to determine hybrid open access journals. It also includes data about offsetting aggrements, which has no pricing information, as well as country information.
 
 Data schema: <https://github.com/OpenAPC/openapc-de/wiki/schema>
 
