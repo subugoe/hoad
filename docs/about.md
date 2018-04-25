@@ -1,6 +1,6 @@
 ---
 title: "About the Hybrid OA Dashboard"
-date: "updated 2018-04-23"
+date: "updated 2018-04-25"
 output:
   html_document:
     df_print: paged
@@ -46,7 +46,7 @@ metadata via the Crossref API, representing 25 % of all publishers studied. At t
 
 *Figure: Overview of Crossref licensing coverage per publisher. Yellow dots represent the number of hybrid open access journals disclosed by the Open APC initiative with licensing metadata, blue dots the overall number of hybrid open access journals in our sample.*
 
-Data were gathered on 2018-04-22. Methods were implemented in R and were made openly available in the source code repository of this project hosted on [GitHub](https://github.com/subugoe/hybrid_oa_dashboard) together with the compiled datasets. A [Shiny web application](https://shiny.rstudio.com/) was built to present the results using [flexdashboard](http://rmarkdown.rstudio.com/flexdashboard/) package. The app is powered by the graphic packages [plotly](https://github.com/ropensci/plotly), [ggplot2](http://ggplot2.tidyverse.org/) and [ggalt](https://github.com/hrbrmstr/ggalt), as well as  [readr](http://readr.tidyverse.org/) for data import. Data analysis made use of [dplyr](http://dplyr.tidyverse.org/).
+Data were gathered on 2018-04-23. Methods were implemented in R and were made openly available in the source code repository of this project hosted on [GitHub](https://github.com/subugoe/hybrid_oa_dashboard) together with the compiled datasets. A [Shiny web application](https://shiny.rstudio.com/) was built to present the results using [flexdashboard](http://rmarkdown.rstudio.com/flexdashboard/) package. The app is powered by the graphic packages [plotly](https://github.com/ropensci/plotly), [ggplot2](http://ggplot2.tidyverse.org/) and [ggalt](https://github.com/hrbrmstr/ggalt), as well as  [readr](http://readr.tidyverse.org/) for data import. Data analysis made use of [dplyr](http://dplyr.tidyverse.org/).
 
 
 ## Results 
@@ -78,7 +78,7 @@ Table 1 presents an additional breakdown by publishers, contrasting the number o
 
 
 
-Numbers and proportion of hybrid open access journal articles varies across publishers and journals. In the year 2017, for example, the mean open access proportion per Springer Nature journal was 12 % (SD = 9.6 %), whereas the  mean open access articles proportion per journal published by Elsevier BV was 2.5 % (SD = 2.6 %). Figure 3 shows the variations for the five publishers with the largest number of hybrid open access journals in 2017 according to our data.
+Numbers and proportion of hybrid open access journal articles varies across publishers and journals. In the year 2017, for example, the mean open access proportion per Springer Nature journal was 12 % (SD = 9.6 %), whereas the  mean open access articles proportion per journal published by Elsevier BV was 4 % (SD = 4.1 %). Figure 3 shows the variations for the five publishers with the largest number of hybrid open access journals in 2017 according to our data.
 
 
 
