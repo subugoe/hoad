@@ -26,38 +26,12 @@ rmarkdown::run("dashboard.Rmd")
 
 ## Methods and data
 
-Methods used are available in the R folder. [`R/cr_fetching.R`](R/cr_fetching.R) describes how licensing and journal metadata were obtained from [Crossref](https://www.crossref.org/), using the [rcrossref](https://github.com/ropensci/rcrossref) client, developed and maintained by the rOpenSci initiative (https://ropensci.org/). [`R/oapc.R`](R/oapc.R) shows how cost information was analysed. 
+Methods used are available in the R folder. [`R/cr_fetching.R`](R/cr_fetching.R) describes how licensing and journal metadata were obtained from [Crossref](https://www.crossref.org/), using the [rcrossref](https://github.com/ropensci/rcrossref) client, developed and maintained by the rOpenSci initiative (https://ropensci.org/). [`R/cr_match.R`](R/cr_match.R) shows how the dataset were merged together and how the count data used for the dashboard were calculated. 
 
 <!--For a long-form documentation, see [about.md](about.md)-->
 
-### Data
+Comprehenive metadata about hybrid open access articles found are shared as well. See this [overview](data/README.md) about how datasets are coded to facilitate analysis.
 
-Data files stored in the [data/](data/) folder include:
-
-#### Indicator dataset
-
-[data/hybrid_license_indicators.json](data/hybrid_license_indicators.json) and [data/hybrid_license_indicators.csv](data/hybrid_license_indicators.csv)
-
-containing the following variables:
-
-|Variable            |Description
-|:-------------------|:------------------------------------------------------------------|
-|`journal_title`     |Journal Title                                                      |
-|`publisher`         |Publisher Name                                                     |
-|`issn`              |ISSN                                                               |
-|`year`              |Publishing year                                                    |
-|`license`           |Open License URL                                                   |
-|`jn_published`      |Yearly article volume per journal                                  |
-|`year_all`          |Yearly article volume of all journals in the dataset               |
-|`year_publisher_all`|Yearly article volume of all journals in the dataset per publisher |                              |
-|`license_ref_n`     |Yearly article volume under the license `license`                  |
-
-
-#### Licensing metadata
-
-[data/jn_facets_df.json](data/jn_facets_df.json) contains journal article volume and corresponding licensing information for the period  2013 - 2017 for each ISSN found in the Open APC dataset representing a hybrid OA journal.
-
-[data/hybrid_license_df.json](data/jn_facets_df.json) stores information about journals with licensing metadata representing hybrid OA journal articles (excluding delayed OA and licenses that only govern text mining)
 
 ## How to contribute?
 
@@ -72,3 +46,11 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 ## Meta
 
 License: MIT
+
+Datasets are released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or distribute these materials in any form, for any purpose, commercial or non-commercial, and by any means.
+
+Crossref asserts no claims of ownership to individual items of bibliographic metadata and associated Digital Object Identifiers (DOIs) acquired through the use of the Crossref Free Services. Individual items of bibliographic metadata and associated DOIs may be cached and incorporated into the user's content and systems.
+
+Open APC Data are made available under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in individual contents of the database are licensed under the Database Contents License: http://opendatacommons.org/licenses/dbcl/1.0/.

@@ -4,7 +4,7 @@ output:
   flexdashboard::flex_dashboard:
     navbar:
       - { title: "About", href: "https://subugoe.github.io/hybrid_oa_dashboard/about.html"}
-      - { title: "Data", href: "https://github.com/subugoe/hybrid_oa_dashboard/tree/master/data"}
+      - { title: "Data", href: "https://github.com/subugoe/hybrid_oa_dashboard/tree/master/data/README.md"}
     orientation: rows
     source_code: "https://github.com/subugoe/hybrid_oa_dashboard/"
     vertical_layout: fill

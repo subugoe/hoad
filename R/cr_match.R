@@ -1,4 +1,3 @@
-#' evaluate coverage oa / pub volumen
 library(tidyverse)
 library(jsonlite)
 #' full data set
@@ -160,24 +159,6 @@ hybrid_dois <- hybrid_oa_df %>%
 #' ### Hybrid journal output vs what was actually sponsored by academic institutions
 #'  Get Open APC data dump, and distinguish between individual hybrid and offsetting
 o_apc <- readr::read_csv("../data/oapc_hybrid.csv") %>%
-  mutate(hybrid_type = ifelse(!is.na(euro), "Open APC (Hybrid)", "Open APC (Offsetting)"))
-#' Include country information, which are available via Open APC OLAP server: 
-#' <https://github.com/OpenAPC/openapc-olap/blob/master/static/institutions.csv>
-country_apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions.csv") %>%
-  select(institution, country)
-countries <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions_offsetting.csv") %>%
-  bind_rows(country_apc) %>%
-  distinct() %>% 
-  mutate(country_name = countrycode::countrycode(country, "iso3c", "country.name"))
-#' merge with open apc dataset
-#' 
-o_apc <- o_apc %>%
-  left_join(countries, by = "institution") %>%
-  filter(!publisher %in% "Copernicus GmbH")
-# export with country infos
-readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
-
-o_apc <- o_apc %>%
   # make sure dois are lowercase
   mutate(doi = tolower(doi)) %>%
   # select columns needed
@@ -197,13 +178,3 @@ my_data %>%
 
 #' backup licensing data set
 readr::write_csv(my_data, "../data/hybrid_publications.csv")
-
-#' oa stats for springer
-my_data %>% 
-  filter(publisher == "Springer Nature") %>%
-  group_by(issued, license, yearly_publisher_volume) %>%
-  summarise(n = n_distinct(doi_oa)) %>%
-  mutate(prop = n / yearly_publisher_volume) %>%
-  ggplot(aes(issued, prop, fill = license)) + 
-  geom_bar(stat = "identity")
-  

@@ -189,13 +189,11 @@ hybrid_cr %>%
 
 ```{r}
 library(tidyverse)
-my_df <- hybrid_cr %>%
-  filter(!is.na(license)) %>%
-  filter(year == 2017) %>%
-  group_by(publisher, journal_title) %>%
-  summarize(oa = sum(license_ref_n, na.rm = TRUE),
-            all = sum(yearly_jn_volume)) %>%
-  mutate(prop = oa / all) %>%
+my_df <- hybrid_cr %>% 
+  filter(year == "2017") %>% 
+  group_by(journal_title, publisher, yearly_jn_volume) %>% 
+  summarise(n = n()) %>% 
+  mutate(prop = n / yearly_jn_volume) %>%
   ungroup() %>%
   mutate(publisher = forcats::as_factor(publisher)) %>%
   mutate(publisher = forcats::fct_reorder(publisher, publisher, fun = length, .desc = TRUE)) %>% 
@@ -208,19 +206,18 @@ Numbers and proportion of hybrid open access journal articles varies across publ
 library(scales)
 q <- ggplot(my_df, aes(publisher, prop)) + 
   geom_boxplot() + 
-  coord_flip() +
   scale_x_discrete(limits = rev(levels(my_df$publisher))) +
-  scale_y_continuous(labels = scales::percent, limit = c(0,1)) +
+  coord_flip(ylim = c(0,0.3)) +
+  #scale_y_continuous(labels = scales::percent, limit = c(0,1)) +
   labs(y = "Hybrid OA share per journal in 2017", x = "Publishers (Top 5)",
-       title = "What is the share of open access articles provided by subscription-based journals?",
-       subtitle = "Notice that only those hybrid open access journals were included where academic institutions\nsponsored the publication fee according to the Open APC initiative and Crossref licensing metadata was found") +
+       title = "What was the share of open access articles \nin subscription-based journals in 2017?") +
   # mimicking github.com/hrbrmstr/hrbrthemes 
-  theme_minimal(base_family="Arial Narrow") +
+  theme_minimal(base_family="Arial Narrow", base_size = 16) +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
   theme(axis.ticks=element_blank()) +
   theme(panel.grid.major.y=element_blank()) +
-  theme(panel.border=element_blank())
+  theme(panel.border=element_blank()) 
 ggsave(q, path = "../img/", filename = "oa_variation.png", width = 9, height = 4, dpi = 450, device = "png")
 ```  
 
