@@ -195,9 +195,10 @@ my_df <- hybrid_cr %>%
   summarise(n = n()) %>% 
   mutate(prop = n / yearly_jn_volume) %>%
   ungroup() %>%
-  mutate(publisher = forcats::as_factor(publisher)) %>%
-  mutate(publisher = forcats::fct_reorder(publisher, publisher, fun = length, .desc = TRUE)) %>% 
-  mutate(publisher = forcats::fct_other(publisher, keep = levels(publisher)[1:5]))
+  mutate(publisher = forcats::as_factor(publisher)) -> my_df
+publishers <- fct_count(my_df$publisher, sort = TRUE) %>%
+  .$f
+my_df %>% mutate(publisher = forcats::fct_other(publisher, keep = publishers[1:5])) -> my_df
 ```
 
 Numbers and proportion of hybrid open access journal articles varies across publishers and journals. In the year 2017, for example, the mean open access proportion per Springer Nature journal was `r my_df %>% filter(publisher == "Springer Nature") %>% .$prop %>% mean() * 100` % (SD = `r my_df %>% filter(publisher == "Springer Nature") %>% .$prop %>% sd() * 100` %), whereas the  mean open access articles proportion per journal published by Elsevier BV was `r my_df %>% filter(publisher == "Elsevier BV") %>% .$prop %>% mean() * 100` % (SD = `r my_df %>% filter(publisher == "Elsevier BV") %>% .$prop %>% sd() * 100` %). Figure 3 shows the variations for the five publishers with the largest number of hybrid open access journals in 2017 according to our data.
