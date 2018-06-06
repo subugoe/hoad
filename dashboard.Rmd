@@ -13,6 +13,7 @@ runtime: shiny
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
+library(viridis)
 library(tidyverse)
 library(plotly)
 library(scales)
@@ -241,6 +242,82 @@ gg <- ggplot(tt, aes(prop, reorder(country, prop))) +
 gg})
 ```
 
+Compare
+=====================================
+
+
+Row {data-height=550}
+--------------------------------------------
+
+### Compare again
+
+```{r}
+inputPanel(
+  selectInput(
+    "Publisher",
+    label = "Select Publisher",
+    choices = c("All", unique(hybrid_df$publisher)),
+    selected = "All"
+  ), 
+  checkboxInput("rb", "Display journals", TRUE)
+)
+
+jn_bx <- reactive({
+  if(input$Publisher == "All") {
+    tt <-   hybrid_df %>%
+      filter(!is.na(license)) %>%
+      group_by(year, publisher, journal_title, yearly_jn_volume) %>%
+      summarize(oa = n()) %>%
+      mutate(prop = oa / yearly_jn_volume)
+  } else {
+    tt <-  hybrid_df %>%
+      filter(!is.na(license)) %>%
+      filter(publisher == input$Publisher) %>%
+      group_by(year, publisher, journal_title, yearly_jn_volume) %>%
+      summarize(oa = n()) %>%
+      mutate(prop = oa / yearly_jn_volume)
+  }
+  tt
+})
+
+```
+
+```{r}
+# plot
+renderPlotly({
+ p <- ggplot(jn_bx(), aes(y = prop, x = as.factor(year), colour = prop, label = journal_title)) +
+  geom_boxplot() + 
+   coord_flip() +
+   theme_minimal() +
+   xlab("Year") +
+   ylab("OA Proportion") +
+   scale_x_discrete(drop = FALSE) +
+   scale_y_continuous(labels = scales::percent)
+ if (input$rb == TRUE) {
+   p <- p +
+     geom_point() +
+     scale_colour_viridis(option = "C") +
+     scale_fill_viridis(option = "C") +
+     guides(color = F)
+ } else {
+   p <- p
+ }
+ plotly::ggplotly(p, tooltip = c("label", "y"), height = "300")
+})
+```
 
 
 
+
+Row
+---------------------------------------------
+
+### Table view
+
+```{r}
+renderDataTable({
+  jn_bx() %>%
+    arrange(desc(year)) 
+},  options = list(
+          pageLength = 5))
+```
