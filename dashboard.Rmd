@@ -18,6 +18,7 @@ library(tidyverse)
 library(plotly)
 library(scales)
 library(ggalt)
+library(DT)
 ```
 
 ```{r global}
@@ -392,10 +393,14 @@ renderDataTable({
     filter(year %in% input$Year) %>%
     group_by(year, publisher, journal_title, yearly_jn_volume) %>%
     summarize(oa = n()) %>%
-    mutate(prop = oa / yearly_jn_volume) %>%
-    arrange(desc(year))}, 
+    mutate(prop = round((oa / yearly_jn_volume) * 100, 2)) %>%
+    arrange(desc(year))},
+  colnames = c('Year', 'Publisher', 'Journal', 'Article Volume', 'OA Articles', 'OA Share (in %)'),
+  rownames = FALSE, 
+  filter = 'bottom',
   options = list(
           pageLength = 10,
-          lengthMenu = c(5,10)))
+          lengthMenu = c(5,10,25,50),
+  columnDefs = list(list(className = 'dt-head-left', targets = "_all"))))
 ```
 
