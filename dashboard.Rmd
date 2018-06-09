@@ -246,19 +246,6 @@ gg})
 Compare 
 =====================================
 
-<!-- Inputs {.sidebar} -->
-<!-- ----------------------------------------------------------------------- -->
-
-<!-- ```{r} -->
-<!--   selectizeInput( -->
-<!--     "Publisher", -->
-<!--     label = "Select Publisher", -->
-<!--     choices = c("All", unique(hybrid_df$publisher)), -->
-<!--     selected = "All" -->
-<!--   ) -->
-<!--   checkboxInput("rb", "Display journals", FALSE) -->
-<!-- ``` -->
-
 Row
 --------------------------------------------
 
@@ -275,7 +262,8 @@ fillCol(height = 600, flex = c(NA, 1),
             choices = c(rev(levels(hybrid_df$year))),
             selected = "2017",
             multiple = TRUE
-    )),
+    ),
+    checkboxInput("rb", "Display journals", FALSE)),
   plotlyOutput("pubplot", height = "100%")
 )
 
@@ -333,8 +321,7 @@ fillCol(height = 600, flex = c(NA, 1),
             label = "Select Publisher",
             choices = c("All", unique(hybrid_df$publisher)),
             selected = "All"
-    ), 
-    checkboxInput("rb", "Display journals", FALSE)),
+    )),
   plotlyOutput("yearplot", height = "100%")
 )
 
