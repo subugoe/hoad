@@ -7,7 +7,7 @@ output:
       - { title: "Data", href: "https://github.com/subugoe/hybrid_oa_dashboard/tree/master/data/README.md"}
     orientation: rows
     source_code: "https://github.com/subugoe/hybrid_oa_dashboard/"
-    vertical_layout: fill
+    vertical_layout: scroll 
 runtime: shiny
 ---
 
@@ -23,7 +23,7 @@ library(ggalt)
 ```{r global}
 # access to data
 hybrid_df <- readr::read_csv("data/hybrid_publications.csv") %>%
-  mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) %>%
+  mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) %>% 
   arrange(desc(yearly_publisher_volume))
 
 o_apc_df <- readr::read_csv("data/oapc_hybrid.csv") %>% 
@@ -242,27 +242,102 @@ gg <- ggplot(tt, aes(prop, reorder(country, prop))) +
 gg})
 ```
 
-Compare
+Compare 
 =====================================
 
+<!-- Inputs {.sidebar} -->
+<!-- ----------------------------------------------------------------------- -->
 
-Row {data-height=550}
+<!-- ```{r} -->
+<!--   selectizeInput( -->
+<!--     "Publisher", -->
+<!--     label = "Select Publisher", -->
+<!--     choices = c("All", unique(hybrid_df$publisher)), -->
+<!--     selected = "All" -->
+<!--   ) -->
+<!--   checkboxInput("rb", "Display journals", FALSE) -->
+<!-- ``` -->
+
+Row
 --------------------------------------------
 
-### Compare again
+
+### Proportion of open access publications in subscription-based journals by publisher 
+
 
 ```{r}
-inputPanel(
-  selectInput(
-    "Publisher",
-    label = "Select Publisher",
-    choices = c("All", unique(hybrid_df$publisher)),
-    selected = "All"
-  ), 
-  checkboxInput("rb", "Display journals", TRUE)
+fillCol(height = 600, flex = c(NA, 1), 
+        inputPanel(
+          selectInput(
+            "Year",
+            label = "Select Year",
+            choices = c(rev(levels(hybrid_df$year))),
+            selected = "2017",
+            multiple = TRUE
+    )),
+  plotlyOutput("pubplot", height = "100%")
 )
 
-jn_bx <- reactive({
+output$pubplot <- renderPlotly({
+  if(input$Year == "All") {
+    tt <-   hybrid_df %>%
+      filter(!is.na(license)) %>%
+      mutate(publisher = forcats::as_factor(publisher)) %>%
+      group_by(year, publisher, journal_title, yearly_jn_volume) %>%
+      summarize(oa = n()) %>%
+      mutate(prop = oa / yearly_jn_volume)
+  } else {
+    tt <-  hybrid_df %>%
+      filter(!is.na(license)) %>%
+      mutate(publisher = forcats::as_factor(publisher)) %>%
+      filter(year %in% input$Year) %>%
+      group_by(year, publisher, journal_title, yearly_jn_volume) %>%
+      summarize(oa = n()) %>%
+      mutate(prop = oa / yearly_jn_volume)
+  }
+  tt <- tt %>%
+    ungroup() %>%
+    mutate(publisher = forcats::fct_other(publisher, keep = levels(publisher)[1:10]))
+  p <- ggplot(tt, aes(y = prop, x = as.factor(publisher))) +
+  geom_boxplot() + 
+   coord_flip() +
+   theme_minimal() +
+   xlab("Publisher") +
+   ylab(NULL) +
+   scale_x_discrete(drop = FALSE, limits = rev(levels(tt$publisher)),
+                    labels = function(x) str_wrap(x, width = 30)) +
+   scale_y_continuous(labels = scales::percent) 
+ if (input$rb == TRUE) {
+   p <- p +
+     geom_point(aes(colour = prop, label = journal_title)) +
+     scale_colour_viridis(option = "C") +
+     scale_fill_viridis(option = "C") +
+     guides(color = FALSE, fill = FALSE)
+ } else {
+   p <- p
+ }
+ plotly::ggplotly(p, tooltip = c("label", "y")) %>%
+   layout(margin = list(l = 200))
+})
+```
+
+
+### Proportion of open access publications in subscription-based journals by year 
+
+```{r}
+fillCol(height = 600, flex = c(NA, 1), 
+        inputPanel(
+          selectInput(
+            "Publisher",
+            label = "Select Publisher",
+            choices = c("All", unique(hybrid_df$publisher)),
+            selected = "All"
+    ), 
+    checkboxInput("rb", "Display journals", FALSE)),
+  plotlyOutput("yearplot", height = "100%")
+)
+
+output$yearplot <- renderPlotly({
   if(input$Publisher == "All") {
     tt <-   hybrid_df %>%
       filter(!is.na(license)) %>%
@@ -277,47 +352,50 @@ jn_bx <- reactive({
       summarize(oa = n()) %>%
       mutate(prop = oa / yearly_jn_volume)
   }
-  tt
-})
-
-```
-
-```{r}
-# plot
-renderPlotly({
- p <- ggplot(jn_bx(), aes(y = prop, x = as.factor(year), colour = prop, label = journal_title)) +
+   
+  p <- ggplot(tt, aes(y = prop, x = as.factor(year))) +
   geom_boxplot() + 
    coord_flip() +
    theme_minimal() +
    xlab("Year") +
-   ylab("OA Proportion") +
+   ylab(NULL) +
    scale_x_discrete(drop = FALSE) +
    scale_y_continuous(labels = scales::percent)
  if (input$rb == TRUE) {
    p <- p +
-     geom_point() +
+     geom_point(aes(colour = prop, label = journal_title)) +
      scale_colour_viridis(option = "C") +
      scale_fill_viridis(option = "C") +
-     guides(color = F)
+     guides(color = FALSE, fill = FALSE)
  } else {
    p <- p
  }
- plotly::ggplotly(p, tooltip = c("label", "y"), height = "300")
+ plotly::ggplotly(p, tooltip = c("label", "y"))
 })
 ```
 
 
-
-
-Row
+Row 
 ---------------------------------------------
 
-### Table view
+### Table view {data-height=700}
 
 ```{r}
 renderDataTable({
-  jn_bx() %>%
-    arrange(desc(year)) 
-},  options = list(
-          pageLength = 5))
+  if(input$Publisher == "All") {
+    hybrid_df
+  } else {
+    hybrid_df <- hybrid_df %>%
+      filter(publisher == input$Publisher)
+  }
+  hybrid_df %>%
+    filter(year %in% input$Year) %>%
+    group_by(year, publisher, journal_title, yearly_jn_volume) %>%
+    summarize(oa = n()) %>%
+    mutate(prop = oa / yearly_jn_volume) %>%
+    arrange(desc(year))}, 
+  options = list(
+          pageLength = 10,
+          lengthMenu = c(5,10)))
 ```
+
