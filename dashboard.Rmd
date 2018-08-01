@@ -222,6 +222,7 @@ renderPlotly({
 renderPlot({
 tt <- o_apc_df %>%
     filter(journal_full_title %in% jn_f()$journal_title) %>%
+    filter(!is.na(country)) %>% # deal with missing country info provided by Open APC 
     count(country) %>% 
   mutate(prop = n / sum(n))
 gg <- ggplot(tt, aes(prop, reorder(country, prop))) +
