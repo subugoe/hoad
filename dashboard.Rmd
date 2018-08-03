@@ -19,6 +19,7 @@ library(plotly)
 library(scales)
 library(ggalt)
 library(DT)
+library(writexl)
 ```
 
 ```{r global}
@@ -370,8 +371,8 @@ Row
 ### Table view {data-height=700}
 
 ```{r}
-renderDataTable({
-  if(input$Publisher == "All") {
+hybrid_data <- reactive({
+  if (input$Publisher == "All") {
     hybrid_df
   } else {
     hybrid_df <- hybrid_df %>%
@@ -382,13 +383,39 @@ renderDataTable({
     group_by(year, publisher, journal_title, yearly_jn_volume) %>%
     summarize(oa = n()) %>%
     mutate(prop = round((oa / yearly_jn_volume) * 100, 2)) %>%
-    arrange(desc(year))},
-  colnames = c('Year', 'Publisher', 'Journal', 'Article Volume', 'OA Articles', 'OA Share (in %)'),
-  rownames = FALSE, 
-  filter = 'bottom',
-  options = list(
-          pageLength = 10,
-          lengthMenu = c(5,10,25,50),
-  columnDefs = list(list(className = 'dt-head-left', targets = "_all"))))
+    arrange(desc(year)) %>%
+    select(
+      Year = year,
+      Publisher = publisher,
+      Journal = journal_title,
+      `Article Volume` = yearly_jn_volume,
+      `OA Articles` = oa,
+      `OA Share (in %)` = prop
+    )
+})
+
+renderDataTable({
+  hybrid_data()
+},
+rownames = FALSE,
+filter = 'bottom',
+options = list(
+  pageLength = 10,
+  lengthMenu = c(5, 10, 25, 50),
+  columnDefs = list(list(
+    className = 'dt-head-left', targets = "_all"
+  ))
+))
+
+# download button
+tags$h4("Export to Excel")
+downloadHandler(
+  filename = function() {
+    paste('hybridoa-', Sys.Date(), '.xlsx', sep = '')
+  },
+  content = function(file) {
+    writexl::write_xlsx(hybrid_data(), file)
+  }
+)
 ```
 
