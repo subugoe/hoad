@@ -62,8 +62,12 @@ o_apc <- o_offset %>%
       publisher
     )
   ) %>%
-  # 4. remove all publications from fully OA publisher copernicus   
+  # 4. remove all publications from fully OA publisher copernicus 
   filter(!publisher %in% "Copernicus GmbH") %>%
+  # 5. remove STEM CELLS Translational Medicine, a fully OA journal
+  # since 2012
+  # https://github.com/subugoe/hybrid_oa_dashboard/issues/10
+  filter(!journal_full_title == "STEM CELLS Translational Medicine") %>%
   # 5. distinguish between individual hybrid and offsetting
   mutate(hybrid_type = ifelse(!is.na(euro), "Open APC (Hybrid)", "Open APC (Offsetting)"))
 #' Include country information, which are available via Open APC OLAP server: 
