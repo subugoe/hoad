@@ -21,15 +21,15 @@ license_df %>%
 license_df %>%
   select(DOI, ISSN, issued) %>%
   # to year
-  mutate_at(vars(issued), funs(lubridate::parse_date_time(., c('y', 'ymd', 'ym')))) %>%
-  mutate_at(vars(issued), funs(lubridate::year(.))) %>%
+  mutate(issued = lubridate::parse_date_time(issued, c('y', 'ymd', 'ym'))) %>%
+  mutate(issued = lubridate::year(issued)) %>%
   # issn 
   separate(ISSN, into = c("issn_1", "issn_2", "issn_3"), sep = ",") %>%
   gather(issn_1, issn_2, issn_3, key = "issn_type", value = "issn") %>%
   filter(!is.na(issn)) -> tidy_oahybrid_df
 #' add licensing info            
 jn_all <- jsonlite::stream_in(file("../data/jn_facets_df.json"), simplifyDataFrame = FALSE)
-#' tidy import, (we need another back strategy to avoid the follwoing steps)
+#' tidy import, (we need another backup strategy to avoid the following steps)
 issn <- map_df(jn_all, "issn")
 jn_df <- issn %>%
   mutate(journal_title = map_chr(jn_all, "journal_title")) %>%
@@ -86,24 +86,31 @@ doaj_lookup <- doaj %>%
   select(issn_print = `Journal ISSN (print version)`,
          issn_e = `Journal EISSN (online version)`,
          year_flipped = `First calendar year journal provided online Open Access content`) %>%
-  # we started our analysis in 2013
-  filter(year_flipped > 2012) %>%
   # gathering issns into one column
   tidyr::gather(issn_print, issn_e, key = "issn_type", value = "issn") %>%
   # remove missing values
   filter(!is.na(issn))
+#' # Include ISOS GOLD OA list to include ISSN-L information.
+#' Rimmert C, Bruns A, Lenke C, Taubert NC. (2017): 
+#' ISSN-Matching of Gold OA Journals (ISSN-GOLD-OA) 2.0. Bielefeld University. 
+#' https://doi.org/10.4119/unibi/2913654.
+isos <- readr::read_csv("https://pub.uni-bielefeld.de/download/2913654/2913655/ISSN_GOLD-OA_2.0.csv") %>%
+  select(1:2)
+doaj_lookup %>% 
+  left_join(isos, by = c("issn" = "ISSN")) %>%
+  tidyr::gather(issn, ISSN_L, key = "issn_type", value = "issn") -> doaj_lookup
 #' # check with our hybrid license dataset
 hybrid_oa_df %>% 
-  inner_join(doaj_lookup, by = "issn") %>% 
+  inner_join(doaj_lookup, by = c("issn" = "issn")) %>% 
   filter(year_flipped <= issued) -> flipped_jns
 # export 
-select(flipped_jns, -year_published) %>%
+flipped_jns %>%
+  select(-year_published) %>%
+  distinct(doi_oa,.keep_all = TRUE) %>%
   readr::write_csv("../data/flipped_jns_doaj.csv")
 #' remove flipped journals from hybrid license data set and store into json
 hybrid_oa_df %>% 
   filter(!doi_oa %in% flipped_jns$doi_oa) %>%
-  # manually remove Copernicus GmbH, which is a fully oa publisher
-  filter(!publisher %in% "Copernicus GmbH") %>%
   # clean license URIS
   mutate(license = gsub("\\/$", "", license)) %>%
   mutate(license = gsub("https", "http", license)) -> hybrid_oa_df
