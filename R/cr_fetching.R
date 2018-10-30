@@ -160,7 +160,8 @@ jn_facets <- purrr::map(issns_list, .f = purrr::safely(function(x) {
       year_published = list(tt$facets$published),
       license_refs = list(tt$facets$license),
       journal_title = tt$facets$`container-title`$.id[1],
-      publisher = tt$facets$publisher$.id[1]
+      publisher = tt$facets$publisher$.id[1],
+      category = list(tt$facets$`category-name`$.id)
     )
   } else {
     NULL
