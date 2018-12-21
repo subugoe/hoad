@@ -25,6 +25,7 @@ library(writexl)
 ```{r global}
 # access to data
 hybrid_df <- readr::read_csv("data/hybrid_publications.csv") %>%
+  mutate(license = fct_infreq(license)) %>%
   mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) %>% 
   arrange(desc(yearly_publisher_volume))
 
@@ -138,15 +139,14 @@ Column {.tabset .tabset-fade}
 ```{r}
 renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, prop, fill = license)) +
-    geom_bar(stat = "identity") +
     xlab("Year") +
     ylab("Hybrid OA / Articles published") +
-    viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
+    scale_fill_manual("License", values =  c("#c23531","#2f4554", "#61a0a8", "#d48265", "#91c7ae","#749f83")) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels = scales::percent) +
-    theme_minimal()
- plotly::ggplotly(p) %>%
-    layout(showlegend = TRUE, legend = list(font = list(size = 9)))
+    theme_minimal() +
+    geom_col(position = position_stack(reverse = TRUE))
+ plotly::ggplotly(p)
 })
 ```
 
@@ -156,20 +156,19 @@ renderPlotly({
 ```{r}
 renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, n, fill = license)) +
-    geom_bar(stat = "identity") +
     xlab("Year") +
     ylab("Hybrid OA Articles") +
-    viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
+    scale_fill_manual("License", values =  c("#c23531","#2f4554", "#61a0a8", "#d48265", "#91c7ae","#749f83")) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
                        breaks= pretty_breaks()) +
-    theme_minimal()
-  plotly::ggplotly(p) %>%
-    layout(showlegend = TRUE, legend = list(font = list(size = 9)))
+    theme_minimal() +
+    geom_col(position = position_stack(reverse = TRUE))
+  plotly::ggplotly(p)
 })
 ```
 
-Row {data-width=400 data-height=350}
+Row
 -------------------------------------
 
 ### Crossref Indexing Coverage vs Spending Information available via Open APC
@@ -206,8 +205,7 @@ renderPlotly({
       alpha = 0.8
     )
   
-  tt <- plotly::ggplotly(p, tooltip = c("y")) %>%
-    layout(showlegend = TRUE, legend = list(font = list(size = 10)))
+  tt <- plotly::ggplotly(p, tooltip = c("y"))
   tt$x$data <- lapply(tt$x$data, function(x) {
     x$text <- paste(x$name, x$y, sep = ": ")
     x
