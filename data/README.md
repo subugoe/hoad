@@ -34,20 +34,20 @@ Tibble view in R:
 ```r
 library(readr)
 readr::read_csv("hybrid_publications.csv")
-#> # A tibble: 138,088 x 14
+#> # A tibble: 142,726 x 14
 #>    license       journal_title  publisher doi_oa   issued yearly_jn_volume
 #>    <chr>         <chr>          <chr>     <chr>     <int>            <int>
 #>  1 http://creat… Soft Computing Springer… 10.1007…   2016              466
 #>  2 http://creat… Soft Computing Springer… 10.1007…   2016              466
-#>  3 http://creat… Soft Computing Springer… 10.1007…   2018              639
-#>  4 http://creat… Soft Computing Springer… 10.1007…   2016              466
+#>  3 http://creat… Soft Computing Springer… 10.1007…   2018              706
+#>  4 http://creat… Soft Computing Springer… 10.1007…   2017              505
 #>  5 http://creat… Soft Computing Springer… 10.1007…   2017              505
-#>  6 http://creat… Soft Computing Springer… 10.1007…   2017              505
-#>  7 http://creat… Soft Computing Springer… 10.1007…   2018              639
+#>  6 http://creat… Soft Computing Springer… 10.1007…   2018              706
+#>  7 http://creat… Soft Computing Springer… 10.1007…   2017              505
 #>  8 http://creat… Soft Computing Springer… 10.1007…   2017              505
 #>  9 http://creat… Soft Computing Springer… 10.1007…   2017              505
 #> 10 http://creat… Soft Computing Springer… 10.1007…   2017              505
-#> # ... with 138,078 more rows, and 8 more variables: license_ref_n <int>,
+#> # ... with 142,716 more rows, and 8 more variables: license_ref_n <int>,
 #> #   yearly_publisher_volume <int>, yearly_all <int>, period <int>,
 #> #   euro <dbl>, hybrid_type <chr>, country <chr>, country_name <chr>
 ```
@@ -70,7 +70,7 @@ Tibble view in R:
 ```r
 library(readr)
 readr::read_csv("oapc_hybrid.csv")
-#> # A tibble: 54,125 x 21
+#> # A tibble: 54,301 x 21
 #>    institution  period euro  doi     is_hybrid publisher journal_full_tit…
 #>    <chr>         <int> <chr> <chr>   <lgl>     <chr>     <chr>            
 #>  1 Aberystwyth…   2015 <NA>  10.100… TRUE      Springer… Soft Computing   
@@ -83,7 +83,7 @@ readr::read_csv("oapc_hybrid.csv")
 #>  8 Anglia Rusk…   2016 <NA>  10.100… TRUE      Springer… Experimental Bra…
 #>  9 Anglia Rusk…   2016 <NA>  10.100… TRUE      Springer… Morphology       
 #> 10 Anglia Rusk…   2016 <NA>  10.100… TRUE      Springer… The Internationa…
-#> # ... with 54,115 more rows, and 14 more variables: issn <chr>,
+#> # ... with 54,291 more rows, and 14 more variables: issn <chr>,
 #> #   issn_print <chr>, issn_electronic <chr>, issn_l <chr>,
 #> #   license_ref <chr>, indexed_in_crossref <lgl>, pmid <int>, pmcid <chr>,
 #> #   ut <chr>, url <chr>, doaj <lgl>, hybrid_type <chr>, country <chr>,
@@ -140,20 +140,20 @@ library(jsonlite)
 library(dplyr)
 jsonlite::stream_in(file("../data/hybrid_license_md.json"), verbose = FALSE) %>%
   dplyr::as_data_frame()
-#> # A tibble: 149,464 x 36
+#> # A tibble: 155,526 x 36
 #>    alternative.id container.title created  deposited DOI    indexed ISSN  
 #>  * <chr>          <chr>           <chr>    <chr>     <chr>  <chr>   <chr> 
 #>  1 2261           Soft Computing  2016-07… 2016-07-… 10.10… 2018-0… 1432-…
 #>  2 2306           Soft Computing  2016-08… 2017-09-… 10.10… 2018-0… 1432-…
 #>  3 3117           Soft Computing  2018-03… 2018-03-… 10.10… 2018-0… 1432-…
-#>  4 2391           Soft Computing  2016-10… 2017-06-… 10.10… 2018-0… 1432-…
-#>  5 2497           Soft Computing  2017-01… 2018-01-… 10.10… 2018-0… 1432-…
-#>  6 2528           Soft Computing  2017-03… 2018-03-… 10.10… 2018-0… 1432-…
-#>  7 3218           Soft Computing  2018-05… 2018-05-… 10.10… 2018-0… 1432-…
-#>  8 2752           Soft Computing  2017-08… 2017-09-… 10.10… 2018-0… 1432-…
-#>  9 2824           Soft Computing  2017-09… 2017-09-… 10.10… 2018-0… 1432-…
-#> 10 2874           Soft Computing  2017-10… 2017-10-… 10.10… 2018-0… 1432-…
-#> # ... with 149,454 more rows, and 29 more variables: issue <chr>,
+#>  4 2497           Soft Computing  2017-01… 2018-01-… 10.10… 2018-0… 1432-…
+#>  5 2528           Soft Computing  2017-03… 2018-03-… 10.10… 2018-0… 1432-…
+#>  6 3218           Soft Computing  2018-05… 2018-05-… 10.10… 2018-0… 1432-…
+#>  7 2752           Soft Computing  2017-08… 2017-09-… 10.10… 2018-0… 1432-…
+#>  8 2824           Soft Computing  2017-09… 2017-09-… 10.10… 2018-0… 1432-…
+#>  9 2874           Soft Computing  2017-10… 2017-10-… 10.10… 2018-0… 1432-…
+#> 10 2951           Soft Computing  2017-11… 2017-11-… 10.10… 2018-0… 1432-…
+#> # ... with 155,516 more rows, and 29 more variables: issue <chr>,
 #> #   issued <chr>, license_date <chr>, license_URL <chr>,
 #> #   license_delay.in.days <chr>, license_content.version <chr>,
 #> #   member <chr>, page <chr>, prefix <chr>, publisher <chr>,
@@ -189,20 +189,20 @@ Tibble view in R:
 ```r
 library(readr)
 readr::read_csv("indicator.csv")
-#> # A tibble: 28,760 x 7
+#> # A tibble: 30,691 x 7
 #>    journal_title  publisher  year yearly_jn_volume license   license_ref_n
 #>    <chr>          <chr>     <int>            <int> <chr>             <int>
-#>  1 Soft Computing Springer…  2018              639 http://c…            20
+#>  1 Soft Computing Springer…  2018              706 http://c…            25
 #>  2 Soft Computing Springer…  2017              505 http://c…            19
 #>  3 Soft Computing Springer…  2016              466 http://c…            15
 #>  4 Soft Computing Springer…  2015              428 http://c…            10
 #>  5 Soft Computing Springer…  2014              349 <NA>                 NA
 #>  6 Soft Computing Springer…  2013              234 <NA>                 NA
 #>  7 Geoheritage    Springer…  2017               65 http://c…             3
-#>  8 Geoheritage    Springer…  2018               57 http://c…             5
+#>  8 Geoheritage    Springer…  2018               62 http://c…             6
 #>  9 Geoheritage    Springer…  2016               42 http://c…             2
 #> 10 Geoheritage    Springer…  2014               41 <NA>                 NA
-#> # ... with 28,750 more rows, and 1 more variable:
+#> # ... with 30,681 more rows, and 1 more variable:
 #> #   yearly_publisher_volume <int>
 ```
 
@@ -214,7 +214,7 @@ To detect fully open acces journals, the [Directory of Open Access Journals](htt
 ```r
 library(readr)
 readr::read_csv("flipped_jns_doaj.csv")
-#> # A tibble: 7,045 x 9
+#> # A tibble: 7,417 x 9
 #>    license     journal_title  publisher  doi_oa   issued issn_type.x issn 
 #>    <chr>       <chr>          <chr>      <chr>     <int> <chr>       <chr>
 #>  1 http://cre… Gynecological… Springer … 10.1186…   2018 issn_2      1613…
@@ -227,7 +227,7 @@ readr::read_csv("flipped_jns_doaj.csv")
 #>  8 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
 #>  9 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
 #> 10 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
-#> # ... with 7,035 more rows, and 2 more variables: year_flipped <int>,
+#> # ... with 7,407 more rows, and 2 more variables: year_flipped <int>,
 #> #   issn_type.y <chr>
 ```
 
@@ -237,26 +237,25 @@ Furthermore, [`flipped_jns.csv`](flipped_jns.csv) contains journals that are pro
 ```r
 library(readr)
 readr::read_csv("flipped_jns.csv")
-#> # A tibble: 17 x 6
+#> # A tibble: 16 x 6
 #>    journal_title       publisher        year yearly_jn_volume n_year  prop
 #>    <chr>               <chr>           <int>            <int>  <int> <dbl>
 #>  1 Applied Nanoscience Springer Nature  2016               30     30 1    
 #>  2 Applied Nanoscience Springer Nature  2017               89     89 1    
 #>  3 Integrating Materi… Springer Nature  2013                5      5 1    
-#>  4 Integrating Materi… Springer Nature  2014               26     25 0.962
-#>  5 Integrating Materi… Springer Nature  2016               14     14 1    
-#>  6 Investigative Opth… Association fo…  2016              929    929 1    
-#>  7 Investigative Opth… Association fo…  2017              785    785 1    
-#>  8 Investigative Opth… Association fo…  2018              634    634 1    
-#>  9 Journal of Applied… Scientific Res…  2013               68     68 1    
-#> 10 Journal of Applied… Scientific Res…  2014              172    172 1    
-#> 11 Journal of Applied… Scientific Res…  2015              197    197 1    
-#> 12 Journal of Applied… Scientific Res…  2016              221    221 1    
-#> 13 Journal of Applied… Scientific Res…  2017              197    197 1    
-#> 14 Journal of Applied… Scientific Res…  2018              201    201 1    
-#> 15 Translational Visi… Association fo…  2016               87     87 1    
-#> 16 Translational Visi… Association fo…  2017               88     88 1    
-#> 17 Translational Visi… Association fo…  2018              135    134 0.993
+#>  4 Integrating Materi… Springer Nature  2016               14     14 1    
+#>  5 Investigative Opth… Association fo…  2016              929    929 1    
+#>  6 Investigative Opth… Association fo…  2017              785    785 1    
+#>  7 Investigative Opth… Association fo…  2018              732    732 1    
+#>  8 Journal of Applied… Scientific Res…  2013               68     68 1    
+#>  9 Journal of Applied… Scientific Res…  2014              172    172 1    
+#> 10 Journal of Applied… Scientific Res…  2015              197    197 1    
+#> 11 Journal of Applied… Scientific Res…  2016              221    221 1    
+#> 12 Journal of Applied… Scientific Res…  2017              197    197 1    
+#> 13 Journal of Applied… Scientific Res…  2018              223    223 1    
+#> 14 Translational Visi… Association fo…  2016               87     87 1    
+#> 15 Translational Visi… Association fo…  2017               88     88 1    
+#> 16 Translational Visi… Association fo…  2018              169    168 0.994
 ```
 
 
