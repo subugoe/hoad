@@ -262,7 +262,7 @@ fillCol(height = 600, flex = c(NA, 1),
             "Year",
             label = "Select Year",
             choices = c(rev(levels(hybrid_df$year))),
-            selected = "2017",
+            selected = c("2017", "2018"),
             multiple = TRUE
     ),
     checkboxInput("rb", "Display journals", FALSE)),
