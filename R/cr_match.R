@@ -3,7 +3,9 @@ library(jsonlite)
 #' full data set
 license_df <- jsonlite::stream_in(file("../data/hybrid_license_md.json")) %>%
   as_data_frame() %>%
-  select(-title,-`clinical-trial-number`, -subtitle, -archive, -abstract, -archive_ , -NA.)
+  select(-title,-`clinical-trial-number`, -subtitle, -archive, -abstract, -archive_ , -NA.) %>%
+  mutate(publisher = ifelse(grepl("Springer", publisher, fixed = FALSE, ignore.case = TRUE),
+                            "Springer Nature", publisher))
 #' get duplicate dois
 license_df %>% 
   select(DOI, container.title, publisher) %>% 
@@ -38,7 +40,9 @@ jn_df <- issn %>%
   mutate(license_refs = map(jn_all, c("license_refs"))) %>%
   mutate(license_refs = map(license_refs, bind_rows)) %>%
   gather(issn, issn.1, issn.2, issn.3, key = "issn_type", value = "issn") %>%
-  filter(!is.na(issn))
+  filter(!is.na(issn)) %>%
+  mutate(publisher = ifelse(grepl("Springer", publisher, fixed = FALSE, ignore.case = TRUE),
+                            "Springer Nature", publisher))
 jn_df %>%
   mutate(year_published = map(year_published, bind_rows)) -> jn_df
 #' load doi set

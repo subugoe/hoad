@@ -35,16 +35,15 @@ knitr::knit_hooks$set(inline = function(x) {
 ```{r}
 # load dplyr 
 library(dplyr)
-# load data
 #' load facets results
-jn_facets <- jsonlite::stream_in(file("../data/jn_facets_df.json"), verbose = FALSE)
+jn_facets <- jsonlite::stream_in(file("../data/jn_facets_df.json"), verbose = FALSE) 
 #' get hybrid journals that have open licensing information in the period 2013-18
 hybrid_cr <- readr::read_csv("../data/hybrid_publications.csv") %>%
   mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) %>%
   arrange(desc(yearly_publisher_volume))
 
 o_apc_df <- readr::read_csv("../data/oapc_hybrid.csv") %>% 
-  mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017", "2018")))
+  mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) 
 ```
 
 ## Summary 
@@ -79,6 +78,8 @@ library(scales)
 library(tidyr)
 n_journals_df <- jn_facets %>% 
   distinct(journal_title, publisher) %>%
+  mutate(publisher = ifelse(grepl("Springer", publisher, fixed = FALSE, ignore.case = TRUE),
+                            "Springer Nature", publisher)) %>%
   group_by(publisher) %>%
   summarise(n_journals = n_distinct(journal_title))
 #' all journals from open apc dataset for which we retrieved facet counts 
