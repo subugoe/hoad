@@ -26,7 +26,7 @@ library(writexl)
 # access to data
 hybrid_df <- readr::read_csv("data/hybrid_publications.csv") %>%
   mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) %>% 
-  arrange(desc(yearly_publisher_volume))
+  arrange(desc(yearly_publisher_volume)) 
 
 o_apc_df <- readr::read_csv("data/oapc_hybrid.csv") %>% 
   mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017", "2018")))

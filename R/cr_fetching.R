@@ -21,6 +21,9 @@ knitr::opts_chunk$set(
 #' Let's retrieve the most current dataset:
 #'
 library(tidyverse)
+library(countrycode)
+library(jsonlite)
+library(rcrossref) # v 0.8
 #' link to dataset
 u <-
   "https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/apc_de.csv"
