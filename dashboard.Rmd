@@ -17,7 +17,6 @@ library(viridis)
 library(tidyverse)
 library(plotly)
 library(scales)
-library(ggalt)
 library(DT)
 library(writexl)
 ```
@@ -25,11 +24,9 @@ library(writexl)
 ```{r global}
 # access to data
 hybrid_df <- readr::read_csv("data/hybrid_publications.csv") %>%
+  mutate(license = fct_infreq(license)) %>%
   mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) %>% 
-  arrange(desc(yearly_publisher_volume)) 
-
-o_apc_df <- readr::read_csv("data/oapc_hybrid.csv") %>% 
-  mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017", "2018")))
+  arrange(desc(yearly_publisher_volume))
 ```
 
 Overview
@@ -138,15 +135,14 @@ Column {.tabset .tabset-fade}
 ```{r}
 renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, prop, fill = license)) +
-    geom_bar(stat = "identity") +
     xlab("Year") +
     ylab("Hybrid OA / Articles published") +
-    viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
+    scale_fill_manual("License", values =  c("#c23531","#2f4554", "#61a0a8", "#d48265", "#91c7ae","#749f83")) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels = scales::percent) +
-    theme_minimal()
- plotly::ggplotly(p) %>%
-    layout(showlegend = TRUE, legend = list(font = list(size = 9)))
+    theme_minimal() +
+    geom_col(position = position_stack(reverse = TRUE))
+ plotly::ggplotly(p)
 })
 ```
 
@@ -156,16 +152,15 @@ renderPlotly({
 ```{r}
 renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, n, fill = license)) +
-    geom_bar(stat = "identity") +
     xlab("Year") +
     ylab("Hybrid OA Articles") +
-    viridis::scale_fill_viridis("Licenses", discrete = TRUE) +
+    scale_fill_manual("License", values =  c("#c23531","#2f4554", "#61a0a8", "#d48265", "#91c7ae","#749f83")) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
                        breaks= pretty_breaks()) +
-    theme_minimal()
-  plotly::ggplotly(p) %>%
-    layout(showlegend = TRUE, legend = list(font = list(size = 9)))
+    theme_minimal() +
+    geom_col(position = position_stack(reverse = TRUE))
+  plotly::ggplotly(p)
 })
 ```
 
@@ -181,8 +176,9 @@ renderPlotly({
     summarise(n = sum(n)) %>%
     mutate(source = "Crossref Hybrid")
   
-  o_apc_sub <- o_apc_df %>%
-    filter(journal_full_title %in% jn_f()$journal_title) %>%
+  o_apc_sub <- hybrid_df %>%
+    filter(journal_title %in% jn_f()$journal_title) %>%
+    filter(!is.na(hybrid_type)) %>%
     count(year, hybrid_type)
   
   p <-
@@ -206,8 +202,7 @@ renderPlotly({
       alpha = 0.8
     )
   
-  tt <- plotly::ggplotly(p, tooltip = c("y")) %>%
-    layout(showlegend = TRUE, legend = list(font = list(size = 10)))
+  tt <- plotly::ggplotly(p, tooltip = c("y"))
   tt$x$data <- lapply(tt$x$data, function(x) {
     x$text <- paste(x$name, x$y, sep = ": ")
     x
@@ -220,29 +215,25 @@ renderPlotly({
 ### Institutional Spending per Country (in percent)
 
 ```{r}
-renderPlot({
-tt <- o_apc_df %>%
-    filter(journal_full_title %in% jn_f()$journal_title) %>%
+tt <- reactive({
+  jn_f() %>%
     filter(!is.na(country)) %>% # deal with missing country info provided by Open APC 
     count(country) %>% 
-  mutate(prop = n / sum(n))
-gg <- ggplot(tt, aes(prop, reorder(country, prop))) +
-  ggalt::geom_lollipop(point.colour="steelblue", point.size=4, horizontal=TRUE) +
-  scale_x_continuous(expand=c(0,0), labels=percent,
-                              breaks=seq(0, 1, by=0.2), limits=c(0, 1)) +
-  labs(x = NULL, y = NULL) +
-  #  title="Institutional spending on hybrid OA journal_title articles",
-  #  subtitle="Articles funded per country (in percent)",
-  theme_minimal() +
-  theme(panel.grid.major.y=element_blank()) +
-  theme(panel.grid.minor=element_blank()) +
-  theme(axis.line.y=element_line(color="#2b2b2b", size=0.15)) +
-  theme(axis.text.y=element_text(margin=margin(r=0, l=0))) +
-  theme(plot.margin=unit(rep(30, 4), "pt")) +
-  theme(plot.title=element_text(face="bold")) +
-  theme(plot.subtitle=element_text(margin=margin(b=10))) +
-  theme(plot.caption=element_text(size=8, margin=margin(t=10)))
-gg})
+  mutate(prop = n / sum(n)) %>%
+  arrange(prop) %>%
+        mutate(country = factor(country, levels = .$country))
+})
+renderPlotly({
+gg <- ggplot(tt(), aes(prop, country)) +
+  geom_segment(aes(x = 0, y = country, xend = prop, yend = country), color = "grey50") +
+  geom_point(color = "steelblue") +
+  scale_x_continuous(expand=c(0,0.2), labels=percent, 
+                     breaks=seq(0, 1, by=0.2)) +
+  labs(x = "Articles funded per country (in percent)", y = NULL) +
+  theme_minimal() 
+ggplotly(gg)
+})
+
 ```
 
 Compare 
@@ -360,7 +351,7 @@ output$yearplot <- renderPlotly({
  } else {
    p <- p
  }
- plotly::ggplotly(p, tooltip = c("label", "y"))
+ plotly::ggplotly(p, tooltip = c("label", "y")) 
 })
 ```
 
