@@ -19,6 +19,7 @@ library(plotly)
 library(scales)
 library(DT)
 library(writexl)
+library(echarts4r)
 ```
 
 ```{r global}
@@ -84,7 +85,7 @@ if (length(unique(jn_f()$publisher)) > 1) {
 ```
 
 Notice that only those hybrid open access journals were included where 
-academic institutions sponsored the publication fee according to the [Open APC initiative](https://github.com/openapc/openapc-de) 
+academic institutions sponsored the open access publication according to the [Open APC initiative](https://github.com/openapc/openapc-de) 
 and where publishers shared licensing information about fulltext accessibility and re-use rights 
 with [Crossref](https://github.com/CrossRef/rest-api-doc).
 
@@ -137,7 +138,8 @@ renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, prop, fill = license)) +
     xlab("Year") +
     ylab("Hybrid OA / Articles published") +
-    scale_fill_manual("License", values =  c("#c23531","#2f4554", "#61a0a8", "#d48265", "#91c7ae","#749f83")) +
+   # pallette https://twitter.com/debivort/status/994583058031546369
+    scale_fill_manual("License", values =  c("#65BADA", "#068E8C", "#00A757", "#E5BA52", "#D86F27", "#C82E6B")) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels = scales::percent) +
     theme_minimal() +
@@ -154,7 +156,8 @@ renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, n, fill = license)) +
     xlab("Year") +
     ylab("Hybrid OA Articles") +
-    scale_fill_manual("License", values =  c("#c23531","#2f4554", "#61a0a8", "#d48265", "#91c7ae","#749f83")) +
+    # pallette https://twitter.com/debivort/status/994583058031546369
+    scale_fill_manual("License", values =  c("#65BADA", "#068E8C", "#00A757", "#E5BA52", "#D86F27", "#C82E6B")) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
                        breaks= pretty_breaks()) +
@@ -167,14 +170,14 @@ renderPlotly({
 Row {data-width=400 data-height=350}
 -------------------------------------
 
-### Crossref Indexing Coverage vs Spending Information available via Open APC
+### Disclosure of Institutional Sponsorship for OA Publication
 
 ```{r}
 renderPlotly({
   hybrid_sub <- hybrid_sub() %>%
     group_by(year) %>% 
     summarise(n = sum(n)) %>%
-    mutate(source = "Crossref Hybrid")
+    mutate(source = "All")
   
   o_apc_sub <- hybrid_df %>%
     filter(journal_title %in% jn_f()$journal_title) %>%
@@ -187,7 +190,7 @@ renderPlotly({
     xlab("Year") +
     ylab("Articles") +
     scale_x_discrete(drop = FALSE) +
-    viridis::scale_fill_viridis("Datasets", discrete = TRUE) +
+    scale_fill_manual("", values = c("#23445D", "#AE4132", "#12AAB5")) + 
     scale_y_continuous(
       labels = function(x)
         format(x, big.mark = " ", scientific = FALSE),
@@ -198,8 +201,7 @@ renderPlotly({
     p + geom_bar(
       data = o_apc_sub,
       aes(year, n, fill = hybrid_type),
-      stat = "identity",
-      alpha = 0.8
+      stat = "identity"
     )
   
   tt <- plotly::ggplotly(p, tooltip = c("y"))
@@ -212,28 +214,19 @@ renderPlotly({
 ```
 
 
-### Institutional Spending per Country (in percent)
+### Text-mined author emails
 
 ```{r}
-tt <- reactive({
-  jn_f() %>%
-    filter(!is.na(country)) %>% # deal with missing country info provided by Open APC 
-    count(country) %>% 
-  mutate(prop = n / sum(n)) %>%
-  arrange(prop) %>%
-        mutate(country = factor(country, levels = .$country))
-})
-renderPlotly({
-gg <- ggplot(tt(), aes(prop, country)) +
-  geom_segment(aes(x = 0, y = country, xend = prop, yend = country), color = "grey50") +
-  geom_point(color = "steelblue") +
-  scale_x_continuous(expand=c(0,0.2), labels=percent, 
-                     breaks=seq(0, 1, by=0.2)) +
-  labs(x = "Articles funded per country (in percent)", y = NULL) +
-  theme_minimal() 
-ggplotly(gg)
-})
-
+ renderEcharts4r({
+   hybrid_df %>%
+     filter(journal_title %in% jn_f()$journal_title) %>%
+     count(suffix, domain) %>% 
+     filter(!is.na(domain)) %>%
+     e_charts() %>%
+     e_treemap(suffix, domain, n, leafDepth = "1", 
+               name = "Corresponding Email") %>%
+     e_tooltip(trigger = "item")
+ })
 ```
 
 Compare 
