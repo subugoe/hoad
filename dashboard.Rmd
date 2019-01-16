@@ -27,6 +27,7 @@ library(echarts4r)
 hybrid_df <- readr::read_csv("data/hybrid_publications.csv") %>%
   mutate(license = fct_infreq(license)) %>%
   mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) %>% 
+  mutate(hybrid_type = factor(hybrid_type, levels = c("Open APC (Offsetting)", "Open APC (Hybrid)", "SCOAP"))) %>%
   arrange(desc(yearly_publisher_volume))
 ```
 
@@ -131,25 +132,35 @@ renderValueBox({
 Column {.tabset .tabset-fade}
 -----------------------------------------------------------------------
 
-### Hybrid OA Licenses found (relative)
+### Hybrid OA licenses found (relative)
 
 ```{r}
 renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, prop, fill = license)) +
     xlab("Year") +
     ylab("Hybrid OA / Articles published") +
-   # pallette https://twitter.com/debivort/status/994583058031546369
-    scale_fill_manual("License", values =  c("#65BADA", "#068E8C", "#00A757", "#E5BA52", "#D86F27", "#C82E6B")) +
+    # pallette https://twitter.com/debivort/status/994583058031546369
+    scale_fill_manual(
+      "License",
+      values =  c(
+        "#65BADA",
+        "#068E8C",
+        "#00A757",
+        "#E5BA52",
+        "#D86F27",
+        "#C82E6B"
+      )
+    ) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels = scales::percent) +
     theme_minimal() +
     geom_col(position = position_stack(reverse = TRUE))
- plotly::ggplotly(p)
+  plotly::ggplotly(p)
 })
 ```
 
 
-### Hybrid OA Licenses found (absolute)
+### Hybrid OA licenses found (absolute)
 
 ```{r}
 renderPlotly({
@@ -157,10 +168,23 @@ renderPlotly({
     xlab("Year") +
     ylab("Hybrid OA Articles") +
     # pallette https://twitter.com/debivort/status/994583058031546369
-    scale_fill_manual("License", values =  c("#65BADA", "#068E8C", "#00A757", "#E5BA52", "#D86F27", "#C82E6B")) +
+    scale_fill_manual(
+      "License",
+      values =  c(
+        "#65BADA",
+        "#068E8C",
+        "#00A757",
+        "#E5BA52",
+        "#D86F27",
+        "#C82E6B"
+      )
+    ) +
     scale_x_discrete(drop = FALSE) +
-    scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
-                       breaks= pretty_breaks()) +
+    scale_y_continuous(
+      labels = function(x)
+        format(x, big.mark = " ", scientific = FALSE),
+      breaks = pretty_breaks()
+    ) +
     theme_minimal() +
     geom_col(position = position_stack(reverse = TRUE))
   plotly::ggplotly(p)
@@ -170,39 +194,31 @@ renderPlotly({
 Row {data-width=400 data-height=350}
 -------------------------------------
 
-### Disclosure of Institutional Sponsorship for OA Publication
+### Sources of disclosure of OA sponsorship
 
 ```{r}
 renderPlotly({
-  hybrid_sub <- hybrid_sub() %>%
-    group_by(year) %>% 
-    summarise(n = sum(n)) %>%
-    mutate(source = "All")
-  
-  o_apc_sub <- hybrid_df %>%
+  p <- hybrid_df %>%
     filter(journal_title %in% jn_f()$journal_title) %>%
-    filter(!is.na(hybrid_type)) %>%
-    count(year, hybrid_type)
-  
-  p <-
-    ggplot(hybrid_sub, aes(year, n, fill = source)) +
-    geom_bar(stat = "identity") +
+    ggplot(aes(year, ..count.., fill = hybrid_type)) +
+    geom_bar(position = position_stack(reverse = TRUE)) +
     xlab("Year") +
     ylab("Articles") +
-    scale_x_discrete(drop = FALSE) +
-    scale_fill_manual("", values = c("#23445D", "#AE4132", "#12AAB5")) + 
     scale_y_continuous(
       labels = function(x)
         format(x, big.mark = " ", scientific = FALSE),
-      breaks = pretty_breaks()
+      breaks = scales::pretty_breaks()
+    ) +
+    scale_fill_manual(
+      "Sources",
+      values = c(
+        "Open APC (Offsetting)" = "#23445D",
+        "Open APC (Hybrid)" = "#AE4132",
+        "SCOAP" = "#12AAB5"
+      ),
+      na.value = "grey60"
     ) +
     theme_minimal()
-  p <-
-    p + geom_bar(
-      data = o_apc_sub,
-      aes(year, n, fill = hybrid_type),
-      stat = "identity"
-    )
   
   tt <- plotly::ggplotly(p, tooltip = c("y"))
   tt$x$data <- lapply(tt$x$data, function(x) {
@@ -214,19 +230,19 @@ renderPlotly({
 ```
 
 
-### Text-mined author emails
+### Text-mined author emails (first match per article)
 
 ```{r}
- renderEcharts4r({
-   hybrid_df %>%
-     filter(journal_title %in% jn_f()$journal_title) %>%
-     count(suffix, domain) %>% 
-     filter(!is.na(domain)) %>%
-     e_charts() %>%
-     e_treemap(suffix, domain, n, leafDepth = "1", 
-               name = "Corresponding Email") %>%
-     e_tooltip(trigger = "item")
- })
+renderEcharts4r({
+  hybrid_df %>%
+    filter(journal_title %in% jn_f()$journal_title) %>%
+    count(suffix, domain) %>%
+    filter(!is.na(domain)) %>%
+    e_charts() %>%
+    e_treemap(suffix, domain, n, leafDepth = "1",
+              name = "Corresponding Email") %>%
+    e_tooltip(trigger = "item")
+})
 ```
 
 Compare 
@@ -240,21 +256,24 @@ Row
 
 
 ```{r}
-fillCol(height = 600, flex = c(NA, 1), 
-        inputPanel(
-          selectInput(
-            "Year",
-            label = "Select Year",
-            choices = c(rev(levels(hybrid_df$year))),
-            selected = c("2017", "2018"),
-            multiple = TRUE
+fillCol(
+  height = 600,
+  flex = c(NA, 1),
+  inputPanel(
+    selectInput(
+      "Year",
+      label = "Select Year",
+      choices = c(rev(levels(hybrid_df$year))),
+      selected = c("2017", "2018"),
+      multiple = TRUE
     ),
-    checkboxInput("rb", "Display journals", FALSE)),
+    checkboxInput("rb", "Display journals", FALSE)
+  ),
   plotlyOutput("pubplot", height = "100%")
 )
 
 output$pubplot <- renderPlotly({
-  if(input$Year == "All") {
+  if (input$Year == "All") {
     tt <-   hybrid_df %>%
       filter(!is.na(license)) %>%
       mutate(publisher = forcats::as_factor(publisher)) %>%
@@ -274,25 +293,29 @@ output$pubplot <- renderPlotly({
     ungroup() %>%
     mutate(publisher = forcats::fct_other(publisher, keep = levels(publisher)[1:10]))
   p <- ggplot(tt, aes(y = prop, x = as.factor(publisher))) +
-  geom_boxplot() + 
-   coord_flip() +
-   theme_minimal() +
-   xlab("Publisher") +
-   ylab(NULL) +
-   scale_x_discrete(drop = FALSE, limits = rev(levels(tt$publisher)),
-                    labels = function(x) str_wrap(x, width = 30)) +
-   scale_y_continuous(labels = scales::percent) 
- if (input$rb == TRUE) {
-   p <- p +
-     geom_point(aes(colour = prop, label = journal_title)) +
-     scale_colour_viridis(option = "C") +
-     scale_fill_viridis(option = "C") +
-     guides(color = FALSE, fill = FALSE)
- } else {
-   p <- p
- }
- plotly::ggplotly(p, tooltip = c("label", "y")) %>%
-   layout(margin = list(l = 200))
+    geom_boxplot() +
+    coord_flip() +
+    theme_minimal() +
+    xlab("Publisher") +
+    ylab(NULL) +
+    scale_x_discrete(
+      drop = FALSE,
+      limits = rev(levels(tt$publisher)),
+      labels = function(x)
+        str_wrap(x, width = 30)
+    ) +
+    scale_y_continuous(labels = scales::percent)
+  if (input$rb == TRUE) {
+    p <- p +
+      geom_point(aes(colour = prop, label = journal_title)) +
+      scale_colour_viridis(option = "C") +
+      scale_fill_viridis(option = "C") +
+      guides(color = FALSE, fill = FALSE)
+  } else {
+    p <- p
+  }
+  plotly::ggplotly(p, tooltip = c("label", "y")) %>%
+    layout(margin = list(l = 200))
 })
 ```
 
@@ -300,19 +323,22 @@ output$pubplot <- renderPlotly({
 ### Proportion of open access publications in subscription-based journals by year 
 
 ```{r}
-fillCol(height = 600, flex = c(NA, 1), 
-        inputPanel(
-          selectInput(
-            "Publisher",
-            label = "Select Publisher",
-            choices = c("All", unique(hybrid_df$publisher)),
-            selected = "All"
-    )),
+fillCol(
+  height = 600,
+  flex = c(NA, 1),
+  inputPanel(
+    selectInput(
+      "Publisher",
+      label = "Select Publisher",
+      choices = c("All", unique(hybrid_df$publisher)),
+      selected = "All"
+    )
+  ),
   plotlyOutput("yearplot", height = "100%")
 )
 
 output$yearplot <- renderPlotly({
-  if(input$Publisher == "All") {
+  if (input$Publisher == "All") {
     tt <-   hybrid_df %>%
       filter(!is.na(license)) %>%
       group_by(year, publisher, journal_title, yearly_jn_volume) %>%
@@ -326,25 +352,25 @@ output$yearplot <- renderPlotly({
       summarize(oa = n()) %>%
       mutate(prop = oa / yearly_jn_volume)
   }
-   
+  
   p <- ggplot(tt, aes(y = prop, x = as.factor(year))) +
-  geom_boxplot() + 
-   coord_flip() +
-   theme_minimal() +
-   xlab("Year") +
-   ylab(NULL) +
-   scale_x_discrete(drop = FALSE) +
-   scale_y_continuous(labels = scales::percent)
- if (input$rb == TRUE) {
-   p <- p +
-     geom_point(aes(colour = prop, label = journal_title)) +
-     scale_colour_viridis(option = "C") +
-     scale_fill_viridis(option = "C") +
-     guides(color = FALSE, fill = FALSE)
- } else {
-   p <- p
- }
- plotly::ggplotly(p, tooltip = c("label", "y")) 
+    geom_boxplot() +
+    coord_flip() +
+    theme_minimal() +
+    xlab("Year") +
+    ylab(NULL) +
+    scale_x_discrete(drop = FALSE) +
+    scale_y_continuous(labels = scales::percent)
+  if (input$rb == TRUE) {
+    p <- p +
+      geom_point(aes(colour = prop, label = journal_title)) +
+      scale_colour_viridis(option = "C") +
+      scale_fill_viridis(option = "C") +
+      guides(color = FALSE, fill = FALSE)
+  } else {
+    p <- p
+  }
+  plotly::ggplotly(p, tooltip = c("label", "y"))
 })
 ```
 
