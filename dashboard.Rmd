@@ -27,7 +27,8 @@ library(echarts4r)
 hybrid_df <- readr::read_csv("data/hybrid_publications.csv") %>%
   mutate(license = fct_infreq(license)) %>%
   mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) %>% 
-  mutate(hybrid_type = factor(hybrid_type, levels = c("Open APC (Offsetting)", "Open APC (Hybrid)", "SCOAP"))) %>%
+  mutate(hybrid_type = ifelse(hybrid_type == "SCOAP", "SCOAP<sup>3</sup>", hybrid_type)) %>%
+  mutate(hybrid_type = factor(hybrid_type, levels = c("Open APC (Offsetting)", "Open APC (Hybrid)", "SCOAP<sup>3</sup>"))) %>%
   arrange(desc(yearly_publisher_volume))
 ```
 
@@ -214,7 +215,7 @@ renderPlotly({
       values = c(
         "Open APC (Offsetting)" = "#23445D",
         "Open APC (Hybrid)" = "#AE4132",
-        "SCOAP" = "#12AAB5"
+        "SCOAP<sup>3</sup>" = "#12AAB5"
       ),
       na.value = "grey60"
     ) +
