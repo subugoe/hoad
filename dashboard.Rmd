@@ -116,7 +116,8 @@ renderValueBox({
 ```{r}
 renderValueBox({
   journal_n <- length(unique(jn_f()$journal_title))
-  valueBox(journal_n, icon = "fa-filter")
+  valueBox(format(journal_n, big.mark = " ", scientific = FALSE), 
+           icon = "fa-filter")
 })
 ```
 
@@ -125,7 +126,8 @@ renderValueBox({
 ```{r}
 renderValueBox({
   hybrid_n <- nrow(jn_f())
-  valueBox(hybrid_n, icon = "fa-creative-commons")
+  valueBox(format(hybrid_n, big.mark = " ", scientific = FALSE), 
+           icon = "fa-creative-commons")
 })
 ```
 
@@ -494,8 +496,7 @@ renderPlotly({
 })
 ```
 
-
-### Sponsorship 
+### Sources of disclosure of OA sponsorship
 
 ```{r}
 renderPlotly({
