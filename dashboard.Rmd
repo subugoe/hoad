@@ -430,3 +430,116 @@ downloadHandler(
 )
 ```
 
+Institutional View
+=================================================================
+
+```{r}
+my_data <- reactive({
+  if(!is.null(input$plot_clicked_data$name)) {
+    hybrid_df %>%
+    filter(suffix == input$plot_clicked_data$name | domain == input$plot_clicked_data$name)
+    } else
+      hybrid_df
+})
+```
+
+Row
+------------------------------------------------------------------- 
+
+### Text-mined author emails (first match per article) - Double click on domain!
+
+```{r}
+echarts4rOutput("plot")
+output$plot <- renderEcharts4r({
+  hybrid_df %>%
+    # filter(journal_title %in% jn_f()$journal_title) %>%
+     count(suffix, domain) %>% 
+     filter(!is.na(domain)) %>%
+     e_charts() %>%
+     e_treemap(suffix, domain, n, leafDepth = "1", 
+               name = "Corresponding Email") %>%
+     e_tooltip(trigger = "item")
+})
+```
+
+Row 
+------------------------------------------------------------------- 
+
+### Hybrid OA licenses found per year (absolute)
+
+```{r}
+renderPlotly({
+    ggplot(my_data(), aes(year, fill = license)) + 
+    geom_bar(position = position_stack(reverse = TRUE)) +
+    ggtitle(paste0("Selection: ", input$plot_clicked_data$name)) +
+    scale_fill_manual(
+      "License",
+      values =  c(
+        "#65BADA",
+        "#068E8C",
+        "#00A757",
+        "#E5BA52",
+        "#D86F27",
+        "#C82E6B"
+      )
+    ) +
+    scale_x_discrete(drop = FALSE) +
+    scale_y_continuous(
+      labels = function(x)
+        format(x, big.mark = " ", scientific = FALSE),
+      breaks = pretty_breaks()
+    ) +
+    theme_minimal() -> p
+    ggplotly(p)
+})
+```
+
+
+### Sponsorship 
+
+```{r}
+renderPlotly({
+  p <- 
+    ggplot(my_data(), aes(year, ..count.., fill = hybrid_type)) +
+    geom_bar(position = position_stack(reverse = TRUE)) +
+    ggtitle(paste0("Selection: ", input$plot_clicked_data$name)) +
+    xlab("Year") +
+    ylab("Articles") +
+    scale_y_continuous(
+      labels = function(x)
+        format(x, big.mark = " ", scientific = FALSE),
+      breaks = scales::pretty_breaks()
+    ) +
+    scale_fill_manual(
+      "Sources",
+      values = c(
+        "Open APC (Offsetting)" = "#23445D",
+        "Open APC (Hybrid)" = "#AE4132",
+        "SCOAP<sup>3</sup>" = "#12AAB5"
+      ),
+      na.value = "grey60"
+    ) +
+    theme_minimal()
+  
+  tt <- plotly::ggplotly(p, tooltip = c("y"))
+  tt$x$data <- lapply(tt$x$data, function(x) {
+    x$text <- paste(x$name, x$y, sep = ": ")
+    x
+  })
+  tt
+})
+```
+
+Row 
+------------------------------------------------------------------- 
+
+### Top Publishers
+
+```{r}
+renderDataTable({
+ my_data() %>%
+      count(publisher) %>%
+      arrange(desc(n)) %>%
+      mutate(prop = round(n / sum(n) * 100,2))
+})
+```
