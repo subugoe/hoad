@@ -27,8 +27,7 @@ library(rcrossref) # v 0.8
 #' link to dataset
 u <-
   "https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/apc_de.csv"
-o_apc <- readr::read_csv(u) %>%
-  filter(is_hybrid == TRUE)
+o_apc <- readr::read_csv(u)
 #'
 #' We also would like to add data from offsetting aggrements, which is also
 #' collected by the Open APC initiative.
@@ -44,6 +43,8 @@ o_apc <- o_offset %>%
   bind_rows(o_apc) %>%
   # start from 2013
   filter(period > 2012) %>%
+  # just hybrid oa journals
+  filter(is_hybrid == TRUE) %>%
   # data cleaning
   # 1. wrong journal title for 10.1136/svn-2016-000035
   mutate(
@@ -72,7 +73,7 @@ o_apc <- o_offset %>%
   # https://github.com/subugoe/hybrid_oa_dashboard/issues/10
   filter(!journal_full_title == "STEM CELLS Translational Medicine") %>%
   # 5. distinguish between individual hybrid and offsetting
-  mutate(hybrid_type = ifelse(!is.na(euro), "Open APC (Hybrid)", "Open APC (Offsetting)"))
+  mutate(hybrid_type = ifelse(!is.na(euro), "Open APC (Hybrid)", "Open APC (TA)"))
 #' Include country information, which are available via Open APC OLAP server: 
 #' <https://github.com/OpenAPC/openapc-olap/blob/master/static/institutions.csv>
 country_apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions.csv") %>%
@@ -90,7 +91,7 @@ readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
 #' ## How does it relate to the general hybrid output per journal?
 #'
 #' Crossref Metadata API is used to gather both license information and
-#' the number of articles published per year for the period 2013 - 2018.
+#' the number of articles published per year for the period 2013 - 2019.
 #' The API is accessed with [rOpenSci's rcrossref client](https://github.com/ropensci/rcrossref).
 #'
 #' Instead of fetching all articles published, we use facet counts to keep API usage low
@@ -100,7 +101,7 @@ readr::write_csv(o_apc, "../data/oapc_hybrid.csv")
 #' This involves two steps:
 #'
 #' First, we retrieve journal article volume and corresponding licensing information
-#' for the period  2013 - 2018 for all issns per journal in the Open APC dataset.
+#' for the period  2013 - 2019 for all issns per journal in the Open APC dataset.
 #'
 #' Let's gather the issn's
 o_apc %>%
@@ -142,7 +143,7 @@ jn_facets <- purrr::map(issns_list, .f = purrr::safely(function(x) {
     filter = c(
       x,
       from_pub_date = "2013-01-01",
-      until_pub_date = "2018-12-31",
+      until_pub_date = "2019-12-31",
       type = "journal-article"
     ),
     facet = TRUE,
@@ -174,7 +175,7 @@ jn_facets_df <- purrr::map_df(jn_facets, "result")
 jsonlite::stream_out(jn_facets_df, file("../data/jn_facets_df.json"))
 #' Second, filter out open licenses and check:
 #' 
-#' Question: Which licenses indicates hybrid OA availability?
+#' Question: Which licenses indicate hybrid OA availability?
 #' 
 #' [dissemin](https://dissem.in/) compiled a list of licenses used in Crossref,
 #' which indicate OA availability. [oaDOI](https://oadoi.org) re-uses this list. 
@@ -227,7 +228,7 @@ cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
                                                                   license.delay = 0,
                                                                   type = "journal-article",
                                                                   from_pub_date = "2013-01-01", 
-                                                                  until_pub_date = "2018-12-31"),
+                                                                  until_pub_date = "2019-12-31"),
                                                        cursor = "*", cursor_max = 5000L, 
                                                        limit = 1000L) 
                             tibble::tibble(
