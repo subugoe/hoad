@@ -26,9 +26,9 @@ library(echarts4r)
 # access to data
 hybrid_df <- readr::read_csv("data/hybrid_publications.csv") %>%
   mutate(license = fct_infreq(license)) %>%
-  mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018"))) %>% 
+  mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019"))) %>% 
   mutate(hybrid_type = ifelse(hybrid_type == "SCOAP", "SCOAP<sup>3</sup>", hybrid_type)) %>%
-  mutate(hybrid_type = factor(hybrid_type, levels = c("Open APC (Offsetting)", "Open APC (Hybrid)", "SCOAP<sup>3</sup>"))) %>%
+  mutate(hybrid_type = factor(hybrid_type, levels = c("Open APC (TA)", "Open APC (Hybrid)", "SCOAP<sup>3</sup>"))) %>%
   arrange(desc(yearly_publisher_volume))
 ```
 
@@ -97,7 +97,7 @@ Data sources:
 
 <a href= "https://github.com/openapc/openapc-de"><img src="https://www.intact-project.org/public/img/openAPC_01+.png" width="200"  alt="Metadata from open apc logo"></a>
 
-Build by: <a href= "https://www.sub.uni-goettingen.de/sub-aktuell/"><img src="img/sub_logo.svg" width="200"  alt="SUB Göttingen"></a>.
+Built by: <a href= "https://www.sub.uni-goettingen.de/sub-aktuell/"><img src="img/sub_logo.svg" width="200"  alt="SUB Göttingen"></a>.
 
 Row
 -----------------------------------------------------------------------
@@ -207,6 +207,7 @@ renderPlotly({
     geom_bar(position = position_stack(reverse = TRUE)) +
     xlab("Year") +
     ylab("Articles") +
+    scale_x_discrete(limits = factor(c(2013:2019))) +
     scale_y_continuous(
       labels = function(x)
         format(x, big.mark = " ", scientific = FALSE),
@@ -215,7 +216,7 @@ renderPlotly({
     scale_fill_manual(
       "Sources",
       values = c(
-        "Open APC (Offsetting)" = "#23445D",
+        "Open APC (TA)" = "#23445D",
         "Open APC (Hybrid)" = "#AE4132",
         "SCOAP<sup>3</sup>" = "#12AAB5"
       ),
@@ -501,7 +502,7 @@ renderPlotly({
 ```{r}
 renderPlotly({
   p <- 
-    ggplot(my_data(), aes(year, ..count.., fill = hybrid_type)) +
+    ggplot(my_data(), aes(factor(year), ..count.., fill = hybrid_type)) +
     geom_bar(position = position_stack(reverse = TRUE)) +
     ggtitle(paste0("Selection: ", input$plot_clicked_data$name)) +
     xlab("Year") +
@@ -514,7 +515,7 @@ renderPlotly({
     scale_fill_manual(
       "Sources",
       values = c(
-        "Open APC (Offsetting)" = "#23445D",
+        "Open APC (TA)" = "#23445D",
         "Open APC (Hybrid)" = "#AE4132",
         "SCOAP<sup>3</sup>" = "#12AAB5"
       ),
