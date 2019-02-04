@@ -445,8 +445,8 @@ my_data <- reactive({
 })
 ```
 
-Row
-------------------------------------------------------------------- 
+Column 
+----------------------------------------------------------------------
 
 ### Text-mined author emails (first match per article) - Double click on domain!
 
@@ -464,8 +464,8 @@ output$plot <- renderEcharts4r({
 })
 ```
 
-Row 
-------------------------------------------------------------------- 
+Column 
+----------------------------------------------------------------------
 
 ### Hybrid OA licenses found per year (absolute)
 
@@ -544,3 +544,4 @@ renderDataTable({
       mutate(prop = round(n / sum(n) * 100,2))
 })
 ```
+
