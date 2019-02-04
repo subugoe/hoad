@@ -1,7 +1,8 @@
 #' Normalize open content licenses
 library(tidyverse)
-hybrid <- readr::read_csv("data/hybrid_publications.csv")
+hybrid <- readr::read_csv("../data/hybrid_publications.csv")
 hybrid %>%
+  mutate(license_url = license) %>%
   mutate(license = gsub("http://creativecommons.org/licenses/", "cc-", license)) %>%
   mutate(license = gsub("/3.0*", "", license)) %>%
   mutate(license = gsub("/4.0", "", license)) %>%
@@ -24,6 +25,6 @@ hybrid_ocl %>%
   count(license, sort = TRUE)
 # export
 hybrid_ocl %>%
-  write_csv("data/hybrid_publications.csv")
+  write_csv("../data/hybrid_publications.csv")
   
   
