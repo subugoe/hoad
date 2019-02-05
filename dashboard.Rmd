@@ -440,7 +440,10 @@ Institutional View
 my_data <- reactive({
   if(!is.null(input$plot_clicked_data$name)) {
     hybrid_df %>%
-    filter(suffix == input$plot_clicked_data$name | domain == input$plot_clicked_data$name)
+    filter(suffix == input$plot_clicked_data$name | domain == input$plot_clicked_data$name) %>%
+    mutate(plot_title = ifelse(!input$plot_clicked_data$name %in% suffix, 
+                               paste(domain, suffix, sep = "."), 
+                               suffix))
     } else
       hybrid_df
 })
@@ -449,13 +452,11 @@ my_data <- reactive({
 Column 
 ----------------------------------------------------------------------
 
-### Text-mined author emails (first match per article) - Double click on domain!
+### Text-mined author emails (first match per article) - Mouse!  
 
 ```{r}
-echarts4rOutput("plot")
 output$plot <- renderEcharts4r({
   hybrid_df %>%
-    # filter(journal_title %in% jn_f()$journal_title) %>%
      count(suffix, domain) %>% 
      filter(!is.na(domain)) %>%
      e_charts() %>%
@@ -463,18 +464,11 @@ output$plot <- renderEcharts4r({
                name = "Corresponding Email") %>%
      e_tooltip(trigger = "item")
 })
-```
 
-Column 
-----------------------------------------------------------------------
-
-### Hybrid OA licenses found per year (absolute)
-
-```{r}
-renderPlotly({
-    ggplot(my_data(), aes(year, fill = license)) + 
+output$oa_license <- renderPlotly({
+    ggplot(my_data(), aes(factor(year), fill = license)) + 
     geom_bar(position = position_stack(reverse = TRUE)) +
-    ggtitle(paste0("Selection: ", input$plot_clicked_data$name)) +
+    ggtitle(unique(my_data()$plot_title)) +
     scale_fill_manual(
       "License",
       values =  c(
@@ -486,8 +480,8 @@ renderPlotly({
         "#C82E6B"
       )
     ) +
-    scale_x_discrete(drop = FALSE) +
-    scale_y_continuous(
+    scale_x_discrete("", drop = FALSE) +
+    scale_y_continuous("Articles",
       labels = function(x)
         format(x, big.mark = " ", scientific = FALSE),
       breaks = pretty_breaks()
@@ -495,16 +489,11 @@ renderPlotly({
     theme_minimal() -> p
     ggplotly(p)
 })
-```
 
-### Sources of disclosure of OA sponsorship
-
-```{r}
-renderPlotly({
+output$oa_source <- renderPlotly({
   p <- 
     ggplot(my_data(), aes(factor(year), ..count.., fill = hybrid_type)) +
     geom_bar(position = position_stack(reverse = TRUE)) +
-    ggtitle(paste0("Selection: ", input$plot_clicked_data$name)) +
     xlab("Year") +
     ylab("Articles") +
     scale_y_continuous(
@@ -530,7 +519,15 @@ renderPlotly({
   })
   tt
 })
+
+
+fillRow(flex = c(1, 2),
+  fillCol(echarts4rOutput("plot")),
+  fillCol(plotlyOutput("oa_license"), plotlyOutput("oa_source"))
+)
 ```
+
+
 
 Row 
 ------------------------------------------------------------------- 
@@ -545,4 +542,3 @@ renderDataTable({
       mutate(prop = round(n / sum(n) * 100,2))
 })
 ```
-
