@@ -452,7 +452,7 @@ my_data <- reactive({
 Column 
 ----------------------------------------------------------------------
 
-### Text-mined author emails (first match per article) - Mouse!  
+### Text-mined author emails (first match per article) - Double click for selection!  
 
 ```{r}
 output$plot <- renderEcharts4r({
@@ -521,7 +521,8 @@ output$oa_source <- renderPlotly({
 })
 
 
-fillRow(flex = c(1, 2),
+fillRow(height = 700, 
+        flex = c(1, 2),
   fillCol(echarts4rOutput("plot")),
   fillCol(plotlyOutput("oa_license"), plotlyOutput("oa_source"))
 )
