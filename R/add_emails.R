@@ -1,8 +1,10 @@
 #' emails add
 library(tidyverse)
 emails_df <- readr::read_csv("../data/emails_normalized.csv")
-hybrid <- readr::read_csv("../data/hybrid_publications.csv")
-hybrid %>%
+hybrid <- readr::read_csv("../data/hybrid_publications.csv") %>%
+  select(1:country_name)
+hybrid_emails <- hybrid %>%
   left_join(emails_df, by = c("doi_oa" = "doi")) %>%
-  readr::write_csv("../data/hybrid_publications.csv")
+  distinct(doi_oa)
+readr::write_csv(hybrid_emails, "../data/hybrid_publications.csv")
   
