@@ -59,9 +59,26 @@ By bringing together openly available datasets about hybrid open access into one
 
 This document gives information about the study design, as well as how to use the dashboard. Because this open source dashboard was built around already existing infrastructure services for scholarly publishing, discussion will also include guidance about how publishers can properly report hybrid open access journal articles to Crossref in accordance with evolving standards like the [ESAC guidelines](http://esac-initiative.org/its-the-workflows-stupid-what-is-required-to-make-offsetting-work-for-the-open-access-transition/).
 
-## Data and methods 
+
+## Motivation
 
 Many publishers offer hybrid open access journals [@Suber_2012]. However, because of non-standardised reporting practices, it is hard to keep track of how many articles were provided immediately in open access by these journals, and to what extent these figures relate to the overall article volume published [@Bj_rk_2017]. In particular, it is challenging to determine subscription-based journals that already did publish open access articles, as well as to obtain proper licensing information about access and re-use rights [@Laakso_2016; @Piwowar_2017].
+
+Hybrid open access journal publishing is at the center of recent debates about implementing open access. Research funders and organisations as well as academic libraries demand evidence about the extent of open access articles published in subscription-based journals to develop and revise their open access policies. While research funders in the UK and the European Commission has widely sponsored individual open access publication in toll-access journals, others refrain from it. For instances, university-wide publication funds in Germany, many of which have been supported by Deutsche Forschungsgeemeinschaft, do not cover publication fees when researchers wish to publish in hybrid open access journals. 
+
+Against the background of varying policies about hybrid open access journal publishing, the OA 2020 initiative called for an aligned large-scale transition from subscription to open access business models. Transformative agreements has been proposed as one mean to re-allocate budgets used for subscriptions in favor of open access business models. Because the total cost  
+
+like University-wide publication funds Publication Funds in Germany did not.  
+
+Determining whether and to what extent hybrid open access has developed is relevant for assessing recent open access policies providing or refusing support publication fees that may arise for publishing in these journals. While research funders in the UK and the European Commission widely funded individual open access publication ins subcription-based journals, others like Publication Funds in Germany did not. 
+
+
+<!-- practical challenges -->
+
+<!-- definition -->
+
+
+## Data and methods 
 
 To reflect the challenge of finding hybrid open access journals with published open access articles, we started with a sample of hybrid open access journals from the [Open APC initiative](https://github.com/OpenAPC/openapc-de/). This open data initiative crowd-source information about spending on open access journal articles from various international research organisations. [Its openly available dataset](https://github.com/OpenAPC/openapc-de/blob/master/data/apc_de.csv) differentiates expenditure for articles published in hybrid and in fully open access journals. It also has a dedicated dataset containing information about articles, which were made openly available as part of [offsetting deals](https://github.com/OpenAPC/openapc-de/tree/master/data/offsetting), central agreements between publishers and large research organisations or consortia aiming at transitioning subscription-based licensing to open access business models. Using data from the [Open APC initiative](https://github.com/OpenAPC/openapc-de/), thus, ensured that only hybrid open access journals with at least one centrally funded open access article were examined.
 
