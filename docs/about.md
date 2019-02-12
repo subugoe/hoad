@@ -1,6 +1,6 @@
 ---
 title: "About the Hybrid OA Dashboard"
-date: "updated 2019-02-05"
+date: "updated 2019-02-12"
 output:
   html_document:
     df_print: paged
@@ -28,9 +28,22 @@ By bringing together openly available datasets about hybrid open access into one
 
 This document gives information about the study design, as well as how to use the dashboard. Because this open source dashboard was built around already existing infrastructure services for scholarly publishing, discussion will also include guidance about how publishers can properly report hybrid open access journal articles to Crossref in accordance with evolving standards like the [ESAC guidelines](http://esac-initiative.org/its-the-workflows-stupid-what-is-required-to-make-offsetting-work-for-the-open-access-transition/).
 
-## Data and methods 
 
-Many publishers offer hybrid open access journals [@Suber_2012]. However, because of non-standardised reporting practices, it is hard to keep track of how many articles were provided immediately in open access by these journals, and to what extent these figures relate to the overall article volume published [@Bj_rk_2017]. In particular, it is challenging to determine subscription-based journals that already did publish open access articles, as well as to obtain proper licensing information about access and re-use rights [@Laakso_2016; @Piwowar_2017].
+## Background and motivation
+
+Many publishers offer hybrid open access journals [@Suber_2012]. However, because of non-standardised reporting practices, it is hard to keep track of how many articles these journals provided immediately in open access, and to what extent these figures relate to the overall article volume published [@Bj_rk_2017]. In particular, it is challenging to determine subscription-based journals that already did publish open access articles, as well as to obtain proper licensing information about access and re-use rights [@Laakso_2016; @Piwowar_2017].
+
+There is also a considerable debate about the transparency of hybrid open access journal publishing. Hybrid open access journals often charge publication fees, also known as article processing charge (APC), to provide immediate open access to individual articles. Although some funders and research library consortia have begun to share expenditures for open access publication in recent years[@Jahn_2016], it remains unclear to which extent such funding activities contribute to the overall transition of subscribtion-based journal publishing to open access, as well as whether these fundings are cost-effective [@Bj_rk_2014; @Pinfield_2017].
+
+Funders and libraries have started to implement compliance criteria to improve  discoverability and transparency of hybrid open access publishing. The Wellcome Trust defined a comprehensive set of metadata requirements and provides a tool, which checks whether metadata requirements are met [using an automated tool](https://compliance.cottagelabs.com/docs). Chorus, a US-based non-profit serving more than 50 publishers, presents metadata compliance at the level of funders with [interactive dashboards](https://dashboard.chorusaccess.org/). The ESAC initiative, based at the Max Planck Digital Library (MPDL), released guidelines about how to implement transformative agreements where subscriptions and open access publication are considered together [@Geschuhn_2017]. According to this, publishers are required to provide rich metadata to Crossref, a DOI registration agency for scholarly works, including open access license information, as well as reports about supported articles to libraries and funders. Some consortia like the Swedish Bibsam or the British JISC have started to share these reports with the [Open APC Initiative](https://github.com/openapc/openapc-de) to increase the transparency of their transformative agreements [@Pieper_2018]. 
+
+In view of these developements, which shows that rich metadata and spending information are critical to review hybrid open access publishing, we want to encourage good data practises when monitoring the transition of subscription-based journals to open access. In order to be included in our analytical design, a hybrid open access journal must fulfill the following characteritcs: 
+
+1. Academic institutions sponsored immediate open access publication of individual articles in a subscription-based journal according to the Open APC initiative 
+2. Publishers provide rich license metadata to Crossref
+
+
+## Data and methods 
 
 To reflect the challenge of finding hybrid open access journals with published open access articles, we started with a sample of hybrid open access journals from the [Open APC initiative](https://github.com/OpenAPC/openapc-de/). This open data initiative crowd-source information about spending on open access journal articles from various international research organisations. [Its openly available dataset](https://github.com/OpenAPC/openapc-de/blob/master/data/apc_de.csv) differentiates expenditure for articles published in hybrid and in fully open access journals. It also has a dedicated dataset containing information about articles, which were made openly available as part of [offsetting deals](https://github.com/OpenAPC/openapc-de/tree/master/data/offsetting), central agreements between publishers and large research organisations or consortia aiming at transitioning subscription-based licensing to open access business models. Using data from the [Open APC initiative](https://github.com/OpenAPC/openapc-de/), thus, ensured that only hybrid open access journals with at least one centrally funded open access article were examined.
 
