@@ -29,6 +29,7 @@ hybrid_df <- readr::read_csv("data/hybrid_publications.csv") %>%
   mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019"))) %>% 
   mutate(hybrid_type = ifelse(hybrid_type == "SCOAP", "SCOAP<sup>3</sup>", hybrid_type)) %>%
   mutate(hybrid_type = factor(hybrid_type, levels = c("Open APC (TA)", "Open APC (Hybrid)", "SCOAP<sup>3</sup>"))) %>%
+  mutate(domain = paste(domain, suffix, sep =".")) %>%
   arrange(desc(yearly_publisher_volume))
 ```
 
@@ -442,7 +443,7 @@ my_data <- reactive({
     hybrid_df %>%
     filter(suffix == input$plot_clicked_data$name | domain == input$plot_clicked_data$name) %>%
     mutate(plot_title = ifelse(!input$plot_clicked_data$name %in% suffix, 
-                               paste(domain, suffix, sep = "."), 
+                               domain, 
                                suffix))
     } else
       hybrid_df
@@ -462,7 +463,7 @@ output$plot <- renderEcharts4r({
      e_charts() %>%
      e_treemap(suffix, domain, n, leafDepth = "1", 
                name = "Corresponding Email") %>%
-     e_tooltip(trigger = "item")
+     e_tooltip(trigger = "item") 
 })
 
 output$oa_license <- renderPlotly({
@@ -484,10 +485,15 @@ output$oa_license <- renderPlotly({
     scale_y_continuous("Articles",
       labels = function(x)
         format(x, big.mark = " ", scientific = FALSE),
-      breaks = pretty_breaks()
+      breaks = scales::pretty_breaks()
     ) +
     theme_minimal() -> p
-    ggplotly(p)
+     tt <- plotly::ggplotly(p, tooltip = c("y"))
+  tt$x$data <- lapply(tt$x$data, function(x) {
+    x$text <- paste(x$name, x$y, sep = ": ")
+    x
+  })
+  tt
 })
 
 output$oa_source <- renderPlotly({
@@ -511,8 +517,7 @@ output$oa_source <- renderPlotly({
       na.value = "grey60"
     ) +
     theme_minimal()
-  
-  tt <- plotly::ggplotly(p, tooltip = c("y"))
+   tt <- plotly::ggplotly(p, tooltip = c("y"))
   tt$x$data <- lapply(tt$x$data, function(x) {
     x$text <- paste(x$name, x$y, sep = ": ")
     x
@@ -520,9 +525,7 @@ output$oa_source <- renderPlotly({
   tt
 })
 
-
-fillRow(height = 700, 
-        flex = c(1, 2),
+fillRow(flex = c(1, 2),
   fillCol(echarts4rOutput("plot")),
   fillCol(plotlyOutput("oa_license"), plotlyOutput("oa_source"))
 )
@@ -532,6 +535,7 @@ fillRow(height = 700,
 
 Row 
 ------------------------------------------------------------------- 
+
 
 ### Top Publishers
 
