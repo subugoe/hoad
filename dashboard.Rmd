@@ -29,6 +29,7 @@ hybrid_df <- readr::read_csv("data/hybrid_publications.csv") %>%
   mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019"))) %>% 
   mutate(hybrid_type = ifelse(hybrid_type == "SCOAP", "SCOAP<sup>3</sup>", hybrid_type)) %>%
   mutate(hybrid_type = factor(hybrid_type, levels = c("Open APC (TA)", "Open APC (Hybrid)", "SCOAP<sup>3</sup>"))) %>%
+  mutate(domain = paste(domain, suffix, sep =".")) %>%
   arrange(desc(yearly_publisher_volume))
 ```
 
@@ -83,13 +84,29 @@ if (length(unique(jn_f()$publisher)) > 1) {
       mutate(prop = n / yearly_jn_volume)
   }
 })
-
+# using unpaywall indicators
+unpaywall <- reactive({
+  hybrid_df %>%
+    filter(journal_title %in% jn_f()$journal_title) %>%
+    group_by(year, journal_title, publisher, jn_y_unpaywall_others) %>%
+    summarise(n = n_distinct(doi_oa)) %>%
+    gather(n, jn_y_unpaywall_others, key = "source", value = "articles") %>%
+    ungroup() %>%
+    group_by(year, source) %>%
+    summarise(articles = sum(articles, na.rm = TRUE)) %>%
+    mutate(
+      source = ifelse(
+        source == "n",
+        "Crossref immediate license",
+        "Other license information\n(Unpaywall)"
+      )
+    )
+})
 ```
 
 Notice that only those hybrid open access journals were included where 
 academic institutions sponsored the open access publication according to the [Open APC initiative](https://github.com/openapc/openapc-de) 
-and where publishers shared licensing information about fulltext accessibility and re-use rights 
-with [Crossref](https://github.com/CrossRef/rest-api-doc).
+and where publishers shared license information about immediate open access with [Crossref](https://github.com/CrossRef/rest-api-doc).
 
 Data sources:
 
@@ -142,7 +159,7 @@ renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, prop, fill = license)) +
     xlab("Year") +
     ylab("Hybrid OA / Articles published") +
-    # pallette https://twitter.com/debivort/status/994583058031546369
+    # palette https://twitter.com/debivort/status/994583058031546369
     scale_fill_manual(
       "License",
       values =  c(
@@ -194,6 +211,32 @@ renderPlotly({
 })
 ```
 
+### Other types of OA license information detected by Unpaywall
+
+```{r}
+renderPlotly({
+  p <- ggplot(unpaywall(), aes(year, articles, fill = source)) +
+    geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
+    xlab("Year") +
+    ylab("Articles") +
+    scale_x_discrete(drop = FALSE) +  
+    scale_y_continuous(
+      labels = function(x)
+        format(x, big.mark = " ", scientific = FALSE),
+      breaks = scales::pretty_breaks()
+    ) +
+    scale_fill_manual(
+      "OA articles with",
+      values = c(
+        "Crossref immediate license" = "#56B4E9",
+        "Other license information\n(Unpaywall)" = "#b3b3b3a0"
+      )
+    ) +
+    theme_minimal()
+  plotly::ggplotly(p)
+})
+```
+
 Row {data-width=400 data-height=350}
 -------------------------------------
 
@@ -207,7 +250,7 @@ renderPlotly({
     geom_bar(position = position_stack(reverse = TRUE)) +
     xlab("Year") +
     ylab("Articles") +
-    scale_x_discrete(limits = factor(c(2013:2019))) +
+    scale_x_discrete(drop = FALSE) +  
     scale_y_continuous(
       labels = function(x)
         format(x, big.mark = " ", scientific = FALSE),
@@ -220,7 +263,7 @@ renderPlotly({
         "Open APC (Hybrid)" = "#AE4132",
         "SCOAP<sup>3</sup>" = "#12AAB5"
       ),
-      na.value = "grey60"
+      na.value = "#b3b3b3a0"
     ) +
     theme_minimal()
   
@@ -257,7 +300,6 @@ Row
 
 
 ### Proportion of open access publications in subscription-based journals by publisher 
-
 
 ```{r}
 fillCol(
@@ -442,7 +484,7 @@ my_data <- reactive({
     hybrid_df %>%
     filter(suffix == input$plot_clicked_data$name | domain == input$plot_clicked_data$name) %>%
     mutate(plot_title = ifelse(!input$plot_clicked_data$name %in% suffix, 
-                               paste(domain, suffix, sep = "."), 
+                               domain, 
                                suffix))
     } else
       hybrid_df
@@ -462,7 +504,7 @@ output$plot <- renderEcharts4r({
      e_charts() %>%
      e_treemap(suffix, domain, n, leafDepth = "1", 
                name = "Corresponding Email") %>%
-     e_tooltip(trigger = "item")
+     e_tooltip(trigger = "item") 
 })
 
 output$oa_license <- renderPlotly({
@@ -484,10 +526,15 @@ output$oa_license <- renderPlotly({
     scale_y_continuous("Articles",
       labels = function(x)
         format(x, big.mark = " ", scientific = FALSE),
-      breaks = pretty_breaks()
+      breaks = scales::pretty_breaks()
     ) +
     theme_minimal() -> p
-    ggplotly(p)
+     tt <- plotly::ggplotly(p, tooltip = c("y"))
+  tt$x$data <- lapply(tt$x$data, function(x) {
+    x$text <- paste(x$name, x$y, sep = ": ")
+    x
+  })
+  tt
 })
 
 output$oa_source <- renderPlotly({
@@ -508,11 +555,10 @@ output$oa_source <- renderPlotly({
         "Open APC (Hybrid)" = "#AE4132",
         "SCOAP<sup>3</sup>" = "#12AAB5"
       ),
-      na.value = "grey60"
+      na.value = "#b3b3b3a0"
     ) +
     theme_minimal()
-  
-  tt <- plotly::ggplotly(p, tooltip = c("y"))
+   tt <- plotly::ggplotly(p, tooltip = c("y"))
   tt$x$data <- lapply(tt$x$data, function(x) {
     x$text <- paste(x$name, x$y, sep = ": ")
     x
@@ -520,9 +566,7 @@ output$oa_source <- renderPlotly({
   tt
 })
 
-
-fillRow(height = 700, 
-        flex = c(1, 2),
+fillRow(flex = c(1, 2),
   fillCol(echarts4rOutput("plot")),
   fillCol(plotlyOutput("oa_license"), plotlyOutput("oa_source"))
 )
@@ -532,6 +576,7 @@ fillRow(height = 700,
 
 Row 
 ------------------------------------------------------------------- 
+
 
 ### Top Publishers
 
