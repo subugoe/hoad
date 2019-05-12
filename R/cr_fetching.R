@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library(countrycode)
 library(jsonlite)
-library(rcrossref) # v 0.8
+library(rcrossref) 
 #' link to dataset
 u <-
   "https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/apc_de.csv"
@@ -135,7 +135,7 @@ issns_list <-
       filter(publisher == x, journal_full_title == y) %>%
       .$issn
     names(issns) <- rep("issn", length(issns))
-    as.list(issns)
+    issns
   })
 #' search crossref
 jn_facets <- purrr::map(issns_list, .f = purrr::safely(function(x) {
