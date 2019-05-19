@@ -30,8 +30,6 @@ license_df %>%
   filter(!is.na(issn)) -> tidy_oahybrid_df
 #' add licensing info            
 jn_all <- jsonlite::stream_in(file("../data/jn_facets_df.json"))
-#' tidy import, (we need another backup strategy to avoid the following steps)
-#'issn <- map_df(jn_all, "issn")
 jn_df <- jn_all %>%
   unnest(issn, .preserve = year_published) %>%
   filter(!is.na(issn)) %>%
@@ -122,8 +120,6 @@ hybrid_oa_df %>%
   mutate(year = lubridate::parse_date_time(year, 'y')) %>%
   mutate(year = lubridate::year(year)) %>%
   left_join(indicator_df, by = c("journal_title", "publisher", "year" = "issued")) -> indicator_df
-
-
 #' yearly 
 #' get journals that are probably flipped, defined as prop > 0.95 in at least two years
 indicator_df %>% 
@@ -134,9 +130,16 @@ indicator_df %>%
   ungroup() %>%
   group_by(journal_title, publisher) %>%
   filter(n() > 1) -> prob_flipped
+#' also check with those jns found by mathias et al 
+#' 10.5281/zenodo.2553582
+rv_flip <- readr::read_csv("https://zenodo.org/record/2553582/files/reverse_flips_dataset.csv?download=1")
+indicator_df %>%
+  inner_join(rv_flip, by = c("journal_title" = "journal_name")) %>% 
+  filter(year < year_reverse_flipped) -> rev_flip_list
 #' export and exclude them
 readr::write_csv(prob_flipped, "../data/flipped_jns.csv")
-anti_join(indicator_df, prob_flipped,  by = c("journal_title", "publisher", "year")) -> indicator_df
+anti_join(indicator_df, prob_flipped,  by = c("journal_title", "publisher", "year")) %>%
+  anti_join(rev_flip_list, by = c("journal_title", "publisher", "year")) -> indicator_df
 #' calculate publishers article volume and add this info to the dataset
 indicator_df %>% 
   distinct(journal_title, publisher, year,.keep_all = TRUE) %>%
@@ -150,6 +153,7 @@ readr::write_csv(indicator_df, "../data/indicator.csv")
 hybrid_dois <- hybrid_oa_df %>%
   # remove flipped journals 
   anti_join(prob_flipped,  by = c("journal_title", "publisher", "issued" = "year")) %>%
+  anti_join(rev_flip_list, by = c("journal_title", "publisher","issued" = "year")) %>%
   # make sure dois are lower case
   mutate(doi_oa = tolower(doi_oa)) %>%
   distinct(doi_oa, .keep_all = TRUE) %>%
