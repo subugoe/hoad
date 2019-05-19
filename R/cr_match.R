@@ -3,67 +3,56 @@ library(jsonlite)
 #' full data set
 license_df <- jsonlite::stream_in(file("../data/hybrid_license_md.json")) %>%
   as_data_frame() %>%
-  select(-title,-`clinical-trial-number`, -subtitle, -archive, -abstract, -archive_ , -NA.) %>%
   mutate(publisher = ifelse(grepl("Springer", publisher, fixed = FALSE, ignore.case = TRUE),
-                            "Springer Nature", publisher))
+                            "Springer Nature", publisher)) 
 #' get duplicate dois
 license_df %>% 
-  select(DOI, container.title, publisher) %>% 
-  group_by(DOI) %>% 
+  select(doi, container.title, publisher) %>% 
+  group_by(doi) %>% 
   filter(n() > 1)
 #' which journals and publishers are affected
 license_df %>% 
-  select(DOI, container.title, publisher) %>% 
-  group_by(DOI) %>% 
+  select(doi, container.title, publisher) %>% 
+  group_by(doi) %>% 
   filter(n() > 1) %>% 
   ungroup() %>% 
   count(container.title, publisher) %>% 
   arrange(desc(n))
 #' create a tidy dataset
 license_df %>%
-  select(DOI, ISSN, issued) %>%
+  select(doi, issn, issued) %>%
   # to year
   mutate(issued = lubridate::parse_date_time(issued, c('y', 'ymd', 'ym'))) %>%
   mutate(issued = lubridate::year(issued)) %>%
   # issn 
-  separate(ISSN, into = c("issn_1", "issn_2", "issn_3"), sep = ",") %>%
+  separate(issn, into = c("issn_1", "issn_2", "issn_3"), sep = ",") %>%
   gather(issn_1, issn_2, issn_3, key = "issn_type", value = "issn") %>%
   filter(!is.na(issn)) -> tidy_oahybrid_df
 #' add licensing info            
-jn_all <- jsonlite::stream_in(file("../data/jn_facets_df.json"), simplifyDataFrame = FALSE)
+jn_all <- jsonlite::stream_in(file("../data/jn_facets_df.json"))
 #' tidy import, (we need another backup strategy to avoid the following steps)
-issn <- map_df(jn_all, "issn")
-jn_df <- issn %>%
-  mutate(journal_title = map_chr(jn_all, "journal_title")) %>%
-  mutate(publisher = map_chr(jn_all, "publisher")) %>%
-  mutate(year_published = map(jn_all, c("year_published"))) %>%
-  mutate(license_refs = map(jn_all, c("license_refs"))) %>%
-  mutate(license_refs = map(license_refs, bind_rows)) %>%
-  gather(issn, issn.1, issn.2, issn.3, key = "issn_type", value = "issn") %>%
+#'issn <- map_df(jn_all, "issn")
+jn_df <- jn_all %>%
+  unnest(issn, .preserve = year_published) %>%
   filter(!is.na(issn)) %>%
   mutate(publisher = ifelse(grepl("Springer", publisher, fixed = FALSE, ignore.case = TRUE),
                             "Springer Nature", publisher))
-jn_df %>%
-  mutate(year_published = map(year_published, bind_rows)) -> jn_df
 #' load doi set
-dois <- jsonlite::stream_in(file("../data/hybrid_license_dois.json"), simplifyDataFrame = FALSE)
-map_df(dois, "issn") %>%
-  mutate(doi_oa = map(dois, "dois")) %>%
-  mutate(license = map_chr(dois, "license")) %>% 
-  # issn 
-  gather(issn, issn.1, issn.2, issn.3, key = "issn_type", value = "issn") %>% 
-  filter(!is.na(issn)) -> dois_df
+dois <- jsonlite::stream_in(file("../data/hybrid_license_dois.json"))
+dois %>%
+  unnest(issn, .preserve = dois) %>%
+  filter(!is.na(issn))  -> dois_df
 #' join article datasets
 tmp <- inner_join(dois_df, jn_df, by = c("issn" = "issn")) %>% 
   distinct(journal_title, publisher, license, .keep_all = TRUE)
 
 hybrid_oa_df <- tmp %>% 
-  select(1:2, journal_title, publisher, year_published) %>% 
+  select(-issn) %>% 
   # remove delayed licenses 
-  filter(map(doi_oa, length) > 0) %>%
-  unnest(doi_oa, .preserve = year_published) %>%
-  distinct(doi_oa, .keep_all = TRUE) %>% 
-  left_join(tidy_oahybrid_df, by = c("doi_oa" = "DOI"))
+  filter(map(dois, length) > 0) %>%
+  unnest(dois, .preserve = year_published) %>%
+  distinct(dois, .keep_all = TRUE) %>% 
+  left_join(tidy_oahybrid_df, by = c("dois" = "doi"))
 #' check for DOAJ
 #' #'
 #' ## Dealing with flipped journals
@@ -110,11 +99,12 @@ hybrid_oa_df %>%
 # export 
 flipped_jns %>%
   select(-year_published) %>%
-  distinct(doi_oa,.keep_all = TRUE) %>%
+  distinct(dois,.keep_all = TRUE) %>%
   readr::write_csv("../data/flipped_jns_doaj.csv")
 #' remove flipped journals from hybrid license data set and store into json
 hybrid_oa_df %>% 
-  filter(!doi_oa %in% flipped_jns$doi_oa) %>%
+  rename(doi_oa = dois) %>%
+  filter(!doi_oa %in% flipped_jns$dois) %>%
   # clean license URIS
   mutate(license = gsub("\\/$", "", license)) %>%
   mutate(license = gsub("https", "http", license)) -> hybrid_oa_df
