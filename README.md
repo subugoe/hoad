@@ -4,7 +4,7 @@ Source code and data repository for the hybrid open access dashboard, using [fle
 
 A live demo is available here:
 
-<https://najkoja.shinyapps.io/hybridoa/>
+<https://subugoe.shinyapps.io/hybridoa/>
 
 Summary of methods used and findings:
 
