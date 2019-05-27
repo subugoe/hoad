@@ -50,6 +50,9 @@ hybrid_cr <- readr::read_csv("../data/hybrid_publications.csv") %>%
 
 o_apc_df <- readr::read_csv("../data/oapc_hybrid.csv") %>% 
   mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019"))) 
+
+unpaywall_df <- readr::read_csv("../data/unpaywall_df.csv") %>%
+  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019")))
 ```
 
 ## Summary 
@@ -282,23 +285,12 @@ Launching the app shows up the overall results that can be subsetted by publishe
 
 The upper part of the dashboard allows to explore the annual development of hybrid open access publishing between 2013 - 2019. The first tab shows the relative uptake of hybrid open access, the second tab the absolute number of published hybrid open access articles on a yearly basis. Bar charts are sub-grouped according to the licensing statements from Crossref, which were normalized. Overall results indicate that the number and proportion of hybrid open access journal articles rose between 2013 (`r hybrid_cr %>% filter(year == 2013) %>% n_distinct(.$doi_oa)` articles, OA share: `r unlist((hybrid_cr %>% filter(year == 2013) %>% n_distinct(.$yearly_all) / hybrid_cr %>% filter(year == 2013) %>% distinct(yearly_all)) * 100)` %) and 2018  (`r hybrid_cr %>% filter(year == 2018) %>% n_distinct(.$yearly_all)` articles, OA share: `r unlist((hybrid_cr %>% filter(year == 2018) %>% n_distinct(.$yearly_all) / hybrid_cr %>% filter(year == 2018) %>% distinct(yearly_all)) * 100)` %). CC-BY is the most prevalent open content license found. Around `r hybrid_cr %>% filter(license == "cc-by") %>% nrow() / nrow(hybrid_cr) * 100` % of open access articles were made available using this licence, followed by the less permissive license CC-BY-NC-ND, representing `r hybrid_cr %>% filter(license == "cc-by-nc-nd") %>% nrow() / nrow(hybrid_cr) * 100` % of the articles.
 
-The third tab presents addtional open access articles provided by hybrid open access journals that Unpaywall detected using license statements. These license information were obtained from publisher websites directly, or, if they originated from Crossref metadata, were probably valid after an embargo period. Similar to the dashboard presentation, Figure contrasts our evidence source for immediate hybrid open access (blue area) with additional license information provided by Unpaywall (grey are) for the publishers Elsevier and Springer Nature. Open access articles from the remaining `r hybrid_cr %>% filter(!publisher %in% c("Elsevier BV", "Springer Nature")) %>% distinct(publisher) %>% nrow()` publishers were reduced to the the residual category "Other". The sharp decline of open access articles with license found by Unpaywall for Elsevier Journals suggests that delayed open access is in place. Indeed, [Elsevier lists 118 journals](https://www.elsevier.com/about/open-science/open-access/open-archive) with embargo periods between six and 48 months. A prominent example is the life-science journal [Cell](https://www.cell.com/cell/archive) where all articles are made freely available after an embargo period of twelve months. While we found `r hybrid_cr %>% filter(journal_title == "Cell") %>% nrow()` hybrid open access articles published without delay, Unpaywall lists another `r hybrid_cr %>% filter(journal_title == "Cell") %>% distinct(year,jn_y_unpaywall_others) %>% .$jn_y_unpaywall_others %>% sum(na.rm = TRUE)` Cell articles with open content license, representing `r hybrid_cr %>% filter(journal_title == "Cell") %>% distinct(year,jn_y_unpaywall_others) %>% .$jn_y_unpaywall_others %>% sum(na.rm = TRUE) / hybrid_cr %>% filter(journal_title == "Cell") %>% distinct(year, yearly_jn_volume) %>% .$yearly_jn_volume %>% sum(na.rm = TRUE) * 100` % of the journal's article volume that has been published since 2013. On the other hand, the  number of additional articles found for Springer Nature using Unpaywall's license evidence is much lower, indicating that delayed open access plays a smaller role in Springer Nature's hybrid open access journal portfolio, and that license statements were shared to large extent with Crossref.
+The third tab presents addtional open access articles provided by hybrid open access journals that Unpaywall detected using license statements. These license information were obtained from publisher websites directly, or, if they originated from Crossref metadata, were probably valid after an embargo period. Similar to the dashboard presentation, Figure contrasts our evidence source for immediate hybrid open access (blue area) with additional license information provided by Unpaywall (grey are) for the publishers Elsevier and Springer Nature. Open access articles from the remaining `r hybrid_cr %>% filter(!publisher %in% c("Elsevier BV", "Springer Nature")) %>% distinct(publisher) %>% nrow()` publishers were reduced to the the residual category "Other". The sharp decline of open access articles with license found by Unpaywall for Elsevier Journals suggests that delayed open access is in place. Indeed, [Elsevier lists 118 journals](https://www.elsevier.com/about/open-science/open-access/open-archive) with embargo periods between six and 48 months. A prominent example is the life-science journal [Cell](https://www.cell.com/cell/archive) where all articles are made freely available after an embargo period of twelve months. While we found `r hybrid_cr %>% filter(journal_title == "Cell") %>% nrow()` hybrid open access articles published without delay, Unpaywall lists another `r unpaywall_df %>% filter(journal_title == "Cell", !grepl("Crossref", source)) %>% .$articles %>% sum()` Cell articles with open content license, representing `r unpaywall_df %>% filter(journal_title == "Cell", !grepl("Crossref", source)) %>% .$articles %>% sum() / hybrid_cr %>% filter(journal_title == "Cell") %>% distinct(year, yearly_jn_volume) %>% .$yearly_jn_volume %>% sum(na.rm = TRUE) * 100` % of the journal's article volume that has been published since 2013. On the other hand, the  number of additional articles found for Springer Nature using Unpaywall's license evidence is much lower, indicating that delayed open access plays a smaller role in Springer Nature's hybrid open access journal portfolio, and that license statements were shared to large extent with Crossref.
 
 ```{r}
-license_plot <- hybrid_cr %>%
+license_plot <- unpaywall_df %>%
   mutate(publisher = fct_other(publisher, keep = c("Elsevier BV", "Springer Nature"))) %>%
-  group_by(year, publisher, jn_y_unpaywall_others) %>%
-  summarise(n = n_distinct(doi_oa)) %>%
-  gather(n, jn_y_unpaywall_others, key = "source", value = "articles") %>%
-  ungroup() %>%
-  mutate(
-    source = ifelse(
-      source == "n",
-      "Crossref immediate license",
-      "Other license information\n(Unpaywall)"
-    )
-  ) %>%
-  group_by(year, source, publisher) %>%
+  group_by(year, publisher, source) %>%
   summarise(articles = sum(articles, na.rm = TRUE)) %>%
   ggplot(aes(year, articles, fill = source)) +
   geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
