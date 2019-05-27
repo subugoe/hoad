@@ -9,15 +9,14 @@ con <- dbConnect(bigrquery::bigquery(),
                  project = "api-project-764811344545",
                  dataset = "oadoi_full")
 #' test connection
-oadoi <- tbl(con, "mongo_13_sep_18")
+oadoi <- tbl(con, "apr_19_mongo_export_2013_Apr2019_full")
 #' my bq query
 sql_unnested <-
   "SELECT doi, evidence, publisher, journal_name, journal_issns, year, is_best, license, host_type
-FROM `oadoi_full.mongo_13_sep_18`, UNNEST(oa_locations)
-WHERE `journal_is_in_doaj`=false AND data_standard=2 AND EXISTS (
+FROM `oadoi_full.apr_19_mongo_export_2013_Apr2019_full` , UNNEST(oa_locations)
+WHERE `journal_is_in_doaj`= false AND data_standard=2 AND EXISTS (
 SELECT evidence FROM UNNEST(oa_locations)
-WHERE evidence LIKE '%license%'
-)
+WHERE evidence = 'open (via crossref license)' OR evidence = 'open (via page says license)')
 "
 #' call bq
 dbGetQuery(con, sql_unnested) -> my_license
@@ -30,17 +29,13 @@ my_license %>%
   gather(issn_1:issn_4, key = "issn_position", value = "issn") %>%
   filter(!is.na(issn)) -> oadoi_issns
 #' get issn variants from crossref
-hybrid_issn <-
-  jsonlite::stream_in(
-    file("../data/jn_facets_df.json"),
-    simplifyDataFrame = FALSE
-  )
-issn <- map_df(hybrid_issn, "issn")
-jn_df <- issn %>%
-  mutate(journal_title = map_chr(hybrid_issn, "journal_title")) %>%
-  mutate(publisher = map_chr(hybrid_issn, "publisher")) %>%
-  gather(issn, issn.1, issn.2, issn.3, key = "issn_type", value = "issn") %>%
-  filter(!is.na(issn))
+jn_all <- jsonlite::stream_in(file("../data/jn_facets_df.json"))
+jn_df <- jn_all %>%
+  select(issn, publisher, journal_title) %>%
+  unnest(issn) %>%
+  filter(!is.na(issn)) %>%
+  mutate(publisher = ifelse(grepl("Springer", publisher, fixed = FALSE, ignore.case = TRUE),
+                            "Springer Nature", publisher))
 #' only journals from unpaywall that are in our sample as well
 oadoi_issns %>%
   filter(issn %in% jn_df$issn) -> hybrid_oadoi_sub
@@ -76,9 +71,24 @@ hybrid_oadoi_sub %>%
 oadoi_indicators %>%
   filter(in_dashbaord == FALSE) %>%
   select(-in_dashbaord) %>%
-  rename(jn_y_unpaywall_others = articles) %>%
-  left_join(hybrid_dash,
-            .,
-            by = c("journal_title", "publisher", "issued" = "year")) -> dash_new
+  rename(jn_y_unpaywall_others = articles) -> oadoi_others
+
+left_join(hybrid_dash, oadoi_others,
+            by = c("journal_title" = "journal_title", "publisher" = "publisher", "issued" = "year")) -> dash_new
+unpaywall_df <- dash_new %>%
+  rename(year = issued) %>%
+  group_by(year, journal_title, publisher, jn_y_unpaywall_others) %>%
+  summarise(n = n_distinct(doi_oa)) %>%
+  gather(n, jn_y_unpaywall_others, key = "source", value = "articles") %>%
+  ungroup() %>%
+  group_by(year,journal_title, publisher, source) %>%
+  summarise(articles = sum(articles, na.rm = TRUE)) %>%
+  mutate(
+    source = ifelse(
+      source == "n",
+      "Crossref immediate license",
+      "Other license information\n(Unpaywall)"
+    )
+  )
 #' export
-write_csv(dash_new, "../data/hybrid_publications.csv")
+readr::write_csv(unpaywall_df, "../data/unpaywall_df.csv")

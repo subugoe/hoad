@@ -31,6 +31,8 @@ hybrid_df <- readr::read_csv("data/hybrid_publications.csv") %>%
   mutate(hybrid_type = factor(hybrid_type, levels = c("Open APC (TA)", "Open APC (Hybrid)", "SCOAP<sup>3</sup>"))) %>%
   mutate(domain = paste(domain, suffix, sep =".")) %>%
   arrange(desc(yearly_publisher_volume))
+unpaywall_df <- readr::read_csv("data/unpaywall_df.csv") %>%
+  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019")))
 ```
 
 Overview
@@ -85,23 +87,23 @@ if (length(unique(jn_f()$publisher)) > 1) {
   }
 })
 # using unpaywall indicators
-unpaywall <- reactive({
-  hybrid_df %>%
-    filter(journal_title %in% jn_f()$journal_title) %>%
-    group_by(year, journal_title, publisher, jn_y_unpaywall_others) %>%
-    summarise(n = n_distinct(doi_oa)) %>%
-    gather(n, jn_y_unpaywall_others, key = "source", value = "articles") %>%
-    ungroup() %>%
-    group_by(year, source) %>%
-    summarise(articles = sum(articles, na.rm = TRUE)) %>%
-    mutate(
-      source = ifelse(
-        source == "n",
-        "Crossref immediate license",
-        "Other license information\n(Unpaywall)"
-      )
-    )
-})
+# unpaywall <- reactive({
+#   hybrid_df %>%
+#     filter(journal_title %in% jn_f()$journal_title) %>%
+#     group_by(year, journal_title, publisher, jn_y_unpaywall_others) %>%
+#     summarise(n = n_distinct(doi_oa)) %>%
+#     gather(n, jn_y_unpaywall_others, key = "source", value = "articles") %>%
+#     ungroup() %>%
+#     group_by(year, source) %>%
+#     summarise(articles = sum(articles, na.rm = TRUE)) %>%
+#     mutate(
+#       source = ifelse(
+#         source == "n",
+#         "Crossref immediate license",
+#         "Other license information\n(Unpaywall)"
+#       )
+#     )
+# })
 ```
 
 Notice that only those hybrid open access journals were included where 
@@ -215,7 +217,11 @@ renderPlotly({
 
 ```{r}
 renderPlotly({
-  p <- ggplot(unpaywall(), aes(year, articles, fill = source)) +
+  p <- unpaywall_df %>% 
+    filter(journal_title %in% jn_f()$journal_title) %>%
+    group_by(year, source) %>%
+    summarise(articles = sum(articles, na.rm = TRUE)) %>%
+  ggplot(aes(year, articles, fill = source)) +
     geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
     xlab("Year") +
     ylab("Articles") +

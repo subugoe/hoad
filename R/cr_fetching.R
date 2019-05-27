@@ -218,11 +218,18 @@ hybrid_licenses <- jn_facets_df %>%
 #' licenses were not issued for delayed open access articles by 
 #' additionally using  the self-explanatory filter `license.url` and
 #'  `license.delay`. We also obtain parsed metadata for these hybrid open
-#'  access articles stored as list-column.
+#'  access articles stored as list-column. metadata fields we pare are 
+#'  defined in `cr_md_fields`
+cr_md_fields <- c("URL", "member", "created", "license", 
+                  "ISSN", "container-title", "issued", "approved", 
+                  "indexed", "accepted", "DOI", "funder", "published-print", 
+                  "subject", "published-online", "link", "type", "publisher", 
+                  "issn-type", "deposited", "content-created")
 cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
                           .f = purrr::safely(function(x, y) {
                             u <- x
                             issn <- y
+                            names(issn) <-rep("issn", length(issn))
                             tmp <- rcrossref::cr_works(filter = c(issn, 
                                                                   license.url = u, 
                                                                   license.delay = 0,
@@ -230,10 +237,10 @@ cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
                                                                   from_pub_date = "2013-01-01", 
                                                                   until_pub_date = "2019-12-31"),
                                                        cursor = "*", cursor_max = 5000L, 
-                                                       limit = 1000L) 
+                                                       limit = 1000L,
+                                                       select = cr_md_fields) 
                             tibble::tibble(
                               issn =  list(issn),
-                              year_published = list(tmp$facets$published),
                               license = u,
                               md = list(tmp$data)
                             )
@@ -246,7 +253,7 @@ cr_license_df <- cr_license %>%
 dplyr::bind_rows(cr_license_df$md) %>% 
   jsonlite::stream_out(file("../data/hybrid_license_md.json"))
 #' only DOIs and how we retrieved them
-purrr::map(cr_license_df$md, "DOI") %>%
+purrr::map(cr_license_df$md, "doi") %>%
   data_frame(dois = ., issn = cr_license_df$issn, license = cr_license_df$license) %>%
   jsonlite::stream_out(file("../data/hybrid_license_dois.json"))
 
