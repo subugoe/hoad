@@ -213,44 +213,7 @@ ggsave(
 
 <!-- *Figure 1: Overview of Crossref licensing coverage per publisher. Yellow dots represent the number of hybrid open access journals disclosed by the Open APC initiative with licensing metadata, blue dots the overall number of hybrid open access journals in our sample.*-->
 
-Comparing the number of articles found via Open APC and Crossref, furthermore suggests that not all publishers shared licensing metadata retrospectively. Take for instance journals published by Springer Nature: In 2015, more hybrid open access articles were reported to the Open APC initiative than registered with an open license via Crossref (see Figure 2). 
 
-```{r, fig.cap=" Comparing Springer Nature hybrid open access journal articles available via Crossref with  disclosed spending information via the Open APC initiative."}
-hybrid_springer <- hybrid_cr %>%
-    filter(publisher == "Springer Nature")
-
-  hybrid_sub <- hybrid_springer %>%
-    group_by(year) %>%
-    summarize(n = n_distinct(doi_oa)) %>%
-    mutate(source = "Crossref Hybrid")
-
-  o_apc_sub <- o_apc_df %>%
-    filter(journal_full_title %in% hybrid_springer$journal_title, period %in% hybrid_springer$year) %>%
-    group_by(year) %>%
-    summarize(n = n()) %>%
-    mutate(source = "Open APC")
-  my_df <- bind_rows(o_apc_sub, hybrid_sub) 
-
-  p <- ggplot(my_df, aes(year, n, fill = source)) +
-    geom_bar(stat = "identity", position = "dodge") +
-    labs(title = "Springer Nature Hybrid OA Coverage", 
-         x = "Year",
-         y = "Articles") +
-    scale_x_discrete(drop = FALSE) +
-scale_fill_manual("", values = c("#EDAE49", "#30638E")) +    scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
-                       breaks= pretty_breaks()) +
-    theme_minimal("Roboto", base_size = 16) +
-    theme(plot.margin = margin(30, 30, 30, 30)) +
-  theme(panel.grid.minor = element_blank()) +
-  theme(panel.border = element_blank()) + 
-  theme(panel.grid.major.x = element_blank()) +
-  theme(legend.position = "top")
-  ggsave(p, path = "../img/", filename = "oapc_cr_springer.png", width = 9, height = 4, dpi = 450, device = "png")
-```
-
-![Comparing Springer Nature hybrid open access journal articles available via Crossref with  disclosed spending information via the Open APC initiative.](../img/oapc_cr_springer.png)
-
-*Figure 2: Comparing Springer Nature hybrid open access journal articles available via Crossref with  disclosed spending information via the Open APC initiative.*
 
 #### Retrieval accuracy 
 
