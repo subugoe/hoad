@@ -304,7 +304,7 @@ Compare
 Row
 --------------------------------------------
 
-### Hybrid Open Access Uptake by Publisher, shown as the proportion of the total number of hybrid open articles found
+### Hybrid open access uptake by Publisher, shown as the proportion of the total number of hybrid open articles found
 
 ```{r}
 hybrid_all <-
