@@ -304,6 +304,46 @@ Compare
 Row
 --------------------------------------------
 
+### Hybrid Open Access Uptake by Publisher, shown as the proportion of the total number of hybrid open articles found
+
+```{r}
+hybrid_all <-
+  hybrid_df %>%
+  count(year) %>%
+  mutate(year = gsub("20", "", year))
+hybrid_df %>%
+  mutate(year = gsub("20", "", year)) %>%
+  mutate(publisher_group = fct_lump(publisher, prop = 0.05)) %>%
+  group_by(year, publisher_group) %>% 
+  summarize(n = n()) %>% 
+  mutate(prop = n / sum(n)) %>%
+  mutate(`Proportion in %` = round(prop * 100, 2)) %>%
+  ggplot(aes(year, n)) +
+  geom_bar(
+    data = hybrid_all,
+    aes(fill = "All Hybrid OA Articles"),
+    color = "transparent",
+    stat = "identity"
+  ) +
+  geom_bar(aes(fill = "by Publisher", label = `Proportion in %`), color = "transparent", stat = "identity") +
+  facet_wrap(~publisher_group, nrow = 1) +
+  scale_fill_manual(values = c("#b3b3b3a0", "#56B4E9"), name = "") +
+   labs(x = "Year", y = "Hybrid OA Articles") +
+  theme_minimal() +
+  theme(legend.position = "top",
+        legend.justification = "right") +
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
+  theme(panel.grid.minor = element_blank()) +
+  theme(axis.ticks = element_blank()) +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(panel.border = element_blank()) -> publishers_comp_plot
+
+plotly::ggplotly(publishers_comp_plot, tooltip = c("label", "y"))
+```
+
+Row
+--------------------------------------------
+
 
 ### Proportion of open access publications in subscription-based journals by publisher 
 
