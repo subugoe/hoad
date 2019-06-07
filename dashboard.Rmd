@@ -345,7 +345,7 @@ Row
 --------------------------------------------
 
 
-### Proportion of open access publications in subscription-based journals by publisher 
+### Journal hybrid open access share by publisher 
 
 ```{r}
 fillCol(
@@ -412,7 +412,7 @@ output$pubplot <- renderPlotly({
 ```
 
 
-### Proportion of open access publications in subscription-based journals by year 
+### Journal hybrid open access share by publisher by year 
 
 ```{r}
 fillCol(
