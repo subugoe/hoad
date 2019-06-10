@@ -45,6 +45,7 @@ library(scales)
 jn_facets <- jsonlite::stream_in(file("../data/jn_facets_df.json"), verbose = FALSE) 
 #' get hybrid journals that have open licensing information in the period 2013-18
 hybrid_cr <- readr::read_csv("../data/hybrid_publications.csv") %>%
+  mutate(license = fct_infreq(license)) %>%
   mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019"))) %>%
   arrange(desc(yearly_publisher_volume))
 
@@ -235,7 +236,7 @@ We were able to retrieve emails for `r hybrid_cr %>% filter(!is.na(suffix)) %>% 
 Using data from Open APC and Crossref, we found `r n_distinct(hybrid_cr$doi_oa)`  open access articles published without delay in
 `r dplyr::n_distinct(hybrid_cr$journal_title)` subscription-based journals from `r dplyr::n_distinct(hybrid_cr$publisher)` publishers between 2013 - 2019. These hybrid open access articles accounted for about `r unlist(dplyr::n_distinct(hybrid_cr$doi_oa) / (hybrid_cr %>% distinct(issued, yearly_all) %>% summarize(prop = sum(yearly_all))) * 100)`% of the overall journal article volume investigated.
 
-In the following, we present the functionality of our [interactive dashboard](https://subugoe.shinyapps.io/hybridoa/), and highlight key findings from our exploratory data analysis. The dashboard itself is divided into three pages, which are accessible through the navigation bar. The first page, ["Overview"](https://subugoe.shinyapps.io/hybridoa/#section-overview) shows a summary of the overall results. They can be subsetted by a publisher or journal using the select boxes in the left sidebar. The select boxes enable browsing and searching. The second page, ["Compare"](https://subugoe.shinyapps.io/hybridoa/#section-compare), let you analyze the uptake of hybrid open access across publisher and years. The third page, ["Institutional View"](https://subugoe.shinyapps.io/hybridoa/#section-institutional-view), is similar to the first page, but allows browsing by email domains instead of publishers and journals.
+In the following, we present the functionality of our [interactive dashboard](https://subugoe.shinyapps.io/hybridoa/), and highlight key findings from our exploratory data analysis. The dashboard itself is divided into three pages, which are accessible through the navigation bar. The first page, ["Overview"](https://subugoe.shinyapps.io/hybridoa/#section-overview) shows a summary of the overall results. They can be subsetted by a publisher or journal using the select boxes in the left sidebar. Theses boxes support browsing and searching. The second page, ["Compare"](https://subugoe.shinyapps.io/hybridoa/#section-compare), let you analyze the uptake of hybrid open access across publisher and years. The third page, ["Institutional View"](https://subugoe.shinyapps.io/hybridoa/#section-institutional-view), is similar to the first page, but allows browsing by email domains instead of publishers and journals.
 
 ### Overview: Longitudinal development of hybrid open access publishing 
 
@@ -245,11 +246,80 @@ Launching the app shows up the overall results that can be subsetted by publishe
 
 <!-- ![*Figure 2: Screenshot of the Hybrid OA Dashboard available at <https://subugoe.shinyapps.io/hybridoa/>*](../img/screenshot.png) -->
 
-The upper part of the dashboard allows to explore the annual development of hybrid open access publishing between 2013 - 2019. The first tab shows the relative uptake of hybrid open access, the second tab the absolute number of published hybrid open access articles on a yearly basis. Bar charts are sub-grouped according to the licensing statements from Crossref, which we normalized. Overall results indicate that the number and proportion of hybrid open access journal articles rose between 2013 (`r hybrid_cr %>% filter(year == 2013) %>% n_distinct(.$doi_oa)` articles, OA share: `r unlist((hybrid_cr %>% filter(year == 2013) %>% n_distinct(.$yearly_all) / hybrid_cr %>% filter(year == 2013) %>% distinct(yearly_all)) * 100)` %) and 2018  (`r hybrid_cr %>% filter(year == 2018) %>% n_distinct(.$yearly_all)` articles, OA share: `r unlist((hybrid_cr %>% filter(year == 2018) %>% n_distinct(.$yearly_all) / hybrid_cr %>% filter(year == 2018) %>% distinct(yearly_all)) * 100)` %). CC-BY is the most prevalent open content license found. Around `r hybrid_cr %>% filter(license == "cc-by") %>% nrow() / nrow(hybrid_cr) * 100` % of open access articles were made available using this licence, followed by the less permissive license CC-BY-NC-ND, representing `r hybrid_cr %>% filter(license == "cc-by-nc-nd") %>% nrow() / nrow(hybrid_cr) * 100` % of the articles.
+The upper part of the dashboard allows to explore the annual development of hybrid open access publishing between 2013 - 2019. The first tab shows the relative uptake of hybrid open access, the second tab the absolute number of published hybrid open access articles on a yearly basis. Following the dashboard implementation, Figure contrasts relative and absolute uptake of hybrid open access license statements since 2013. Bar charts are sub-grouped according to the licensing statements from Crossref, which we normalized. Overall results indicate that the number and proportion of hybrid open access journal articles rose between 2013 (`r hybrid_cr %>% filter(year == 2013) %>% n_distinct(.$doi_oa)` articles, OA share: `r unlist((hybrid_cr %>% filter(year == 2013) %>% n_distinct(.$yearly_all) / hybrid_cr %>% filter(year == 2013) %>% distinct(yearly_all)) * 100)` %) and 2018  (`r hybrid_cr %>% filter(year == 2018) %>% n_distinct(.$yearly_all)` articles, OA share: `r unlist((hybrid_cr %>% filter(year == 2018) %>% n_distinct(.$yearly_all) / hybrid_cr %>% filter(year == 2018) %>% distinct(yearly_all)) * 100)` %). CC-BY is the most prevalent open content license found. Around `r hybrid_cr %>% filter(license == "cc-by") %>% nrow() / nrow(hybrid_cr) * 100` % of open access articles were made available using this licence, followed by the less permissive license CC-BY-NC-ND, representing `r hybrid_cr %>% filter(license == "cc-by-nc-nd") %>% nrow() / nrow(hybrid_cr) * 100` % of the articles. 
 
-The third tab presents addtional open access articles provided by hybrid open access journals that Unpaywall detected using license statements. Unpaywall obtained these license information from publisher websites directly or from Crossref metadata. Unlike our approach, Unpaywall did not distinguish between immediate and delayed open access provision using Crossref's metadata. 
+```{r}
+library(cowplot)
+hybrid_all <- hybrid_cr %>%
+  group_by(year, yearly_all, license) %>%
+  count() %>%
+  mutate(prop = n / yearly_all)
+prop_p <- ggplot(hybrid_all, aes(year, prop, fill = license)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+    xlab("Year") +
+    ylab("Hybrid OA / Articles published") +
+    # palette https://twitter.com/debivort/status/994583058031546369
+    scale_fill_manual(
+      "License",
+      values =  c(
+        "#65BADA",
+        "#068E8C",
+        "#00A757",
+        "#E5BA52",
+        "#D86F27",
+        "#C82E6B"
+      )
+    ) +
+    scale_x_discrete(drop = FALSE) +
+    scale_y_continuous(labels = scales::percent) +
+    theme_minimal(base_family="Roboto", base_size = 12) +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank()) +
+  theme(legend.position="none")
+prop_n <- ggplot(hybrid_all, aes(year, n, fill = license)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+    xlab("Year") +
+    ylab("Hybrid OA Articles") +
+    # palette https://twitter.com/debivort/status/994583058031546369
+    scale_fill_manual(
+      "License",
+      values =  c(
+        "#65BADA",
+        "#068E8C",
+        "#00A757",
+        "#E5BA52",
+        "#D86F27",
+        "#C82E6B"
+      )
+    ) +
+    scale_x_discrete(drop = FALSE) +
+    scale_y_continuous() +
+   theme_minimal(base_family="Roboto", base_size = 12) +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank()) 
+prow <- cowplot::plot_grid(prop_p, prop_n + 
+  theme(legend.position="none"),
+  align = 'vh',
+           labels = c("A", "B"),
+           hjust = -1,
+           nrow = 1)
 
-Similar to the dashboard presentation, Figure contrasts our evidence source for immediate hybrid open access (blue area) with additional license information provided by Unpaywall (grey area) for the two largest publishers in our sample, Elsevier and Springer Nature. Open access articles from the remaining `r hybrid_cr %>% filter(!publisher %in% c("Elsevier BV", "Springer Nature")) %>% distinct(publisher) %>% nrow()` publishers were reduced to the residual category "Other". The sharp decline of open access articles with license found by Unpaywall for Elsevier Journals suggests that delayed open access is in place. Indeed, [Elsevier lists 130 journals](https://www.elsevier.com/about/open-science/open-access/open-archive) with embargo periods between six and 48 months. A prominent example is the life-science journal [Cell](https://www.cell.com/cell/archive) where all articles are made freely available after an embargo period of twelve months. While we found `r hybrid_cr %>% filter(journal_title == "Cell") %>% nrow()` hybrid open access articles published without delay, Unpaywall lists another `r unpaywall_df %>% filter(journal_title == "Cell", !grepl("Crossref", source)) %>% .$articles %>% sum()` Cell articles with open content license, representing `r unpaywall_df %>% filter(journal_title == "Cell", !grepl("Crossref", source)) %>% .$articles %>% sum() / hybrid_cr %>% filter(journal_title == "Cell") %>% distinct(year, yearly_jn_volume) %>% .$yearly_jn_volume %>% sum(na.rm = TRUE) * 100` % of the journal's article volume that has been published since 2013. On the other hand, the number of additional articles found for Springer Nature using Unpaywall's license evidence is much lower, indicating that delayed open access plays a smaller role in Springer Nature's hybrid open access journal portfolio, and that license statements were shared to large extent with Crossref.
+legend_b <- get_legend(prop_n + theme(legend.position="bottom"))
+plot_grid(prow, legend_b, ncol = 1, rel_heights = c(1, .2)) -> p_license
+ggsave(p_license, path = "../img/", filename = "p_license.png", width = 9, height = 4.5, dpi = 450, device = "png")
+```
+
+![Uptake of hybrid open access license statements. Graph A shows the relative growth, B the absolute number of articles found since 2013.](../img/p_license.png)
+
+The third tab presents additional open access articles provided by hybrid open access journals that Unpaywall detected using license statements. Unpaywall obtained these license information from publisher websites directly or from Crossref metadata. Unlike our approach, Unpaywall did not distinguish between immediate and delayed open access provision using Crossref's metadata. 
+
+Similar to the dashboard presentation, Figure contrasts our evidence source for immediate hybrid open access (blue area) with additional license information provided by Unpaywall (gray area) for the two largest publishers in our sample, Elsevier and Springer Nature. Open access articles from the remaining `r hybrid_cr %>% filter(!publisher %in% c("Elsevier BV", "Springer Nature")) %>% distinct(publisher) %>% nrow()` publishers were reduced to the residual category "Other". The sharp decline of open access articles with license found by Unpaywall for Elsevier Journals suggests that delayed open access is in place. Indeed, [Elsevier lists 130 journals](https://www.elsevier.com/about/open-science/open-access/open-archive) with embargo periods between six and 48 months. A prominent example is the life-science journal [Cell](https://www.cell.com/cell/archive) where all articles are made freely available after an embargo period of twelve months. While we found `r hybrid_cr %>% filter(journal_title == "Cell") %>% nrow()` hybrid open access articles published without delay, Unpaywall lists another `r unpaywall_df %>% filter(journal_title == "Cell", !grepl("Crossref", source)) %>% .$articles %>% sum()` Cell articles with open content license, representing `r unpaywall_df %>% filter(journal_title == "Cell", !grepl("Crossref", source)) %>% .$articles %>% sum() / hybrid_cr %>% filter(journal_title == "Cell") %>% distinct(year, yearly_jn_volume) %>% .$yearly_jn_volume %>% sum(na.rm = TRUE) * 100` % of the journal's article volume that has been published since 2013. On the other hand, the number of additional articles found for Springer Nature using Unpaywall's license evidence is much lower, indicating that delayed open access plays a smaller role in Springer Nature's hybrid open access journal portfolio, and that license statements were shared to large extent with Crossref.
 
 ```{r}
 license_plot <- unpaywall_df %>%
@@ -279,7 +349,7 @@ license_plot <- unpaywall_df %>%
   theme(panel.grid.major.x=element_blank()) +
   theme(panel.border=element_blank()) +
   theme(legend.position="top")
-ggsave(license_plot, path = "../img/", filename = "license_plot.png", width = 9, height = 6, dpi = 450, device = "png")
+ggsave(license_plot, path = "../img/", filename = "license_plot.png", width = 9, height = 4.5, dpi = 450, device = "png")
 ```
 
 ![Hybrid Open Access License Statements by publisher and source](../img/license_plot.png)
@@ -333,14 +403,14 @@ spending_plot <- hybrid_cr %>%
   theme(panel.grid.major.x=element_blank()) +
   theme(panel.border=element_blank()) +
   theme(legend.position="top")
-ggsave(spending_plot, path = "../img/", filename = "spending_plot.png", width = 9, height = 6, dpi = 450, device = "png")
+ggsave(spending_plot, path = "../img/", filename = "spending_plot.png", width = 9, height = 4.5, dpi = 450, device = "png")
 ```
 
 ![Development of spending disclosure for hybrid open Access articles across publishers. Sources include expenditures for individual articles ("Open APC (Hybrid)") and articles from transformative agreements ("Open APC (TA)") as disclosed by the Open APC Initiative. Overlap between hybrid open access articles found via Crossref and the SCOAP$^3$ repository are displayed as well. The light gray stack areas represent the number of articles where no information about open access sponsorship was available. Notice that it is very likely that the overall decrease of spending for hybrid open access reported to the Open APC initiative in 2019 is due to a lag between the time  payments were made and reporting of payments to the initiative.]("../img/spending_plot.png)
 
 #### Email Domains from First / Corresponding Author 
 
-The lower right chart presents email domains extracted from the open access full-texts per publisher or journal selection. Because only the first email occurrence per article was obtained, the so parsed addresses can act as a rough estimate for the affiliation of the first or corresponding author of an article, a data point used to delineate open access funding. 
+The lower right chart presents email domains extracted from the open access full-texts per publisher or journal selection. Because the first email occurrence per article was obtained, the so parsed addresses can act as a rough estimate for the affiliation of the first or corresponding author of an article, a data point used to delineate open access funding. 
 
 Figure presents a breakdown by email domain suffix, representing the top-level domain. In total, `r hybrid_cr %>% filter(!is.na(suffix)) %>% nrow()` emails were retrieved and parsed, representing  `r hybrid_cr %>% filter(!is.na(suffix)) %>% nrow() / nrow(hybrid_cr) *100` % of all articles in our dataset. `r hybrid_cr %>% filter(suffix == "ac.uk") %>% nrow()` articles can be attributed to academic institutions in the UK ("ac.uk"), followed by domains registered by commercial organisations, mostly email providers like gmail.com or the Chinese 163.com and 126.com, and US-American instituions of higher education ("edu"). The figure also shows that European institutions from the Netherlands ("nl"), Germany ("de"), Sweden ("se"), Austria ("ac.at") and Poland ("edu.pl") are among the top 10. In total, `r hybrid_cr %>% filter(!is.na(suffix)) %>% .$suffix %>% unique() %>% length()` top-level domains were retrieved.
 
@@ -373,7 +443,9 @@ ggsave(email_plot, path = "../img/", filename = "email_plot.png", width = 9, hei
 
 ### Variation in Hybrid Open Access Publishing
 
-Figure shows the top three publishers in terms of the number of hybrid open access articles published since 2013. These publishers Elsevier BV, Springer Nature and Wiley-Blackwell accounted for the largest proportion of open access articles (`r round(sum(top3$"Hybrid OA article volume") / sum(hybrid_overview$"Hybrid OA article volume") * 100, 2)` %), as well as of hybrid open access journals (`r round(sum(top3$"Number of journals") / sum(hybrid_overview$"Number of journals") * 100, 2)` %).
+The page "Overview" presents data visualization allowing to explore variations hybrid open access publishing across publishers. It focuses on market shares in terms of the absoluter number of published articles and the hybrid open access share among journals across publishers. 
+
+Figure shows the top three publishers in terms of the number of hybrid open access articles published since 2013, presented as These publishers -- Elsevier BV, Springer Nature and Wiley-Blackwell -- accounted for the largest proportion of open access articles (`r round(sum(top3$"Hybrid OA article volume") / sum(hybrid_overview$"Hybrid OA article volume") * 100, 2)` %), and that of hybrid open access journals (`r round(sum(top3$"Number of journals") / sum(hybrid_overview$"Number of journals") * 100, 2)` %). Whereas
 
 ```{r}
 hybrid_all <-
@@ -410,30 +482,10 @@ ggsave(publishers_comp_plot, path = "../img/", filename = "publishers_comp_plot.
 ![](../img/publishers_comp_plot.png)
 
 
-Table 1 presents an additional breakdown by publishers, contrasting the number of journals with the number of articles found. The three publishers Elsevier BV, Springer Nature and Wiley-Blackwell are leading, accounting for the largest proportion of hybrid open access journals (`r round(sum(top3$"Number of journals") / sum(hybrid_overview$"Number of journals") * 100, 2)` %) and open access articles (`r round(sum(top3$"Hybrid OA article volume") / sum(hybrid_overview$"Hybrid OA article volume") * 100, 2)` %) found.
-
 
 ```{r}
-hybrid_cr %>%
-  distinct(publisher, year, yearly_publisher_volume) %>%
-  group_by(publisher) %>%
-  summarise(`Article volume` = sum(yearly_publisher_volume, na.rm = TRUE)) %>%
-  left_join(hybrid_overview, by = "publisher") %>%
-  mutate(`OA proportion per publisher (in %)` = round(`Hybrid OA article volume`  / `Article volume` * 100, 2)) %>% 
-  mutate(`Overall OA proportion (in %)` = round(`Hybrid OA article volume`  / sum(`Hybrid OA article volume`) * 100, 2)) %>% 
-  mutate(`Journal proportion (in %)` = round(`Number of journals` / sum(`Number of journals`) * 100, 2)) %>%
-  mutate(`Journals (in %)` = paste0(`Number of journals`, " (" ,`Journal proportion (in %)`, " %)")) %>% 
-  mutate(`Article volume (in %)` = paste0(`Article volume`, " (", round(`Article volume` / sum(`Article volume`) * 100, 2), " %)")) %>%
-  arrange(desc(`Article volume`)) %>%
-  select(Publisher = publisher,`Journals (in %)`, `Article volume (in %)`,4:6)
-```
-
-*Table 1: Hybrid open access journal and article breakdown by publisher.*
-
-```{r}
-library(tidyverse)
 my_df <- hybrid_cr %>% 
-  filter(year == "2017") %>% 
+  filter(year %in% c("2017", "2018") %>% 
   group_by(journal_title, publisher, yearly_jn_volume) %>% 
   summarise(n = n()) %>% 
   mutate(prop = n / yearly_jn_volume) %>%
