@@ -368,7 +368,45 @@ ggsave(email_plot, path = "../img/", filename = "email_plot.png", width = 9, hei
 
 ![Text-mined author email top-level domains from hybrid open access journal articles. Only the first email per article was considered.](../img/email_plot.png)
 
+
 ### Variation in Hybrid Open Access Publishing
+
+Figure shows the top three publishers in terms of the number of hybrid open access articles published since 2013. These publishers Elsevier BV, Springer Nature and Wiley-Blackwell accounted for the largest proportion of open access articles (`r round(sum(top3$"Hybrid OA article volume") / sum(hybrid_overview$"Hybrid OA article volume") * 100, 2)` %), as well as of hybrid open access journals (`r round(sum(top3$"Number of journals") / sum(hybrid_overview$"Number of journals") * 100, 2)` %).
+
+```{r}
+hybrid_all <-
+  hybrid_cr %>%
+  count(year) %>%
+  mutate(year = gsub("20", "", year))
+hybrid_cr %>%
+  mutate(year = gsub("20", "", year)) %>%
+  mutate(publisher_group = fct_lump(publisher, prop = 0.05)) %>%
+  count(year, publisher_group) %>%
+  ggplot(aes(year, n)) +
+  geom_bar(
+    data = hybrid_all,
+    aes(fill = "All Hybrid OA Articles"),
+    color = "transparent",
+    stat = "identity"
+  ) +
+  geom_bar(aes(fill = "per Publisher"), color = "transparent", stat = "identity") +
+  facet_wrap(~publisher_group, nrow = 1) +
+  scale_fill_manual(values = c("#b3b3b3a0", "#56B4E9"), name = "") +
+   labs(x = "Year", y = "Hybrid OA Articles", title = "Uptake of Hybrid Open Access since 2013") +
+  theme_minimal(base_family = "Roboto") +
+  theme(legend.position = "top",
+        legend.justification = "right") +
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
+  theme(plot.margin = margin(30, 30, 30, 30)) +
+  theme(panel.grid.minor = element_blank()) +
+  theme(axis.ticks = element_blank()) +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(panel.border = element_blank()) -> publishers_comp_plot
+ggsave(publishers_comp_plot, path = "../img/", filename = "publishers_comp_plot.png", width = 9, height = 4.5, dpi = 450, device = "png")
+```
+
+![](../img/publishers_comp_plot.png)
+
 
 Table 1 presents an additional breakdown by publishers, contrasting the number of journals with the number of articles found. The three publishers Elsevier BV, Springer Nature and Wiley-Blackwell are leading, accounting for the largest proportion of hybrid open access journals (`r round(sum(top3$"Number of journals") / sum(hybrid_overview$"Number of journals") * 100, 2)` %) and open access articles (`r round(sum(top3$"Hybrid OA article volume") / sum(hybrid_overview$"Hybrid OA article volume") * 100, 2)` %) found.
 
