@@ -445,7 +445,7 @@ ggsave(email_plot, path = "../img/", filename = "email_plot.png", width = 9, hei
 
 The page "Overview" presents data visualization allowing to explore variations hybrid open access publishing across publishers. It focuses on market shares in terms of the absoluter number of published articles and the hybrid open access share among journals across publishers. 
 
-Figure shows the top three publishers in terms of the number of hybrid open access articles published since 2013, presented as These publishers -- Elsevier BV, Springer Nature and Wiley-Blackwell -- accounted for the largest proportion of open access articles (`r round(sum(top3$"Hybrid OA article volume") / sum(hybrid_overview$"Hybrid OA article volume") * 100, 2)` %), and that of hybrid open access journals (`r round(sum(top3$"Number of journals") / sum(hybrid_overview$"Number of journals") * 100, 2)` %). Whereas
+The first chart shows the top three publishers in terms of the number of hybrid open access articles published since 2013 (also shown in Figure). Grey bars present the overall number of hybrid open access articles, colored bars the number of hybrid open access articles per publisher. These top three publishers -- Elsevier BV, Springer Nature and Wiley-Blackwell -- accounted for the largest proportion of open access articles (`r round(sum(top3$"Hybrid OA article volume") / sum(hybrid_overview$"Hybrid OA article volume") * 100, 2)` %), and that of hybrid open access journals (`r round(sum(top3$"Number of journals") / sum(hybrid_overview$"Number of journals") * 100, 2)` %). 
 
 ```{r}
 hybrid_all <-
