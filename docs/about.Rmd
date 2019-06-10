@@ -443,9 +443,9 @@ ggsave(email_plot, path = "../img/", filename = "email_plot.png", width = 9, hei
 
 ### Variation in Hybrid Open Access Publishing
 
-The page "Overview" presents data visualization allowing to explore variations hybrid open access publishing across publishers. It focuses on market shares in terms of the absoluter number of published articles and the hybrid open access share among journals across publishers. 
+The page "Overview" presents data visualization allowing to explore variations hybrid open access publishing across publishers. It focuses on market shares in terms of the absoluter number of published articles and the hybrid open access share among journals across publishers. A table at the bottom of the page presents these key indicators at the journal-level, which can be downloaded as Excel spreadsheet.
 
-The first chart shows the top three publishers in terms of the number of hybrid open access articles published since 2013 (also shown in Figure). Grey bars present the overall number of hybrid open access articles, colored bars the number of hybrid open access articles per publisher. These top three publishers -- Elsevier BV, Springer Nature and Wiley-Blackwell -- accounted for the largest proportion of open access articles (`r round(sum(top3$"Hybrid OA article volume") / sum(hybrid_overview$"Hybrid OA article volume") * 100, 2)` %), and that of hybrid open access journals (`r round(sum(top3$"Number of journals") / sum(hybrid_overview$"Number of journals") * 100, 2)` %). 
+Figure, which is shown at the top of the "Overview" dashboard page, presents the top three publishers in terms of the number of hybrid open access articles published since 2013. Grey bars present the overall number of hybrid open access articles, colored bars the number of hybrid open access articles per publisher. These top three publishers -- Elsevier BV, Springer Nature and Wiley-Blackwell -- accounted for the largest proportion of open access articles (`r round(sum(top3$"Hybrid OA article volume") / sum(hybrid_overview$"Hybrid OA article volume") * 100, 2)` %), and that of hybrid open access journals (`r round(sum(top3$"Number of journals") / sum(hybrid_overview$"Number of journals") * 100, 2)` %).  
 
 ```{r}
 hybrid_all <-
@@ -479,55 +479,41 @@ hybrid_cr %>%
 ggsave(publishers_comp_plot, path = "../img/", filename = "publishers_comp_plot.png", width = 9, height = 4.5, dpi = 450, device = "png")
 ```
 
-![](../img/publishers_comp_plot.png)
+![Hybrid open access articles by publisher, shown as proportion of the total number of hybrid open access articles found. The colored bars show the number of articles per publisher, grey bars the overall distribution.](../img/publishers_comp_plot.png)
 
 
 
 ```{r}
 my_df <- hybrid_cr %>% 
-  filter(year %in% c("2017", "2018") %>% 
-  group_by(journal_title, publisher, yearly_jn_volume) %>% 
+  mutate(publisher_group = fct_lump(publisher, prop = 0.05)) %>%
+  filter(year %in% c("2017", "2018")) %>% 
+  group_by(journal_title, publisher_group, yearly_jn_volume) %>% 
   summarise(n = n()) %>% 
-  mutate(prop = n / yearly_jn_volume) %>%
-  ungroup() %>%
-  mutate(publisher = forcats::as_factor(publisher)) -> my_df
-publishers <- fct_count(my_df$publisher, sort = TRUE) %>%
-  .$f
-my_df %>% mutate(publisher = forcats::fct_other(publisher, keep = publishers[1:5])) -> my_df
+  mutate(prop = n / yearly_jn_volume) 
 ```
 
-Numbers and proportion of hybrid open access journal articles varies across publishers and journals. In the year 2017, for example, the mean open access proportion per Springer Nature journal was `r my_df %>% filter(publisher == "Springer Nature") %>% .$prop %>% mean() * 100` % (SD = `r my_df %>% filter(publisher == "Springer Nature") %>% .$prop %>% sd() * 100` %), whereas the  mean open access articles proportion per journal published by Elsevier BV was `r my_df %>% filter(publisher == "Elsevier BV") %>% .$prop %>% mean() * 100` % (SD = `r my_df %>% filter(publisher == "Elsevier BV") %>% .$prop %>% sd() * 100` %). Figure 3 shows the variations for the five publishers with the largest number of hybrid open access journals in 2017 according to our data.
+Numbers and proportion of hybrid open access journal articles varies across publishers and journals. In the two-years period 2017-2018, for example, the mean open access proportion per Springer Nature journal was `r my_df %>% filter(publisher_group == "Springer Nature") %>% .$prop %>% mean() * 100` % (SD = `r my_df %>% filter(publisher_group == "Springer Nature") %>% .$prop %>% sd() * 100` %), whereas the  mean open access articles proportion per journal published by Elsevier BV was `r my_df %>% filter(publisher_group == "Elsevier BV") %>% .$prop %>% mean() * 100` % (SD = `r my_df %>% filter(publisher_group == "Elsevier BV") %>% .$prop %>% sd() * 100` %). The publisher Wiley performed between these two: The mean proportion was `r my_df %>% filter(publisher_group == "Wiley") %>% .$prop %>% mean() * 100` %) (SD = `r my_df %>% filter(publisher_group == "Wiley") %>% .$prop %>% sd() * 100` %). Figure 3 shows the variations for these three publishers, illustration the differences of hybrid open access uptake within and across the publishers. 
 
 ```{r}
-library(scales)
-q <- ggplot(my_df, aes(publisher, prop)) + 
+q <- ggplot(my_df, aes(publisher_group, prop)) + 
   geom_boxplot() + 
-  scale_x_discrete(limits = rev(levels(my_df$publisher))) +
-  scale_y_continuous(labels = scales::percent) +
+  scale_x_discrete(limits = rev(levels(my_df$publisher_group))) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 5L)) +
   coord_flip(ylim = c(0,0.3)) +
-  #scale_y_continuous(labels = scales::percent, limit = c(0,1)) +
-  labs(y = "Hybrid OA share per journal in 2017", x = "Publishers (Top 5)",
-       title = "What was the share of open access articles \nin subscription-based journals in 2017?") +
-  # mimicking github.com/hrbrmstr/hrbrthemes 
-  theme_minimal(base_family="Arial Narrow", base_size = 16) +
+  labs(y = "Hybrid OA share per journal in 2017 - 2018", x = "Publishers (Top 3)",
+       title = "What was the share of open access articles \nin subscription-based journals in the two-years period 2017 - 2018?") +
+  theme_minimal(base_family = "Roboto")  +
   theme(plot.margin=margin(30,30,30,30)) +
   theme(panel.grid.minor=element_blank()) +
   theme(axis.ticks=element_blank()) +
   theme(panel.grid.major.y=element_blank()) +
   theme(panel.border=element_blank()) 
-ggsave(q, path = "../img/", filename = "oa_variation.png", width = 9, height = 4, dpi = 450, device = "png")
+ggsave(q, path = "../img/", filename = "oa_variation.png", width = 9, height = 4.5, dpi = 450, device = "png")
 ```  
 
 ![](../img/oa_variation.png)
 
-*Figure 3: Box plot characterizing spread and differences of the share of open access articles provided by subscription-based journal per publisher in 2017 using five summary statistics (the median, the 25th and 75th percentiles, and 1.5 times the inter-quartile range between the first and third quartiles), and visualizing all outlying points individually.*
-
-### Institutional support
-
-In addition to bibliographic metadata, institutional support either for publication fees or as part of central agreements between research organisations and publishers (offsetting) was also studied.
-The lower left chart in the dashboard compares the number of articles found via Open APC and Crossref for the selection. The lower right chart indicates from which countries the institutional support originated from. 
-
-Notice that it is very likely that the overall decrease of spending for hybrid open access reported to the Open APC initiative in 2019 is due to a lag between the time that payments were made and expenditures were reported to the initiative. Comparing the number of articles found via Open APC and Crossref, furthermore suggests that not all publishers share licensing metadata retrospectively. Take for instance journals published by Springer Nature: between 2013 and 2015 more open access articles were reported to the Open APC initiative than registered with an open license via Crossref (see Figure 2). 
+*Figure 3: Box plot characterizing spread and differences of the share of open access articles provided by subscription-based journal per publisher between 2017 and 2018 using five summary statistics (the median, the 25th and 75th percentiles, and 1.5 times the inter-quartile range between the first and third quartiles), and visualizing all outlying points individually.*
 
 
 ## Discussion and conclusion
