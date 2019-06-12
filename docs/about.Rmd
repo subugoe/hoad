@@ -417,15 +417,15 @@ The lower right chart presents email domains extracted from the open access full
 Figure presents a breakdown by email domain suffix. In total, `r hybrid_cr %>% filter(!is.na(suffix)) %>% nrow()` emails were retrieved and parsed, representing  `r hybrid_cr %>% filter(!is.na(suffix)) %>% nrow() / nrow(hybrid_cr) *100` % of all articles in our dataset. `r hybrid_cr %>% filter(suffix == "ac.uk") %>% nrow()` articles can be attributed to academic institutions in the UK ("ac.uk"), followed by domains registered by commercial organizations, mostly email providers like gmail.com or the Chinese 163.com and 126.com, and US-American institutions of higher education ("edu"). The figure illustrates that European institutions from the Netherlands ("nl"), Germany ("de"), Sweden ("se"), Austria ("ac.at") and Poland ("edu.pl") were among the top 10. In total, `r hybrid_cr %>% filter(!is.na(suffix)) %>% .$suffix %>% unique() %>% length()` top-level domains were retrieved.
 
 ```{r}
-email_plot <- hybrid_cr %>%
+email_df <- hybrid_cr %>%
   filter(!is.na(suffix)) %>%
   mutate(suffix = fct_lump(suffix, prop = 0.02, other_level = "other")) %>%
   count(suffix, sort = TRUE) %>%
   mutate(prop = n / sum(n)) %>%
   mutate(suffix = fct_inorder(suffix)) %>%
   mutate(suffix = fct_rev(suffix)) %>%
-  mutate(suffix = fct_relevel(suffix, "other")) %>%
-  ggplot(aes(suffix, prop)) +
+  mutate(suffix = fct_relevel(suffix, "other")) 
+email_plot <- ggplot(email_df, aes(suffix, prop)) +
   geom_bar(stat = "identity", fill = c(rep("grey60", 10), "#56B4E9")) +
   coord_flip() +
   scale_y_continuous("Percentage", labels = scales::percent_format(accuracy = 5L)) +
@@ -514,6 +514,43 @@ ggsave(q, path = "../img/", filename = "oa_variation.png", width = 9, height = 4
 ```  
 
 ![Box plot characterizing spread and differences of the share of open access articles provided by subscription-based journal per publisher between 2017 and 2018 using five summary statistics (the median, the 25th and 75th percentiles, and 1.5 times the inter-quartile range between the first and third quartiles), and visualizing all outlying points individually (Axis displaying proportions was limited to around 30%).](../img/oa_variation.png)
+
+
+### Institutional view
+
+```{r}
+hybrid_cr %>%
+  mutate(year = gsub("20", "", year)) %>%
+  mutate(hybrid_type = ifelse(hybrid_type == "SCOAP","SCOAP³", hybrid_type)) %>%
+  filter(!is.na(suffix)) %>%
+  mutate(suffix = fct_lump(suffix, prop = 0.02, other_level = "other")) %>%
+  count(hybrid_type, year, suffix, sort = TRUE) %>% 
+  ggplot(aes(year, n, fill = hybrid_type)) +
+  geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
+  facet_wrap(~factor(suffix, levels = rev(levels(email_df$suffix)))) +
+  scale_fill_manual(
+      "Sources:",
+      values = c(
+        "Open APC (TA)" = "#23445D",
+        "Open APC (Hybrid)" = "#AE4132",
+        "SCOAP³" = "#12AAB5"
+      ),
+      na.value = "#b3b3b3a0"
+    ) +
+  labs(x = "Year", y = "Hybrid OA Articles",
+       title = "Availability of Spending Information for Hybrid Open Access Articles",
+       subtitle = "Breakdown by email top-level domain from corresponding authors") +
+  theme_minimal(base_family = "Roboto", base_size = 12) +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.x=element_blank()) +
+  theme(panel.border=element_blank()) +
+  theme(legend.position="top") -> plot_institutions
+ggplot2::ggsave(plot_institutions, path = "../img/", filename = "plot_institutions.png", width = 9, height = 8, dpi = 450, device = "png")
+```
+
+![](../img/plot_institutions.png)
 
 ## Discussion and conclusion
 
