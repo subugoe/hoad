@@ -146,7 +146,8 @@ jn_facets <- purrr::map(issns_list, .f = purrr::safely(function(x) {
       until_pub_date = "2019-12-31",
       type = "journal-article"
     ),
-    facet = TRUE,
+    # being explicit about facets improves API performance!
+    facet = "license:*,published:*,container-title:*,publisher-name:*",
     # less api traffic
     select = "DOI"
   )
