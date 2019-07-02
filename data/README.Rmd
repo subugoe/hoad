@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 Documentation:
 
-||Variable                   |Description
+|Variable                   |Description
 |:--------------------------|:------------------------------------------------------------------|
 |`license`                  |Normalized open content license statement                          |
 |`journal_title`            |Most frequent journal title used by Crossref                       |

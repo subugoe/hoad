@@ -10,7 +10,7 @@
 
 Documentation:
 
-||Variable                   |Description
+|Variable                   |Description
 |:--------------------------|:------------------------------------------------------------------|
 |`license`                  |Normalized open content license statement                          |
 |`journal_title`            |Most frequent journal title used by Crossref                       |
@@ -35,7 +35,11 @@ Documentation:
 
 Tibble view in R:
 
-library(readr)readr::read_csv("hybrid_publications.csv")#> # A tibble: 207,602 x 20
+
+```r
+library(readr)
+readr::read_csv("hybrid_publications.csv")
+#> # A tibble: 207,602 x 20
 #>    license journal_title publisher doi_oa issued yearly_jn_volume
 #>    <chr>   <chr>         <chr>     <chr>   <int>            <int>
 #>  1 cc-by   Soft Computi… Springer… 10.10…   2016              466
@@ -53,7 +57,7 @@ library(readr)readr::read_csv("hybrid_publications.csv")#> # A tibble: 207,602 x
 #> #   period <int>, euro <dbl>, hybrid_type <chr>, country <chr>,
 #> #   country_name <chr>, license_url <chr>, host <chr>, subdomain <chr>,
 #> #   domain <chr>, suffix <chr>
-
+```
 
 ## Re-used data sources
 
@@ -69,7 +73,11 @@ Data schema: <https://github.com/OpenAPC/openapc-de/wiki/schema>
 
 Tibble view in R:
 
-library(readr)readr::read_csv("oapc_hybrid.csv")#> # A tibble: 62,960 x 22
+
+```r
+library(readr)
+readr::read_csv("oapc_hybrid.csv")
+#> # A tibble: 62,960 x 22
 #>    institution period euro  doi   is_hybrid publisher journal_full_ti…
 #>    <chr>        <int> <chr> <chr> <lgl>     <chr>     <chr>           
 #>  1 Aberystwyt…   2015 <NA>  10.1… TRUE      Springer… Soft Computing  
@@ -87,7 +95,7 @@ library(readr)readr::read_csv("oapc_hybrid.csv")#> # A tibble: 62,960 x 22
 #> #   license_ref <chr>, indexed_in_crossref <lgl>, pmid <int>, pmcid <chr>,
 #> #   ut <chr>, url <chr>, doaj <lgl>, agreement <chr>, hybrid_type <chr>,
 #> #   country <chr>, country_name <chr>
-
+```
 
 ### Crossref
 
@@ -105,7 +113,11 @@ JSON-ND file. Includes the following metadata from Crossref:
 
 How to load into R?
 
-library(jsonlite)jsonlite::stream_in(file("jn_facets_df.json"), simplifyDataFrame = FALSE)
+
+```r
+library(jsonlite)
+jsonlite::stream_in(file("jn_facets_df.json"), simplifyDataFrame = FALSE)
+```
 
 #### [`hybrid_license_dois.json`](hybrid_license_dois.json)
 
@@ -117,7 +129,11 @@ Variable                    |Description
 |`issn`                     |ISSN obtained from Open APC dataset used to query Crossref API |
 |`license`                  |Open License URI (non-normalised)                              |
 
-library(jsonlite)jsonlite::stream_in(file("hybrid_license_dois.json"), simplifyDataFrame = FALSE)
+
+```r
+library(jsonlite)
+jsonlite::stream_in(file("hybrid_license_dois.json"), simplifyDataFrame = FALSE)
+```
 
 #### `hybrid_license_md.json`
 
@@ -125,8 +141,13 @@ library(jsonlite)jsonlite::stream_in(file("hybrid_license_dois.json"), simplifyD
 
 Tibble view in R:
 
-library(jsonlite)library(dplyr)jsonlite::stream_in(file("../data/hybrid_license_md.json"), verbose = FALSE) %>%
-  dplyr::as_data_frame()#> # A tibble: 218,621 x 17
+
+```r
+library(jsonlite)
+library(dplyr)
+jsonlite::stream_in(file("../data/hybrid_license_md.json"), verbose = FALSE) %>%
+  dplyr::as_data_frame()
+#> # A tibble: 218,621 x 17
 #>    container.title created deposited published.print published.online doi  
 #>    <chr>           <chr>   <chr>     <chr>           <chr>            <chr>
 #>  1 Soft Computing  2016-0… 2017-08-… 2017-09         2016-06-17       10.1…
@@ -142,7 +163,7 @@ library(jsonlite)library(dplyr)jsonlite::stream_in(file("../data/hybrid_license_
 #> # … with 218,611 more rows, and 11 more variables: indexed <chr>,
 #> #   issn <chr>, issued <chr>, member <chr>, publisher <chr>, type <chr>,
 #> #   url <chr>, funder <list>, link <list>, license <list>, subject <chr>
-
+```
 
 ## Count data
 
@@ -165,7 +186,11 @@ Coding scheme:
 
 Tibble view in R:
 
-library(readr)readr::read_csv("indicator.csv")#> # A tibble: 42,370 x 7
+
+```r
+library(readr)
+readr::read_csv("indicator.csv")
+#> # A tibble: 42,370 x 7
 #>    journal_title publisher  year yearly_jn_volume license license_ref_n
 #>    <chr>         <chr>     <int>            <int> <chr>           <int>
 #>  1 Soft Computi… Springer…  2018              706 http:/…            25
@@ -180,13 +205,17 @@ library(readr)readr::read_csv("indicator.csv")#> # A tibble: 42,370 x 7
 #> 10 Geoheritage   Springer…  2018               62 http:/…             6
 #> # … with 42,360 more rows, and 1 more variable:
 #> #   yearly_publisher_volume <int>
-
+```
 
 ## Flipped journals
 
 To detect fully open acces journals, the [Directory of Open Access Journals](https://doaj.org/) was checked. [`flipped_jns_doaj.csv`](flipped_jns_doaj.csv) contains the so detected articles published in fully open access journals.
 
-library(readr)readr::read_csv("flipped_jns_doaj.csv")#> # A tibble: 14,550 x 9
+
+```r
+library(readr)
+readr::read_csv("flipped_jns_doaj.csv")
+#> # A tibble: 14,550 x 9
 #>    license journal_title publisher dois  issued issn_type.x issn 
 #>    <chr>   <chr>         <chr>     <chr>  <int> <chr>       <chr>
 #>  1 http:/… Gynecologica… Springer… 10.1…   2017 issn_2      1613…
@@ -201,11 +230,15 @@ library(readr)readr::read_csv("flipped_jns_doaj.csv")#> # A tibble: 14,550 x 9
 #> 10 http:/… Gynecologica… Springer… 10.1…   2017 issn_2      1613…
 #> # … with 14,540 more rows, and 2 more variables: year_flipped <int>,
 #> #   issn_type.y <chr>
-
+```
 
 Furthermore, [`flipped_jns.csv`](flipped_jns.csv) contains journals that are probably flipped, indicated by a proportion of open access article volume larger than 0.95 in at least two years.
 
-library(readr)readr::read_csv("flipped_jns.csv")#> # A tibble: 33 x 6
+
+```r
+library(readr)
+readr::read_csv("flipped_jns.csv")
+#> # A tibble: 33 x 6
 #>    journal_title       publisher        year yearly_jn_volume n_year  prop
 #>    <chr>               <chr>           <int>            <int>  <int> <dbl>
 #>  1 3 Biotech           Springer Nature  2014               78     77 0.987
@@ -219,7 +252,7 @@ library(readr)readr::read_csv("flipped_jns.csv")#> # A tibble: 33 x 6
 #>  9 EPMA Journal        Springer Nature  2013               25     25 1    
 #> 10 EPMA Journal        Springer Nature  2014              187    187 1    
 #> # … with 23 more rows
-
+```
 
 
 ## Data re-use and licenses
