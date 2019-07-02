@@ -29,16 +29,16 @@ u <-
   "https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/apc_de.csv"
 o_apc <- readr::read_csv(u)
 #'
-#' We also would like to add data from offsetting aggrements, which is also
+#' We also would like to add data from transformative aggrements, which is also
 #' collected by the Open APC initiative.
-#' The offsetting data-set does not include pricing information.
+#' The transformative agreements data-set does not include pricing information.
 #'
-o_offset <-
+oa_trans <-
   readr::read_csv(
-    "https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/offsetting/offsetting.csv"
+    "https://github.com/OpenAPC/openapc-de/blob/master/data/transformative_agreements/transformative_agreements.csv?raw=true"
   )
 #' Merge with Open APC dataset
-o_apc <- o_offset %>%
+o_apc <- oa_trans %>%
   mutate(euro = as.integer(euro)) %>%
   bind_rows(o_apc) %>%
   # start from 2013
@@ -72,13 +72,13 @@ o_apc <- o_offset %>%
   # since 2012
   # https://github.com/subugoe/hybrid_oa_dashboard/issues/10
   filter(!journal_full_title == "STEM CELLS Translational Medicine") %>%
-  # 5. distinguish between individual hybrid and offsetting
+  # 6. distinguish between individual hybrid and offsetting
   mutate(hybrid_type = ifelse(!is.na(euro), "Open APC (Hybrid)", "Open APC (TA)"))
 #' Include country information, which are available via Open APC OLAP server: 
 #' <https://github.com/OpenAPC/openapc-olap/blob/master/static/institutions.csv>
 country_apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions.csv") %>%
   select(institution, country)
-countries <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions_offsetting.csv") %>%
+countries <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions_transformative_agreements.csv") %>%
   bind_rows(country_apc) %>%
   distinct() %>% 
   mutate(country_name = countrycode::countrycode(country, "iso3c", "country.name"))
@@ -146,7 +146,8 @@ jn_facets <- purrr::map(issns_list, .f = purrr::safely(function(x) {
       until_pub_date = "2019-12-31",
       type = "journal-article"
     ),
-    facet = TRUE,
+    # being explicit about facets improves API performance!
+    facet = "license:*,published:*,container-title:*,publisher-name:*",
     # less api traffic
     select = "DOI"
   )

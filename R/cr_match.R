@@ -167,7 +167,7 @@ o_apc <- readr::read_csv("../data/oapc_hybrid.csv") %>%
   # make sure dois are lowercase
   mutate(doi = tolower(doi)) %>%
   # select columns needed
-  select(1:4, 19:21)
+  select(1:4, hybrid_type, country, country_name)
 
 #' merge with hybrid_dois data set
 hybrid_dois %>%
@@ -179,7 +179,7 @@ my_data %>%
   summarise(yearly_all = sum(yearly_publisher_volume)) %>%
   right_join(my_data, by = c("issued")) %>%
   # some sorting of columns
-  select(3:6, issued, 7:9, yearly_all, 11:15) -> my_data
+  select(3:6, issued, 7:9, yearly_all, 10:15) -> my_data
 
 #' backup licensing data set
 readr::write_csv(my_data, "../data/hybrid_publications.csv")
