@@ -55,7 +55,7 @@ unpaywall_df <- readr::read_csv("../data/unpaywall_df.csv") %>%
 
 ## Summary 
 
-[This open source dashboard](https://subugoe.shinyapps.io/hybridoa/) presents the uptake of hybrid open access for `r dplyr::n_distinct(hybrid_cr$journal_title)` subscription journals from `r dplyr::n_distinct(hybrid_cr$publisher)` publishers. Sicne 2013, these journals have published `r hybrid_cr %>% distinct(issued, yearly_all) %>% summarize(n = sum(yearly_all)) %>% .$n` articles, of which r dplyr::n_distinct(hybrid_cr$doi_oa)` were made openly available without delay, representing a hybrid open access share of `r unlist(dplyr::n_distinct(hybrid_cr$doi_oa) / (hybrid_cr %>% distinct(issued, yearly_all) %>% summarize(prop = sum(yearly_all))) * 100)`%.
+[This open source dashboard](https://subugoe.shinyapps.io/hybridoa/) presents the uptake of hybrid open access for `r dplyr::n_distinct(hybrid_cr$journal_title)` subscription journals from `r dplyr::n_distinct(hybrid_cr$publisher)` publishers. Sicne 2013, these journals have published `r hybrid_cr %>% distinct(issued, yearly_all) %>% summarize(n = sum(yearly_all)) %>% .$n` articles, of which `r dplyr::n_distinct(hybrid_cr$doi_oa)` were made openly available without delay, representing a hybrid open access share of `r unlist(dplyr::n_distinct(hybrid_cr$doi_oa) / (hybrid_cr %>% distinct(issued, yearly_all) %>% summarize(prop = sum(yearly_all))) * 100)`%.
 
 Hybrid open access journals are included when they share the following two characteristics:
 
