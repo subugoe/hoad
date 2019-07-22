@@ -1,6 +1,6 @@
 ---
 title: "About the Hybrid OA Dashboard"
-date: "First published in November 2017, updated 2019-07-14"
+date: "First published in November 2017, updated 2019-07-22"
 output:
   html_document:
     df_print: paged
@@ -18,7 +18,7 @@ csl: frontiers.csl
 
 ## Summary 
 
-[This open source dashboard](https://subugoe.shinyapps.io/hybridoa/) presents the uptake of hybrid open access for 4,529 subscription journals from 59 publishers. Sicne 2013, these journals have published 6,413,679 articles, of which 207,602 were made openly available without delay, representing a hybrid open access share of 3.2%.
+[This open source dashboard](https://subugoe.shinyapps.io/hybridoa/) presents the uptake of hybrid open access for 4,529 subscription journals from 59 publishers. Since 2013, these journals have published 6,413,679 articles, of which 207,602 were made openly available without delay, representing a hybrid open access share of 3.2%.
 
 Hybrid open access journals are included when they share the following two characteristics:
 
