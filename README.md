@@ -1,4 +1,4 @@
-# A reproducible dashboard for monitoring hybrid open acccess uptake with R
+# A reproducible dashboard for monitoring hybrid open access uptake with R
 
 Source code and data repository for the hybrid open access dashboard, using [flexdashboard](https://rstudio.github.io/flexdashboard) and [shiny](http://shiny.rstudio.com).
 
@@ -30,7 +30,7 @@ Methods used are available in the R folder. [`R/cr_fetching.R`](R/cr_fetching.R)
 
 <!--For a long-form documentation, see [about.md](about.md)-->
 
-Comprehenive metadata about hybrid open access articles found are shared as well. See this [overview](data/README.md) about how datasets are coded to facilitate analysis.
+Comprehensive metadata about hybrid open access articles found are shared as well. See this [overview](data/README.md) about how datasets are coded to facilitate analysis.
 
 
 ## How to contribute?
