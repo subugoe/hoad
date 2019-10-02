@@ -19,7 +19,7 @@ Documentation:
 
 |Variable                   |Description
 |:--------------------------|:------------------------------------------------------------------|
-|`license`                  |Open License URI (semi-normalised)                                 |
+|`license`                  |Normalized open content license statement                          |
 |`journal_title`            |Most frequent journal title used by Crossref                       |
 |`publisher`                |Most frequent publisher name used by Crossref                      |
 |`doi_oa`                   |DOI of the hybrid open access article                              |
@@ -28,12 +28,17 @@ Documentation:
 |`license_ref_n`            |Yearly article volume under the license `license`                  |
 |`yearly_publisher_volume`  |Yearly article volume of all journals in the dataset per publisher |
 |`yearly_all`               |Yearly article volume investigated                                 |
+|`period`                   |Year of reporting to Open APC                                      |
+|`euro`                     |The amount that was paid in EURO. Includes VAT and additional fees |
+|`hybrid_type`              |Spending source (Open APC, SCOAP3)                                 |
 |`institution`              |Top-level organisation which reported article to Open APC          |
 |`country`                  |Country of origin (iso3c)                                          |
 |`country_name`             |Country of origin (name)                                           |
-|`period`                   |Year of reporting to Open APC                                      |
-|`euro`                     |The amount that was paid in EURO. Includes VAT and additional fees |
-|`hybrid_type`              |Open APC hybrid open access collection (individual or offsetting)  |
+|`license_url`              |License URL                                                        |
+|`host`                     |Email host first or corresponding author                           |
+|`subdomain`                |Email subdomain first or corresponding author                      |
+|`domain`                   |Email domain first or corresponding author                         |
+|`suffix`                   |Email suffix first or corresponding author                         |
 
 Tibble view in R:
 
@@ -50,7 +55,7 @@ Open data from the Open APC Initiative and Crossref were used to identify hybrid
 
 #### [`oapc_hybrid.csv`](oapc_hybrid.csv)
 
-This dataset was obtained from the [Open APC Initiative](https://github.com/openapc/openapc-de) and was used to determine hybrid open access journals. It also includes data about offsetting aggrements, which has no pricing information, as well as country information.
+This dataset was obtained from the [Open APC Initiative](https://github.com/openapc/openapc-de) and was used to determine hybrid open access journals. It also includes data about transformative aggrements, which has no pricing information, as well as country information.
 
 Data schema: <https://github.com/OpenAPC/openapc-de/wiki/schema>
 

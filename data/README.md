@@ -12,7 +12,7 @@ Documentation:
 
 |Variable                   |Description
 |:--------------------------|:------------------------------------------------------------------|
-|`license`                  |Open License URI (semi-normalised)                                 |
+|`license`                  |Normalized open content license statement                          |
 |`journal_title`            |Most frequent journal title used by Crossref                       |
 |`publisher`                |Most frequent publisher name used by Crossref                      |
 |`doi_oa`                   |DOI of the hybrid open access article                              |
@@ -21,12 +21,17 @@ Documentation:
 |`license_ref_n`            |Yearly article volume under the license `license`                  |
 |`yearly_publisher_volume`  |Yearly article volume of all journals in the dataset per publisher |
 |`yearly_all`               |Yearly article volume investigated                                 |
+|`period`                   |Year of reporting to Open APC                                      |
+|`euro`                     |The amount that was paid in EURO. Includes VAT and additional fees |
+|`hybrid_type`              |Spending source (Open APC, SCOAP3)                                 |
 |`institution`              |Top-level organisation which reported article to Open APC          |
 |`country`                  |Country of origin (iso3c)                                          |
 |`country_name`             |Country of origin (name)                                           |
-|`period`                   |Year of reporting to Open APC                                      |
-|`euro`                     |The amount that was paid in EURO. Includes VAT and additional fees |
-|`hybrid_type`              |Open APC hybrid open access collection (individual or offsetting)  |
+|`license_url`              |License URL                                                        |
+|`host`                     |Email host first or corresponding author                           |
+|`subdomain`                |Email subdomain first or corresponding author                      |
+|`domain`                   |Email domain first or corresponding author                         |
+|`suffix`                   |Email suffix first or corresponding author                         |
 
 Tibble view in R:
 
@@ -34,23 +39,24 @@ Tibble view in R:
 ```r
 library(readr)
 readr::read_csv("hybrid_publications.csv")
-#> # A tibble: 150,864 x 18
-#>    license journal_title  publisher   doi_oa       issued yearly_jn_volume
-#>    <chr>   <chr>          <chr>       <chr>         <int>            <int>
-#>  1 cc-by   Soft Computing Springer N… 10.1007/s00…   2016              466
-#>  2 cc-by   Soft Computing Springer N… 10.1007/s00…   2016              466
-#>  3 cc-by   Soft Computing Springer N… 10.1007/s00…   2018              706
-#>  4 cc-by   Soft Computing Springer N… 10.1007/s00…   2017              505
-#>  5 cc-by   Soft Computing Springer N… 10.1007/s00…   2017              505
-#>  6 cc-by   Soft Computing Springer N… 10.1007/s00…   2018              706
-#>  7 cc-by   Soft Computing Springer N… 10.1007/s00…   2017              505
-#>  8 cc-by   Soft Computing Springer N… 10.1007/s00…   2017              505
-#>  9 cc-by   Soft Computing Springer N… 10.1007/s00…   2016              466
-#> 10 cc-by   Soft Computing Springer N… 10.1007/s00…   2016              466
-#> # ... with 150,854 more rows, and 12 more variables: license_ref_n <int>,
-#> #   yearly_publisher_volume <int>, yearly_all <int>, period <int>,
-#> #   euro <dbl>, hybrid_type <chr>, country <chr>, country_name <chr>,
-#> #   host <chr>, subdomain <chr>, domain <chr>, suffix <chr>
+#> # A tibble: 207,602 x 20
+#>    license journal_title publisher doi_oa issued yearly_jn_volume
+#>    <chr>   <chr>         <chr>     <chr>   <int>            <int>
+#>  1 cc-by   Soft Computi… Springer… 10.10…   2016              466
+#>  2 cc-by   Soft Computi… Springer… 10.10…   2016              466
+#>  3 cc-by   Soft Computi… Springer… 10.10…   2016              466
+#>  4 cc-by   Soft Computi… Springer… 10.10…   2016              466
+#>  5 cc-by   Soft Computi… Springer… 10.10…   2016              466
+#>  6 cc-by   Soft Computi… Springer… 10.10…   2016              466
+#>  7 cc-by   Soft Computi… Springer… 10.10…   2016              466
+#>  8 cc-by   Soft Computi… Springer… 10.10…   2016              466
+#>  9 cc-by   Soft Computi… Springer… 10.10…   2016              466
+#> 10 cc-by   Soft Computi… Springer… 10.10…   2017              505
+#> # … with 207,592 more rows, and 14 more variables: license_ref_n <int>,
+#> #   yearly_publisher_volume <int>, yearly_all <int>, institution <chr>,
+#> #   period <int>, euro <dbl>, hybrid_type <chr>, country <chr>,
+#> #   country_name <chr>, license_url <chr>, host <chr>, subdomain <chr>,
+#> #   domain <chr>, suffix <chr>
 ```
 
 ## Re-used data sources
@@ -61,7 +67,7 @@ Open data from the Open APC Initiative and Crossref were used to identify hybrid
 
 #### [`oapc_hybrid.csv`](oapc_hybrid.csv)
 
-This dataset was obtained from the [Open APC Initiative](https://github.com/openapc/openapc-de) and was used to determine hybrid open access journals. It also includes data about offsetting aggrements, which has no pricing information, as well as country information.
+This dataset was obtained from the [Open APC Initiative](https://github.com/openapc/openapc-de) and was used to determine hybrid open access journals. It also includes data about transformative aggrements, which has no pricing information, as well as country information.
 
 Data schema: <https://github.com/OpenAPC/openapc-de/wiki/schema>
 
@@ -71,24 +77,24 @@ Tibble view in R:
 ```r
 library(readr)
 readr::read_csv("oapc_hybrid.csv")
-#> # A tibble: 55,616 x 21
-#>    institution  period euro  doi     is_hybrid publisher journal_full_tit…
-#>    <chr>         <int> <chr> <chr>   <lgl>     <chr>     <chr>            
-#>  1 Aberystwyth…   2015 <NA>  10.100… TRUE      Springer… Soft Computing   
-#>  2 Aberystwyth…   2016 <NA>  10.100… TRUE      Springer… Geoheritage      
-#>  3 Aberystwyth…   2016 <NA>  10.100… TRUE      Springer… Studies in Philo…
-#>  4 Aberystwyth…   2016 <NA>  10.100… TRUE      Springer… Language Policy  
-#>  5 Aberystwyth…   2016 <NA>  10.100… TRUE      Springer… Conservation Gen…
-#>  6 Aberystwyth…   2016 <NA>  10.100… TRUE      Springer… Sports Medicine  
-#>  7 Anglia Rusk…   2016 <NA>  10.100… TRUE      Springer… Journal of Autis…
-#>  8 Anglia Rusk…   2016 <NA>  10.100… TRUE      Springer… Experimental Bra…
-#>  9 Anglia Rusk…   2016 <NA>  10.100… TRUE      Springer… Morphology       
-#> 10 Anglia Rusk…   2016 <NA>  10.100… TRUE      Springer… The Internationa…
-#> # ... with 55,606 more rows, and 14 more variables: issn <chr>,
+#> # A tibble: 62,960 x 22
+#>    institution period euro  doi   is_hybrid publisher journal_full_ti…
+#>    <chr>        <int> <chr> <chr> <lgl>     <chr>     <chr>           
+#>  1 Aberystwyt…   2015 <NA>  10.1… TRUE      Springer… Soft Computing  
+#>  2 Aberystwyt…   2016 <NA>  10.1… TRUE      Springer… Geoheritage     
+#>  3 Aberystwyt…   2016 <NA>  10.1… TRUE      Springer… Studies in Phil…
+#>  4 Aberystwyt…   2016 <NA>  10.1… TRUE      Springer… Language Policy 
+#>  5 Aberystwyt…   2016 <NA>  10.1… TRUE      Springer… Conservation Ge…
+#>  6 Aberystwyt…   2016 <NA>  10.1… TRUE      Springer… Sports Medicine 
+#>  7 Anglia Rus…   2016 <NA>  10.1… TRUE      Springer… Journal of Auti…
+#>  8 Anglia Rus…   2016 <NA>  10.1… TRUE      Springer… Experimental Br…
+#>  9 Anglia Rus…   2016 <NA>  10.1… TRUE      Springer… Morphology      
+#> 10 Anglia Rus…   2016 <NA>  10.1… TRUE      Springer… The Internation…
+#> # … with 62,950 more rows, and 15 more variables: issn <chr>,
 #> #   issn_print <chr>, issn_electronic <chr>, issn_l <chr>,
 #> #   license_ref <chr>, indexed_in_crossref <lgl>, pmid <int>, pmcid <chr>,
-#> #   ut <chr>, url <chr>, doaj <lgl>, hybrid_type <chr>, country <chr>,
-#> #   country_name <chr>
+#> #   ut <chr>, url <chr>, doaj <lgl>, agreement <chr>, hybrid_type <chr>,
+#> #   country <chr>, country_name <chr>
 ```
 
 ### Crossref
@@ -141,28 +147,22 @@ library(jsonlite)
 library(dplyr)
 jsonlite::stream_in(file("../data/hybrid_license_md.json"), verbose = FALSE) %>%
   dplyr::as_data_frame()
-#> # A tibble: 163,407 x 36
-#>    alternative.id container.title created  deposited DOI    indexed ISSN  
-#>  * <chr>          <chr>           <chr>    <chr>     <chr>  <chr>   <chr> 
-#>  1 2261           Soft Computing  2016-07… 2016-07-… 10.10… 2018-0… 1432-…
-#>  2 2306           Soft Computing  2016-08… 2017-09-… 10.10… 2018-0… 1432-…
-#>  3 3117           Soft Computing  2018-03… 2018-03-… 10.10… 2018-0… 1432-…
-#>  4 2497           Soft Computing  2017-01… 2018-01-… 10.10… 2018-0… 1432-…
-#>  5 2528           Soft Computing  2017-03… 2018-03-… 10.10… 2018-0… 1432-…
-#>  6 3218           Soft Computing  2018-05… 2018-05-… 10.10… 2018-0… 1432-…
-#>  7 2874           Soft Computing  2017-10… 2017-10-… 10.10… 2018-0… 1432-…
-#>  8 2951           Soft Computing  2017-11… 2017-11-… 10.10… 2018-0… 1432-…
-#>  9 2215           Soft Computing  2016-06… 2017-08-… 10.10… 2018-0… 1432-…
-#> 10 2227           Soft Computing  2016-06… 2017-08-… 10.10… 2018-0… 1432-…
-#> # ... with 163,397 more rows, and 29 more variables: issue <chr>,
-#> #   issued <chr>, license_date <chr>, license_URL <chr>,
-#> #   license_delay.in.days <chr>, license_content.version <chr>,
-#> #   member <chr>, page <chr>, prefix <chr>, publisher <chr>,
-#> #   reference.count <chr>, score <chr>, source <chr>, title <chr>,
-#> #   type <chr>, update.policy <chr>, URL <chr>, volume <chr>,
-#> #   author <list>, funder <list>, link <list>, assertion <list>,
-#> #   `clinical-trial-number` <list>, subject <chr>, subtitle <chr>,
-#> #   archive <chr>, abstract <chr>, archive_ <chr>, NA. <chr>
+#> # A tibble: 218,621 x 17
+#>    container.title created deposited published.print published.online doi  
+#>    <chr>           <chr>   <chr>     <chr>           <chr>            <chr>
+#>  1 Soft Computing  2016-0… 2017-08-… 2017-09         2016-06-17       10.1…
+#>  2 Soft Computing  2016-0… 2017-08-… 2017-09         2016-06-23       10.1…
+#>  3 Soft Computing  2016-0… 2016-07-… 2016-08         2016-07-12       10.1…
+#>  4 Soft Computing  2016-0… 2017-11-… 2017-12         2016-08-03       10.1…
+#>  5 Soft Computing  2016-0… 2017-09-… 2017-10         2016-08-09       10.1…
+#>  6 Soft Computing  2016-0… 2017-06-… 2017-01         2016-09-19       10.1…
+#>  7 Soft Computing  2016-0… 2017-06-… 2017-01         2016-09-28       10.1…
+#>  8 Soft Computing  2016-1… 2017-06-… 2017-01         2016-10-05       10.1…
+#>  9 Soft Computing  2016-1… 2017-06-… 2017-01         2016-10-11       10.1…
+#> 10 Soft Computing  2016-1… 2018-03-… 2018-03         2016-11-09       10.1…
+#> # … with 218,611 more rows, and 11 more variables: indexed <chr>,
+#> #   issn <chr>, issued <chr>, member <chr>, publisher <chr>, type <chr>,
+#> #   url <chr>, funder <list>, link <list>, license <list>, subject <chr>
 ```
 
 ## Count data
@@ -190,20 +190,20 @@ Tibble view in R:
 ```r
 library(readr)
 readr::read_csv("indicator.csv")
-#> # A tibble: 35,627 x 7
-#>    journal_title  publisher  year yearly_jn_volume license   license_ref_n
-#>    <chr>          <chr>     <int>            <int> <chr>             <int>
-#>  1 Soft Computing Springer…  2018              706 http://c…            25
-#>  2 Soft Computing Springer…  2017              505 http://c…            19
-#>  3 Soft Computing Springer…  2016              466 http://c…            15
-#>  4 Soft Computing Springer…  2015              428 http://c…            10
-#>  5 Soft Computing Springer…  2014              349 <NA>                 NA
-#>  6 Soft Computing Springer…  2013              234 <NA>                 NA
-#>  7 Soft Computing Springer…  2019               86 http://c…             1
-#>  8 Geoheritage    Springer…  2017               65 http://c…             3
-#>  9 Geoheritage    Springer…  2018               62 http://c…             6
-#> 10 Geoheritage    Springer…  2016               42 http://c…             2
-#> # ... with 35,617 more rows, and 1 more variable:
+#> # A tibble: 42,370 x 7
+#>    journal_title publisher  year yearly_jn_volume license license_ref_n
+#>    <chr>         <chr>     <int>            <int> <chr>           <int>
+#>  1 Soft Computi… Springer…  2018              706 http:/…            25
+#>  2 Soft Computi… Springer…  2017              505 http:/…            19
+#>  3 Soft Computi… Springer…  2019              466 http:/…            12
+#>  4 Soft Computi… Springer…  2016              466 http:/…            15
+#>  5 Soft Computi… Springer…  2015              428 http:/…            14
+#>  6 Soft Computi… Springer…  2014              349 http:/…             1
+#>  7 Soft Computi… Springer…  2014              349 http:/…             8
+#>  8 Soft Computi… Springer…  2013              234 http:/…             4
+#>  9 Geoheritage   Springer…  2017               65 http:/…             3
+#> 10 Geoheritage   Springer…  2018               62 http:/…             6
+#> # … with 42,360 more rows, and 1 more variable:
 #> #   yearly_publisher_volume <int>
 ```
 
@@ -215,20 +215,20 @@ To detect fully open acces journals, the [Directory of Open Access Journals](htt
 ```r
 library(readr)
 readr::read_csv("flipped_jns_doaj.csv")
-#> # A tibble: 7,817 x 9
-#>    license     journal_title  publisher  doi_oa   issued issn_type.x issn 
-#>    <chr>       <chr>          <chr>      <chr>     <int> <chr>       <chr>
-#>  1 http://cre… Gynecological… Springer … 10.1186…   2018 issn_2      1613…
-#>  2 http://cre… Gynecological… Springer … 10.1186…   2018 issn_2      1613…
-#>  3 http://cre… Gynecological… Springer … 10.1186…   2018 issn_2      1613…
-#>  4 http://cre… Gynecological… Springer … 10.1186…   2018 issn_2      1613…
-#>  5 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
-#>  6 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
-#>  7 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
-#>  8 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
-#>  9 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
-#> 10 http://cre… Gynecological… Springer … 10.1186…   2017 issn_2      1613…
-#> # ... with 7,807 more rows, and 2 more variables: year_flipped <int>,
+#> # A tibble: 14,550 x 9
+#>    license journal_title publisher dois  issued issn_type.x issn 
+#>    <chr>   <chr>         <chr>     <chr>  <int> <chr>       <chr>
+#>  1 http:/… Gynecologica… Springer… 10.1…   2017 issn_2      1613…
+#>  2 http:/… Gynecologica… Springer… 10.1…   2017 issn_2      1613…
+#>  3 http:/… Gynecologica… Springer… 10.1…   2017 issn_2      1613…
+#>  4 http:/… Gynecologica… Springer… 10.1…   2017 issn_2      1613…
+#>  5 http:/… Gynecologica… Springer… 10.1…   2017 issn_2      1613…
+#>  6 http:/… Gynecologica… Springer… 10.1…   2017 issn_2      1613…
+#>  7 http:/… Gynecologica… Springer… 10.1…   2017 issn_2      1613…
+#>  8 http:/… Gynecologica… Springer… 10.1…   2017 issn_2      1613…
+#>  9 http:/… Gynecologica… Springer… 10.1…   2017 issn_2      1613…
+#> 10 http:/… Gynecologica… Springer… 10.1…   2017 issn_2      1613…
+#> # … with 14,540 more rows, and 2 more variables: year_flipped <int>,
 #> #   issn_type.y <chr>
 ```
 
@@ -238,21 +238,20 @@ Furthermore, [`flipped_jns.csv`](flipped_jns.csv) contains journals that are pro
 ```r
 library(readr)
 readr::read_csv("flipped_jns.csv")
-#> # A tibble: 12 x 6
+#> # A tibble: 33 x 6
 #>    journal_title       publisher        year yearly_jn_volume n_year  prop
 #>    <chr>               <chr>           <int>            <int>  <int> <dbl>
-#>  1 Applied Nanoscience Springer Nature  2016               30     30 1    
-#>  2 Applied Nanoscience Springer Nature  2017               89     89 1    
-#>  3 Integrating Materi… Springer Nature  2013                5      5 1    
-#>  4 Integrating Materi… Springer Nature  2016               14     14 1    
-#>  5 Investigative Opth… Association fo…  2016              929    929 1    
-#>  6 Investigative Opth… Association fo…  2017              785    785 1    
-#>  7 Investigative Opth… Association fo…  2018              732    732 1    
-#>  8 Investigative Opth… Association fo…  2019               56     56 1    
-#>  9 Translational Visi… Association fo…  2016               87     87 1    
-#> 10 Translational Visi… Association fo…  2017               88     88 1    
-#> 11 Translational Visi… Association fo…  2018              169    168 0.994
-#> 12 Translational Visi… Association fo…  2019               16     16 1
+#>  1 3 Biotech           Springer Nature  2014               78     77 0.987
+#>  2 3 Biotech           Springer Nature  2015               48     47 0.979
+#>  3 3 Biotech           Springer Nature  2016              254    253 0.996
+#>  4 Applied Nanoscience Springer Nature  2013              104    102 0.981
+#>  5 Applied Nanoscience Springer Nature  2014              103    101 0.981
+#>  6 Applied Nanoscience Springer Nature  2015              125    125 1    
+#>  7 Applied Nanoscience Springer Nature  2016               30     30 1    
+#>  8 Applied Nanoscience Springer Nature  2017               89     89 1    
+#>  9 EPMA Journal        Springer Nature  2013               25     25 1    
+#> 10 EPMA Journal        Springer Nature  2014              187    187 1    
+#> # … with 23 more rows
 ```
 
 
