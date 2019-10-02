@@ -214,7 +214,7 @@ hybrid_licenses <- jn_facets_df %>%
   filter(hybrid_license == TRUE) %>%
   left_join(jn_facets_df, by = c("journal_title" = "journal_title", "publisher" = "publisher"))
 #' We now know, whether and which open licenses were used by the journal in the 
-#' period 2013:2018. As a next step we want to validate that these 
+#' period 2013:2019. As a next step we want to validate that these 
 #' licenses were not issued for delayed open access articles by 
 #' additionally using  the self-explanatory filter `license.url` and
 #'  `license.delay`. We also obtain parsed metadata for these hybrid open
