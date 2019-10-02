@@ -74,11 +74,10 @@ o_apc <- oa_trans %>%
   filter(!journal_full_title == "STEM CELLS Translational Medicine") %>%
   # 6. distinguish between individual hybrid and offsetting
   mutate(hybrid_type = ifelse(!is.na(euro), "Open APC (Hybrid)", "Open APC (TA)"))
-#' Include country information, which are available via Open APC OLAP server: 
-#' <https://github.com/OpenAPC/openapc-olap/blob/master/static/institutions.csv>
-country_apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions.csv") %>%
+#' Include country information
+country_apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/institutions.csv") %>%
   select(institution, country)
-countries <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-olap/master/static/institutions_transformative_agreements.csv") %>%
+countries <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/institutions_transformative_agreements.csv") %>%
   bind_rows(country_apc) %>%
   distinct() %>% 
   mutate(country_name = countrycode::countrycode(country, "iso3c", "country.name"))
