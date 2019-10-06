@@ -9,7 +9,7 @@ output:
     toc_depth: 2
     toc_float: yes
 bibliography: references.bib
-csl: frontiers.csl
+csl: chicago.csl
 ---
 
 ```{r, echo = FALSE}
