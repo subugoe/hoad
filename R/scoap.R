@@ -11,5 +11,5 @@ write_csv(tt, "../data/scoap_oai_dois.csv")
 # match with hybrid oa data set and export
 hybrid_oa <- readr::read_csv("../data/hybrid_publications.csv")
 hybrid_oa %>%
-  mutate(hybrid_type = ifelse(doi_oa %in% scoap_doi$doi, "SCOAP", hybrid_type)) %>%
+  mutate(hybrid_type = ifelse(doi_oa %in% tt$doi, "SCOAP", hybrid_type)) %>%
   write_csv("../data/hybrid_publications.csv")
