@@ -254,6 +254,6 @@ dplyr::bind_rows(cr_license_df$md) %>%
   jsonlite::stream_out(file("../data/hybrid_license_md.json"))
 #' only DOIs and how we retrieved them
 purrr::map(cr_license_df$md, "doi") %>%
-  data_frame(dois = ., issn = cr_license_df$issn, license = cr_license_df$license) %>%
+  tibble(dois = ., issn = cr_license_df$issn, license = cr_license_df$license) %>%
   jsonlite::stream_out(file("../data/hybrid_license_dois.json"))
 
