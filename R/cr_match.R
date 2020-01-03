@@ -179,7 +179,21 @@ my_data %>%
   summarise(yearly_all = sum(yearly_publisher_volume)) %>%
   right_join(my_data, by = c("issued")) %>%
   # some sorting of columns
-  select(3:6, issued, 7:9, yearly_all, 10:15) -> my_data
+  select(license, 
+         journal_title,
+         publisher,
+         doi_oa,
+         issued,
+         yearly_jn_volume,
+         license_ref_n,
+         yearly_publisher_volume,
+         yearly_all,
+         institution,
+         period,
+         euro,
+         hybrid_type,
+         country,
+         country_name) -> tt
 
 #' backup licensing data set
-readr::write_csv(my_data, "../data/hybrid_publications.csv")
+readr::write_csv(tt, "../data/hybrid_publications.csv")
