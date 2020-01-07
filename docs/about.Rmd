@@ -43,6 +43,7 @@ jn_facets <- jsonlite::stream_in(file("../data/jn_facets_df.json"), verbose = FA
 #' get hybrid journals that have open licensing information in the period 2013-18
 hybrid_cr <- readr::read_csv("../data/hybrid_publications.csv") %>%
   mutate(license = fct_infreq(license)) %>%
+  mutate(publisher = fct_infreq(publisher)) %>%
   mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019"))) %>%
   arrange(desc(yearly_publisher_volume))
 
