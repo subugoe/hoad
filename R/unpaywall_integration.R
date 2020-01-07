@@ -9,11 +9,11 @@ con <- dbConnect(bigrquery::bigquery(),
                  project = "api-project-764811344545",
                  dataset = "oadoi_full")
 #' test connection
-oadoi <- tbl(con, "mongo_export_apr19_2013_Apr2019_full_macos")
+oadoi <- tbl(con, "mongo_export_upwNov19_13_19")
 #' my bq query
 sql_unnested <-
   "SELECT doi, evidence, publisher, journal_name, journal_issns, year, is_best, license, host_type
-FROM `mongo_export_apr19_2013_Apr2019_full_macos` , UNNEST(oa_locations)
+FROM `mongo_export_upwNov19_13_19` , UNNEST(oa_locations)
 WHERE `journal_is_in_doaj`= false AND data_standard=2 AND EXISTS (
 SELECT evidence FROM UNNEST(oa_locations)
 WHERE evidence = 'open (via crossref license)' OR evidence = 'open (via page says license)')
