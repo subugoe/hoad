@@ -1,11 +1,9 @@
-hoad.Rproj\.user$
 ^LICENSE\.md$
 ^codecov\.yml$
 ^\.github/workflows/main\.yaml$
 ^_pkgdown\.yml$
 ^docs$
 ^img$
-^data$
 ^pkgdown$
 ^\.github/workflows/pkgdown\.yaml$
 ^R/.add_emails\.R$
@@ -18,3 +16,4 @@ dashboard.Rmd
 ^CODE_OF_CONDUCT\.md$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^vignettes$
