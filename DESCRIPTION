@@ -47,7 +47,10 @@ Suggests:
     pkgdown (>= 1.4.1),
     testthat (>= 2.1.0),
     rmarkdown (>= 2.1),
-    knitr (>= 1.28)
+    knitr (>= 1.28),
+    jsonlite (>= 1.6.1),
+    ggalt (>= 0.4.0),
+    scales (>= 1.1.0)
 URL: https://subugoe.github.io/metar
 BugReports: https://github.com/subugoe/metaR/issues
 RoxygenNote: 7.0.2
