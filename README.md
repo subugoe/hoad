@@ -1,5 +1,9 @@
 # A reproducible dashboard for monitoring hybrid open acccess uptake with R
 
+[![R build status](https://github.com/subugoe/hybrid_oa_dashboard/workflows/CICD/badge.svg)](https://github.com/subugoe/hybrid_oa_dashboard/actions)
+[![CRAN status](https://www.r-pkg.org/badges/version/hoad)](https://CRAN.R-project.org/package=hoad)
+[![Codecov test coverage](https://codecov.io/gh/subugoe/hybrid_oa_dashboard/branch/master/graph/badge.svg)](https://codecov.io/gh/subugoe/hybrid_oa_dashboard?branch=master)
+
 Source code and data repository for the hybrid open access dashboard, using [flexdashboard](https://rstudio.github.io/flexdashboard) and [shiny](http://shiny.rstudio.com).
 
 A live demo is available here:
