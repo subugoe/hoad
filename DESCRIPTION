@@ -1,0 +1,56 @@
+Package: hoad
+Title: Hybrid Open Access Dashboard
+Version: 0.0.0.9000
+Authors@R: 
+    c(
+      person(
+        given = "Najko",
+        family = "Jahn",
+        role = c("aut", "cre"),
+        email = "najko.jahn@gmail.com",
+        comment = c(ORCID = "0000-0001-5105-1463")
+      ),
+      person(
+        given = "Maximilian",
+        family = "Held",
+        role = c("aut"),
+        email = "info@maxheld.de",
+        comment = c(ORCID = "0000-0002-4703-5388")
+      ),
+      person(
+        given = "Jan",
+        family = "Höffler",
+        role = c("aut"),
+        email = "hoeffler@sub.uni-goettingen.de",
+        comment = c(ORCID = "0000-0002-8382-2071")
+      ),
+      person(
+        given = "Henrieke",
+        family = "Walter",
+        role = c("aut"),
+        email = "henrieke.walter@sub.uni-goettingen.de"
+      ),
+      person(
+        given = "Göttingen State and University Library",
+        role = c("cph", "fnd")
+      )
+    )
+Description: Analytics to increase cost transparency in business model transformation towards open access publishing.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Language: en
+LazyData: true
+Roxygen: list(markdown = TRUE)
+Suggests: 
+    covr (>= 3.4.0),
+    rcmdcheck (>= 1.3.3),
+    pkgdown (>= 1.4.1),
+    testthat (>= 2.1.0),
+    rmarkdown (>= 2.1),
+    knitr (>= 1.28)
+URL: https://subugoe.github.io/metar
+BugReports: https://github.com/subugoe/metaR/issues
+RoxygenNote: 7.0.2
+Imports: 
+    dplyr (>= 0.8.4)
+VignetteBuilder: knitr

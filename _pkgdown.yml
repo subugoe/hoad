@@ -1,0 +1,16 @@
+destination: docs
+url: https://subugoe.github.io/hybrid_oa_dashboard/
+authors:
+  Najko Jahn:
+    href: https://www.sub.uni-goettingen.de/kontakt/personen-a-z/personendetails/person/najko-jahn/
+  Maximilian Held:
+    href: https://www.maxheld.de
+  Jan Höffler:
+    href: https://www.sub.uni-goettingen.de/kontakt/personen-a-z/personendetails/person/jan-h-hoeffler/
+  Henrieke Walter:
+    href: https://www.sub.uni-goettingen.de/kontakt/personen-a-z/personendetails/person/henrieke-walter/
+  Göttingen State and University Library:
+    href: https://www.sub.uni-goettingen.de/
+template:
+  params:
+    bootswatch: cosmo
