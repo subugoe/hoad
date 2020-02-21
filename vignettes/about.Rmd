@@ -592,15 +592,15 @@ In the end, this open source dashboard demonstrates how existing pieces of an ev
 
 Dashboard and analysis have been developed in the open using open tools. There are a number of ways you can help make the this work better:
 
-- If you don’t understand something, please let us know and [submit an issue](https://github.com/subugoe/hoad/issues).
+- If you don’t understand something, please let us know and [submit an issue](https://github.com/subugoe/hybrid_oa_dashboard/issues).
 
-- Feel free to add new features or fix bugs by sending a [pull request](https://github.com/subugoe/hoad/pulls).
+- Feel free to add new features or fix bugs by sending a [pull request](https://github.com/subugoe/hybrid_oa_dashboard/pulls).
 
-Please note that this project is released with a [Contributor Code of Conduct](https://github.com/subugoe/hoad/CONDUCT.md). By participating in this project you agree to abide by its terms.
+Please note that this project is released with a [Contributor Code of Conduct](https://github.com/subugoe/hybrid_oa_dashboard/CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 Author: Najko Jahn (Scholarly Communication Analyst, [SUB Göttingen](https://www.sub.uni-goettingen.de/)), 2017.
 
-The R Markdown file, which includes the underlying source code for this document, is available [here](https://github.com/subugoe/hoad/blob/master/docs/about.Rmd).
+The R Markdown file, which includes the underlying source code for this document, is available [here](https://github.com/subugoe/hybrid_oa_dashboard/blob/master/docs/about.Rmd).
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 

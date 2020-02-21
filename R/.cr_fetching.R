@@ -70,7 +70,7 @@ o_apc <- oa_trans %>%
   filter(!publisher %in% "Copernicus GmbH") %>%
   # 5. remove STEM CELLS Translational Medicine, a fully OA journal
   # since 2012
-  # https://github.com/subugoe/hoad/issues/10
+  # https://github.com/subugoe/hybrid_oa_dashboard/issues/10
   filter(!journal_full_title == "STEM CELLS Translational Medicine") %>%
   # 6. distinguish between individual hybrid and offsetting
   mutate(hybrid_type = ifelse(!is.na(euro), "Open APC (Hybrid)", "Open APC (TA)"))
