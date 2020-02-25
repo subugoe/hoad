@@ -3,5 +3,3 @@
 .RData
 .Ruserdata
 *.DS_Store
-data/hybrid_license_md.json
-inst/doc
