@@ -39,7 +39,9 @@ knitr::knit_hooks$set(inline = function(x) {
    })
 library(hoad)
 library(magrittr)
-library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(readr)
 library(forcats)
 ```
 
