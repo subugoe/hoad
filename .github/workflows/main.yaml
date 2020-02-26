@@ -17,7 +17,8 @@ jobs:
           sudo apt-get update && apt-get install -y --no-install-recommends \
           libxml2-dev \
           libssl-dev \
-          libcurl4-openssl-dev
+          libcurl4-openssl-dev \
+          proj-bin
       - name: Install Package Dependencies
         run: |-
           Rscript -e "install.packages('remotes', repos = 'https://demo.rstudiopm.com/all/__linux__/bionic/latest')"
