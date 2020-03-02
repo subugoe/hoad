@@ -1,50 +1,101 @@
-journal_title,publisher,year,yearly_jn_volume,n_year,prop
-3 Biotech,Springer Nature,2014,78,77,0.9871794871794872
-3 Biotech,Springer Nature,2015,48,47,0.9791666666666666
-3 Biotech,Springer Nature,2016,254,253,0.9960629921259843
-Applied Nanoscience,Springer Nature,2013,104,102,0.9807692307692307
-Applied Nanoscience,Springer Nature,2014,103,101,0.9805825242718447
-Applied Nanoscience,Springer Nature,2015,125,125,1
-Applied Nanoscience,Springer Nature,2016,30,30,1
-Applied Nanoscience,Springer Nature,2017,88,88,1
-China Population and Development Studies,Springer Nature,2017,13,13,1
-China Population and Development Studies,Springer Nature,2018,18,18,1
-DARU Journal of Pharmaceutical Sciences,Springer Nature,2013,78,78,1
-DARU Journal of Pharmaceutical Sciences,Springer Nature,2014,80,80,1
-DARU Journal of Pharmaceutical Sciences,Springer Nature,2015,56,56,1
-DARU Journal of Pharmaceutical Sciences,Springer Nature,2016,25,25,1
-DARU Journal of Pharmaceutical Sciences,Springer Nature,2017,25,25,1
-EPMA Journal,Springer Nature,2013,25,25,1
-EPMA Journal,Springer Nature,2014,187,187,1
-Gold Bulletin,Springer Nature,2013,56,56,1
-Gold Bulletin,Springer Nature,2014,22,22,1
-Integrating Materials and Manufacturing Innovation,Springer Nature,2015,13,13,1
-Integrating Materials and Manufacturing Innovation,Springer Nature,2016,14,14,1
-Investigative Opthalmology & Visual Science,Association for Research in Vision and Ophthalmology (ARVO),2016,929,929,1
-Investigative Opthalmology & Visual Science,Association for Research in Vision and Ophthalmology (ARVO),2017,784,784,1
-Investigative Opthalmology & Visual Science,Association for Research in Vision and Ophthalmology (ARVO),2018,732,732,1
-Investigative Opthalmology & Visual Science,Association for Research in Vision and Ophthalmology (ARVO),2019,560,560,1
-Journal of Environmental Health Science and Engineering,Springer Nature,2013,44,43,0.9772727272727273
-Journal of Environmental Health Science and Engineering,Springer Nature,2014,152,152,1
-Journal of Environmental Health Science and Engineering,Springer Nature,2015,86,85,0.9883720930232558
-Journal of Environmental Health Science and Engineering,Springer Nature,2016,21,21,1
-Journal of Environmental Health Science and Engineering,Springer Nature,2017,25,25,1
-Journal of Remanufacturing,Springer Nature,2014,9,9,1
-Journal of Remanufacturing,Springer Nature,2015,12,12,1
-Journal of Remanufacturing,Springer Nature,2016,3,3,1
-Maritime Studies,Springer Nature,2016,15,15,1
-Maritime Studies,Springer Nature,2017,22,22,1
-Raumforschung und Raumordnung,Walter de Gruyter GmbH,2013,63,61,0.9682539682539683
-Raumforschung und Raumordnung,Walter de Gruyter GmbH,2014,57,57,1
-Raumforschung und Raumordnung,Walter de Gruyter GmbH,2015,52,50,0.9615384615384616
-Raumforschung und Raumordnung,Walter de Gruyter GmbH,2016,61,60,0.9836065573770492
-Raumforschung und Raumordnung,Walter de Gruyter GmbH,2017,64,64,1
-Raumforschung und Raumordnung,Walter de Gruyter GmbH,2018,56,56,1
-Raumforschung und Raumordnung,Walter de Gruyter GmbH,2019,66,65,0.9848484848484849
-Research in Number Theory,Springer Nature,2015,29,28,0.9655172413793104
-Research in Number Theory,Springer Nature,2016,35,35,1
-Research in Number Theory,Springer Nature,2017,29,29,1
-Research in the Mathematical Sciences,Springer Nature,2014,14,14,1
-Research in the Mathematical Sciences,Springer Nature,2015,26,25,0.9615384615384616
-Research in the Mathematical Sciences,Springer Nature,2016,41,41,1
-Research in the Mathematical Sciences,Springer Nature,2017,28,28,1
+journal_title,publisher,year,yearly_jn_volume,license,license_ref_n,issn,year_founded,year_reverse_flipped,journal_location,society_affiliation,other_sci_affiliation,post_flip_publisher,access_model,apc_pre,apc_post,apc_now,discipline,flipped_oa,born_oa,embargo
+Gold Bulletin,Springer Nature,2013,56,http://creativecommons.org/licenses/by/2.0,46,2190-7579,1968,2016,-,0,0,Springer Nature,Hybrid,0,3000,3000,PSM,1,0,12
+Gold Bulletin,Springer Nature,2013,56,http://creativecommons.org/licenses/by-nc/2.0,10,2190-7579,1968,2016,-,0,0,Springer Nature,Hybrid,0,3000,3000,PSM,1,0,12
+Gold Bulletin,Springer Nature,2014,22,http://creativecommons.org/licenses/by/2.0,1,2190-7579,1968,2016,-,0,0,Springer Nature,Hybrid,0,3000,3000,PSM,1,0,12
+Gold Bulletin,Springer Nature,2014,22,http://creativecommons.org/licenses/by/4.0,20,2190-7579,1968,2016,-,0,0,Springer Nature,Hybrid,0,3000,3000,PSM,1,0,12
+Gold Bulletin,Springer Nature,2014,22,http://creativecommons.org/licenses/by-nc/2.0,1,2190-7579,1968,2016,-,0,0,Springer Nature,Hybrid,0,3000,3000,PSM,1,0,12
+Gold Bulletin,Springer Nature,2015,20,http://creativecommons.org/licenses/by/4.0,19,2190-7579,1968,2016,-,0,0,Springer Nature,Hybrid,0,3000,3000,PSM,1,0,12
+Acta Geophysica,Springer Nature,2016,135,http://creativecommons.org/licenses/by/3.0,28,1895-7455,1953,2017,Poland,0,"Institute of Geophysics, Polish Academy of Sciences & Polish Academy of Sciences",Springer Nature,Hybrid,0,3000,3000,PSM,1,0,12
+Acta Geophysica,Springer Nature,2016,135,http://creativecommons.org/licenses/by-nc-nd/3.0,37,1895-7455,1953,2017,Poland,0,"Institute of Geophysics, Polish Academy of Sciences & Polish Academy of Sciences",Springer Nature,Hybrid,0,3000,3000,PSM,1,0,12
+Acta Geophysica,Springer Nature,2013,95,NA,NA,1895-7455,1953,2017,Poland,0,"Institute of Geophysics, Polish Academy of Sciences & Polish Academy of Sciences",Springer Nature,Hybrid,0,3000,3000,PSM,1,0,12
+Acta Geophysica,Springer Nature,2015,81,NA,NA,1895-7455,1953,2017,Poland,0,"Institute of Geophysics, Polish Academy of Sciences & Polish Academy of Sciences",Springer Nature,Hybrid,0,3000,3000,PSM,1,0,12
+Acta Geophysica,Springer Nature,2014,48,NA,NA,1895-7455,1953,2017,Poland,0,"Institute of Geophysics, Polish Academy of Sciences & Polish Academy of Sciences",Springer Nature,Hybrid,0,3000,3000,PSM,1,0,12
+Research in the Mathematical Sciences,Springer Nature,2016,41,http://creativecommons.org/licenses/by/4.0,41,2197-9847,2014,2018,-,0,0,Springer Nature,Hybrid,980,3000,3000,PSM,0,1,12
+Research in the Mathematical Sciences,Springer Nature,2017,28,http://creativecommons.org/licenses/by/4.0,28,2197-9847,2014,2018,-,0,0,Springer Nature,Hybrid,980,3000,3000,PSM,0,1,12
+Research in the Mathematical Sciences,Springer Nature,2015,26,http://creativecommons.org/licenses/by/2.0,1,2197-9847,2014,2018,-,0,0,Springer Nature,Hybrid,980,3000,3000,PSM,0,1,12
+Research in the Mathematical Sciences,Springer Nature,2015,26,http://creativecommons.org/licenses/by/4.0,24,2197-9847,2014,2018,-,0,0,Springer Nature,Hybrid,980,3000,3000,PSM,0,1,12
+Research in the Mathematical Sciences,Springer Nature,2014,14,http://creativecommons.org/licenses/by/2.0,2,2197-9847,2014,2018,-,0,0,Springer Nature,Hybrid,980,3000,3000,PSM,0,1,12
+Research in the Mathematical Sciences,Springer Nature,2014,14,http://creativecommons.org/licenses/by/4.0,12,2197-9847,2014,2018,-,0,0,Springer Nature,Hybrid,980,3000,3000,PSM,0,1,12
+Integrating Materials and Manufacturing Innovation,Springer Nature,2014,25,http://creativecommons.org/licenses/by/4.0,15,2193-9772,2012,2017,USA,"The Minerals, Metals & Materials Society",0,Springer Nature,Hybrid,1500,3000,3000,PSM,0,1,12
+Integrating Materials and Manufacturing Innovation,Springer Nature,2016,14,http://creativecommons.org/licenses/by/4.0,14,2193-9772,2012,2017,USA,"The Minerals, Metals & Materials Society",0,Springer Nature,Hybrid,1500,3000,3000,PSM,0,1,12
+Integrating Materials and Manufacturing Innovation,Springer Nature,2015,13,http://creativecommons.org/licenses/by/4.0,13,2193-9772,2012,2017,USA,"The Minerals, Metals & Materials Society",0,Springer Nature,Hybrid,1500,3000,3000,PSM,0,1,12
+Integrating Materials and Manufacturing Innovation,Springer Nature,2013,5,NA,NA,2193-9772,2012,2017,USA,"The Minerals, Metals & Materials Society",0,Springer Nature,Hybrid,1500,3000,3000,PSM,0,1,12
+Tropical Plant Pathology,Springer Nature,2014,64,NA,NA,1982-5676,1976,2015,Brazil,Brazilian Phytopathology Society,0,Springer Nature,Hybrid,0,3000,3000,LS,1,0,12
+Tropical Plant Pathology,Springer Nature,2013,29,NA,NA,1982-5676,1976,2015,Brazil,Brazilian Phytopathology Society,0,Springer Nature,Hybrid,0,3000,3000,LS,1,0,12
+Journal of Remanufacturing,Springer Nature,2015,12,http://creativecommons.org/licenses/by/4.0,12,2210-4690,2011,2017,-,0,0,Springer Nature,Hybrid,1085,3000,3000,SSH,0,1,12
+Journal of Remanufacturing,Springer Nature,2013,10,http://creativecommons.org/licenses/by/2.0,1,2210-4690,2011,2017,-,0,0,Springer Nature,Hybrid,1085,3000,3000,SSH,0,1,12
+Journal of Remanufacturing,Springer Nature,2014,9,http://creativecommons.org/licenses/by/2.0,5,2210-4690,2011,2017,-,0,0,Springer Nature,Hybrid,1085,3000,3000,SSH,0,1,12
+Journal of Remanufacturing,Springer Nature,2014,9,http://creativecommons.org/licenses/by/4.0,4,2210-4690,2011,2017,-,0,0,Springer Nature,Hybrid,1085,3000,3000,SSH,0,1,12
+Journal of Remanufacturing,Springer Nature,2016,3,http://creativecommons.org/licenses/by/4.0,3,2210-4690,2011,2017,-,0,0,Springer Nature,Hybrid,1085,3000,3000,SSH,0,1,12
+3 Biotech,Springer Nature,2016,254,http://creativecommons.org/licenses/by/4.0,253,2190-5738,2011,2017,Saudi Arabia,0,King Abdulaziz City of Science and Technology (KACST),Springer Nature,Hybrid,0,3000,3000,LS,0,1,12
+3 Biotech,Springer Nature,2013,83,http://creativecommons.org/licenses/by/2.0,71,2190-5738,2011,2017,Saudi Arabia,0,King Abdulaziz City of Science and Technology (KACST),Springer Nature,Hybrid,0,3000,3000,LS,0,1,12
+3 Biotech,Springer Nature,2014,78,http://creativecommons.org/licenses/by/2.0,6,2190-5738,2011,2017,Saudi Arabia,0,King Abdulaziz City of Science and Technology (KACST),Springer Nature,Hybrid,0,3000,3000,LS,0,1,12
+3 Biotech,Springer Nature,2014,78,http://creativecommons.org/licenses/by/4.0,71,2190-5738,2011,2017,Saudi Arabia,0,King Abdulaziz City of Science and Technology (KACST),Springer Nature,Hybrid,0,3000,3000,LS,0,1,12
+3 Biotech,Springer Nature,2015,48,http://creativecommons.org/licenses/by/4.0,47,2190-5738,2011,2017,Saudi Arabia,0,King Abdulaziz City of Science and Technology (KACST),Springer Nature,Hybrid,0,3000,3000,LS,0,1,12
+Research in Number Theory,Springer Nature,2016,35,http://creativecommons.org/licenses/by/4.0,35,2363-9555,2015,2018,-,0,0,Springer Nature,Hybrid,1085,3000,3000,PSM,0,1,12
+Research in Number Theory,Springer Nature,2017,29,http://creativecommons.org/licenses/by/4.0,29,2363-9555,2015,2018,-,0,0,Springer Nature,Hybrid,1085,3000,3000,PSM,0,1,12
+Research in Number Theory,Springer Nature,2015,29,http://creativecommons.org/licenses/by/4.0,28,2363-9555,2015,2018,-,0,0,Springer Nature,Hybrid,1085,3000,3000,PSM,0,1,12
+Maritime Studies,Springer Nature,2017,22,http://creativecommons.org/licenses/by/4.0,22,2212-9790,2002,2018,Netherlands,0,Centre for Maritime Research,Springer Nature,Hybrid,1085,3000,3000,SSH,1,0,12
+Maritime Studies,Springer Nature,2015,21,http://creativecommons.org/licenses/by/4.0,19,2212-9790,2002,2018,Netherlands,0,Centre for Maritime Research,Springer Nature,Hybrid,1085,3000,3000,SSH,1,0,12
+Maritime Studies,Springer Nature,2014,17,http://creativecommons.org/licenses/by/2.0,2,2212-9790,2002,2018,Netherlands,0,Centre for Maritime Research,Springer Nature,Hybrid,1085,3000,3000,SSH,1,0,12
+Maritime Studies,Springer Nature,2014,17,http://creativecommons.org/licenses/by/4.0,4,2212-9790,2002,2018,Netherlands,0,Centre for Maritime Research,Springer Nature,Hybrid,1085,3000,3000,SSH,1,0,12
+Maritime Studies,Springer Nature,2016,15,http://creativecommons.org/licenses/by/4.0,15,2212-9790,2002,2018,Netherlands,0,Centre for Maritime Research,Springer Nature,Hybrid,1085,3000,3000,SSH,1,0,12
+Maritime Studies,Springer Nature,2013,13,NA,NA,2212-9790,2002,2018,Netherlands,0,Centre for Maritime Research,Springer Nature,Hybrid,1085,3000,3000,SSH,1,0,12
+Applied Nanoscience,Springer Nature,2015,125,http://creativecommons.org/licenses/by/4.0,125,2190-5517,2011,2018,Saudi Arabia,0,King Abdulaziz City of Science and Technology (KACST),Springer Nature,Hybrid,0,3000,3000,LS,0,1,12
+Applied Nanoscience,Springer Nature,2013,104,http://creativecommons.org/licenses/by/2.0,102,2190-5517,2011,2018,Saudi Arabia,0,King Abdulaziz City of Science and Technology (KACST),Springer Nature,Hybrid,0,3000,3000,LS,0,1,12
+Applied Nanoscience,Springer Nature,2014,103,http://creativecommons.org/licenses/by/2.0,10,2190-5517,2011,2018,Saudi Arabia,0,King Abdulaziz City of Science and Technology (KACST),Springer Nature,Hybrid,0,3000,3000,LS,0,1,12
+Applied Nanoscience,Springer Nature,2014,103,http://creativecommons.org/licenses/by/4.0,91,2190-5517,2011,2018,Saudi Arabia,0,King Abdulaziz City of Science and Technology (KACST),Springer Nature,Hybrid,0,3000,3000,LS,0,1,12
+Applied Nanoscience,Springer Nature,2017,88,http://creativecommons.org/licenses/by/4.0,88,2190-5517,2011,2018,Saudi Arabia,0,King Abdulaziz City of Science and Technology (KACST),Springer Nature,Hybrid,0,3000,3000,LS,0,1,12
+Applied Nanoscience,Springer Nature,2016,30,http://creativecommons.org/licenses/by/4.0,30,2190-5517,2011,2018,Saudi Arabia,0,King Abdulaziz City of Science and Technology (KACST),Springer Nature,Hybrid,0,3000,3000,LS,0,1,12
+EPMA Journal,Springer Nature,2014,187,http://creativecommons.org/licenses/by/2.0,170,1878-5085,2010,2017,Belgium,"European Association for Predictive, Preventive and Personalised Medicine",0,Springer Nature,Hybrid,2240,3000,3000,Health,1,0,12
+EPMA Journal,Springer Nature,2014,187,http://creativecommons.org/licenses/by/4.0,17,1878-5085,2010,2017,Belgium,"European Association for Predictive, Preventive and Personalised Medicine",0,Springer Nature,Hybrid,2240,3000,3000,Health,1,0,12
+EPMA Journal,Springer Nature,2015,29,http://creativecommons.org/licenses/by/4.0,15,1878-5085,2010,2017,Belgium,"European Association for Predictive, Preventive and Personalised Medicine",0,Springer Nature,Hybrid,2240,3000,3000,Health,1,0,12
+EPMA Journal,Springer Nature,2013,25,http://creativecommons.org/licenses/by/2.0,25,1878-5085,2010,2017,Belgium,"European Association for Predictive, Preventive and Personalised Medicine",0,Springer Nature,Hybrid,2240,3000,3000,Health,1,0,12
+EPMA Journal,Springer Nature,2016,22,http://creativecommons.org/licenses/by/4.0,1,1878-5085,2010,2017,Belgium,"European Association for Predictive, Preventive and Personalised Medicine",0,Springer Nature,Hybrid,2240,3000,3000,Health,1,0,12
+Journal of Environmental Health Science and Engineering,Springer Nature,2014,152,http://creativecommons.org/licenses/by/2.0,126,2052-336X,2004,2018,Iran,"Iranian Association of Environmental Health, Tehran University of Medical Sciences",0,Springer Nature,Hybrid,1045,3000,3000,Health,0,1,12
+Journal of Environmental Health Science and Engineering,Springer Nature,2014,152,http://creativecommons.org/licenses/by/4.0,26,2052-336X,2004,2018,Iran,"Iranian Association of Environmental Health, Tehran University of Medical Sciences",0,Springer Nature,Hybrid,1045,3000,3000,Health,0,1,12
+Journal of Environmental Health Science and Engineering,Springer Nature,2015,86,http://creativecommons.org/licenses/by/2.0,10,2052-336X,2004,2018,Iran,"Iranian Association of Environmental Health, Tehran University of Medical Sciences",0,Springer Nature,Hybrid,1045,3000,3000,Health,0,1,12
+Journal of Environmental Health Science and Engineering,Springer Nature,2015,86,http://creativecommons.org/licenses/by/4.0,75,2052-336X,2004,2018,Iran,"Iranian Association of Environmental Health, Tehran University of Medical Sciences",0,Springer Nature,Hybrid,1045,3000,3000,Health,0,1,12
+Journal of Environmental Health Science and Engineering,Springer Nature,2013,44,http://creativecommons.org/licenses/by/2.0,43,2052-336X,2004,2018,Iran,"Iranian Association of Environmental Health, Tehran University of Medical Sciences",0,Springer Nature,Hybrid,1045,3000,3000,Health,0,1,12
+Journal of Environmental Health Science and Engineering,Springer Nature,2017,25,http://creativecommons.org/licenses/by/4.0,25,2052-336X,2004,2018,Iran,"Iranian Association of Environmental Health, Tehran University of Medical Sciences",0,Springer Nature,Hybrid,1045,3000,3000,Health,0,1,12
+Journal of Environmental Health Science and Engineering,Springer Nature,2016,21,http://creativecommons.org/licenses/by/4.0,21,2052-336X,2004,2018,Iran,"Iranian Association of Environmental Health, Tehran University of Medical Sciences",0,Springer Nature,Hybrid,1045,3000,3000,Health,0,1,12
+DARU Journal of Pharmaceutical Sciences,Springer Nature,2014,80,http://creativecommons.org/licenses/by/2.0,50,2008-2231,1993,2018,Iran,0,Tehran University of Medical Sciences,Springer Nature,Hybrid,1046,3000,3000,Health,1,0,12
+DARU Journal of Pharmaceutical Sciences,Springer Nature,2014,80,http://creativecommons.org/licenses/by/4.0,30,2008-2231,1993,2018,Iran,0,Tehran University of Medical Sciences,Springer Nature,Hybrid,1046,3000,3000,Health,1,0,12
+DARU Journal of Pharmaceutical Sciences,Springer Nature,2013,78,http://creativecommons.org/licenses/by/2.0,76,2008-2231,1993,2018,Iran,0,Tehran University of Medical Sciences,Springer Nature,Hybrid,1046,3000,3000,Health,1,0,12
+DARU Journal of Pharmaceutical Sciences,Springer Nature,2013,78,http://www.creativecommons.org/licenses/by/2.0,2,2008-2231,1993,2018,Iran,0,Tehran University of Medical Sciences,Springer Nature,Hybrid,1046,3000,3000,Health,1,0,12
+DARU Journal of Pharmaceutical Sciences,Springer Nature,2015,56,http://creativecommons.org/licenses/by/2.0,1,2008-2231,1993,2018,Iran,0,Tehran University of Medical Sciences,Springer Nature,Hybrid,1046,3000,3000,Health,1,0,12
+DARU Journal of Pharmaceutical Sciences,Springer Nature,2015,56,http://creativecommons.org/licenses/by/4.0,55,2008-2231,1993,2018,Iran,0,Tehran University of Medical Sciences,Springer Nature,Hybrid,1046,3000,3000,Health,1,0,12
+DARU Journal of Pharmaceutical Sciences,Springer Nature,2017,25,http://creativecommons.org/licenses/by/4.0,25,2008-2231,1993,2018,Iran,0,Tehran University of Medical Sciences,Springer Nature,Hybrid,1046,3000,3000,Health,1,0,12
+DARU Journal of Pharmaceutical Sciences,Springer Nature,2016,25,http://creativecommons.org/licenses/by/4.0,25,2008-2231,1993,2018,Iran,0,Tehran University of Medical Sciences,Springer Nature,Hybrid,1046,3000,3000,Health,1,0,12
+Journal of Diabetes & Metabolic Disorders,Springer Nature,2015,128,http://creativecommons.org/licenses/by/2.0,4,2251-6581,2002,2018,Iran,0,"Tehran University of Medical Sciences, Endocrinology and Metabolism Research Institute",Springer Nature,Hybrid,735,3000,3000,Health,1,0,12
+Journal of Diabetes & Metabolic Disorders,Springer Nature,2015,128,http://creativecommons.org/licenses/by/4.0,63,2251-6581,2002,2018,Iran,0,"Tehran University of Medical Sciences, Endocrinology and Metabolism Research Institute",Springer Nature,Hybrid,735,3000,3000,Health,1,0,12
+Journal of Diabetes & Metabolic Disorders,Springer Nature,2014,118,http://creativecommons.org/licenses/by/2.0,9,2251-6581,2002,2018,Iran,0,"Tehran University of Medical Sciences, Endocrinology and Metabolism Research Institute",Springer Nature,Hybrid,735,3000,3000,Health,1,0,12
+Journal of Diabetes & Metabolic Disorders,Springer Nature,2014,118,http://creativecommons.org/licenses/by/4.0,29,2251-6581,2002,2018,Iran,0,"Tehran University of Medical Sciences, Endocrinology and Metabolism Research Institute",Springer Nature,Hybrid,735,3000,3000,Health,1,0,12
+Journal of Diabetes & Metabolic Disorders,Springer Nature,2013,60,NA,NA,2251-6581,2002,2018,Iran,0,"Tehran University of Medical Sciences, Endocrinology and Metabolism Research Institute",Springer Nature,Hybrid,735,3000,3000,Health,1,0,12
+Journal of Diabetes & Metabolic Disorders,Springer Nature,2017,49,NA,NA,2251-6581,2002,2018,Iran,0,"Tehran University of Medical Sciences, Endocrinology and Metabolism Research Institute",Springer Nature,Hybrid,735,3000,3000,Health,1,0,12
+Journal of Diabetes & Metabolic Disorders,Springer Nature,2016,17,NA,NA,2251-6581,2002,2018,Iran,0,"Tehran University of Medical Sciences, Endocrinology and Metabolism Research Institute",Springer Nature,Hybrid,735,3000,3000,Health,1,0,12
+Biointerphases,American Vacuum Society,2013,37,NA,NA,1559-4106,2006,2014,USA,American Vacuum Society (AVS),0,American Institute of Physics,Hybrid,1045,2200,1085,LS,1,0,0
+Colloid and Interface Science Communications,Elsevier BV,2014,27,http://creativecommons.org/licenses/by/4.0,2,2215-0382,2014,2016,-,0,0,Elsevier,Hybrid,750,1500,1500,PSM,0,1,24
+Colloid and Interface Science Communications,Elsevier BV,2014,27,http://creativecommons.org/licenses/by-nc-nd/3.0,3,2215-0382,2014,2016,-,0,0,Elsevier,Hybrid,750,1500,1500,PSM,0,1,24
+Colloid and Interface Science Communications,Elsevier BV,2014,27,http://creativecommons.org/licenses/by-nc-nd/4.0,14,2215-0382,2014,2016,-,0,0,Elsevier,Hybrid,750,1500,1500,PSM,0,1,24
+Colloid and Interface Science Communications,Elsevier BV,2014,27,http://creativecommons.org/licenses/by-nc-sa/3.0,1,2215-0382,2014,2016,-,0,0,Elsevier,Hybrid,750,1500,1500,PSM,0,1,24
+Colloid and Interface Science Communications,Elsevier BV,2015,24,http://creativecommons.org/licenses/by-nc-nd/3.0,1,2215-0382,2014,2016,-,0,0,Elsevier,Hybrid,750,1500,1500,PSM,0,1,24
+Economic Analysis and Policy,Elsevier BV,2013,21,NA,NA,0313-5926,1971,2014,Australia,0,Economic Society of Australia (Queensland) Inc.,Elsevier,Hybrid,0,1800,1800,SSH,1,0,24
+Cancer Treatment Communications,Elsevier BV,2015,55,http://creativecommons.org/licenses/by-nc-nd/3.0,4,2213-0896,1982,2016,-,0,0,Elsevier,Hybrid,600,650,650,Health,1,0,0
+Cancer Treatment Communications,Elsevier BV,2015,55,http://creativecommons.org/licenses/by-nc-nd/4.0,1,2213-0896,1982,2016,-,0,0,Elsevier,Hybrid,600,650,650,Health,1,0,0
+Cancer Treatment Communications,Elsevier BV,2014,11,http://creativecommons.org/licenses/by-nc-nd/4.0,1,2213-0896,1982,2016,-,0,0,Elsevier,Hybrid,600,650,650,Health,1,0,0
+Cancer Treatment Communications,Elsevier BV,2014,11,http://creativecommons.org/licenses/by-nc-sa/3.0,1,2213-0896,1982,2016,-,0,0,Elsevier,Hybrid,600,650,650,Health,1,0,0
+Cancer Treatment Communications,Elsevier BV,2013,5,NA,NA,2213-0896,1982,2016,-,0,0,Elsevier,Hybrid,600,650,650,Health,1,0,0
+Materials Today,Elsevier BV,2013,234,http://creativecommons.org/licenses/by-nc-nd/3.0,81,1369-7021,1998,2017,-,0,0,Elsevier,Hybrid,3000,3000,3300,PSM,1,0,24
+Materials Today,Elsevier BV,2014,230,http://creativecommons.org/licenses/by-nc-nd/3.0,151,1369-7021,1998,2017,-,0,0,Elsevier,Hybrid,3000,3000,3300,PSM,1,0,24
+Materials Today,Elsevier BV,2014,230,http://creativecommons.org/licenses/by-nc-nd/4.0,57,1369-7021,1998,2017,-,0,0,Elsevier,Hybrid,3000,3000,3300,PSM,1,0,24
+Materials Today,Elsevier BV,2015,221,http://creativecommons.org/licenses/by-nc-nd/3.0,26,1369-7021,1998,2017,-,0,0,Elsevier,Hybrid,3000,3000,3300,PSM,1,0,24
+Materials Today,Elsevier BV,2015,221,http://creativecommons.org/licenses/by-nc-nd/4.0,186,1369-7021,1998,2017,-,0,0,Elsevier,Hybrid,3000,3000,3300,PSM,1,0,24
+Materials Today,Elsevier BV,2016,212,http://creativecommons.org/licenses/by-nc-nd/4.0,197,1369-7021,1998,2017,-,0,0,Elsevier,Hybrid,3000,3000,3300,PSM,1,0,24
+Plant Gene,Elsevier BV,2015,29,http://creativecommons.org/licenses/by/4.0,1,2352-4073,2015,2016,-,0,0,Elsevier,Hybrid,1500,1500,1500,LS,0,1,12
+Plant Gene,Elsevier BV,2015,29,http://creativecommons.org/licenses/by-nc-nd/4.0,25,2352-4073,2015,2016,-,0,0,Elsevier,Hybrid,1500,1500,1500,LS,0,1,12
+International Journal of Gastronomy and Food Science,Elsevier BV,2015,9,http://creativecommons.org/licenses/by-nc-nd/3.0,2,1878-450X,2012,2016,Spain,0,"AZTI-Tecnalia, Basque Culinary Center, and Mugaritz",Elsevier,Hybrid,0,3000,3000,LS,0,1,12
+International Journal of Gastronomy and Food Science,Elsevier BV,2015,9,http://creativecommons.org/licenses/by-nc-nd/4.0,2,1878-450X,2012,2016,Spain,0,"AZTI-Tecnalia, Basque Culinary Center, and Mugaritz",Elsevier,Hybrid,0,3000,3000,LS,0,1,12
+International Journal of Gastronomy and Food Science,Elsevier BV,2014,8,http://creativecommons.org/licenses/by-nc-nd/3.0,7,1878-450X,2012,2016,Spain,0,"AZTI-Tecnalia, Basque Culinary Center, and Mugaritz",Elsevier,Hybrid,0,3000,3000,LS,0,1,12
+Atmospheric Pollution Research,Elsevier BV,2014,90,NA,NA,1309-1042,2010,2015,Turkey,0,Turkish National Committee for Air Pollution Research and Control,Elsevier,Subscription,0,-,1500,PSM,0,1,24
+Atmospheric Pollution Research,Elsevier BV,2013,52,NA,NA,1309-1042,2010,2015,Turkey,0,Turkish National Committee for Air Pollution Research and Control,Elsevier,Subscription,0,-,1500,PSM,0,1,24

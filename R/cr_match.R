@@ -96,7 +96,7 @@ hybrid_oa_df %>%
   filter(year_flipped <= issued) -> flipped_jns
 # export 
 flipped_jns %>%
-  select(-year_published) %>%
+  select(-year_published, -license_refs) %>%
   distinct(dois,.keep_all = TRUE) %>%
   readr::write_csv("../data/flipped_jns_doaj.csv")
 #' remove flipped journals from hybrid license data set and store into json
@@ -137,7 +137,7 @@ indicator_df %>%
   inner_join(rv_flip, by = c("journal_title" = "journal_name")) %>% 
   filter(year < year_reverse_flipped) -> rev_flip_list
 #' export and exclude them
-readr::write_csv(prob_flipped, "../data/flipped_jns.csv")
+readr::write_csv(rev_flip_list, "../data/flipped_jns.csv")
 anti_join(indicator_df, prob_flipped,  by = c("journal_title", "publisher", "year")) %>%
   anti_join(rev_flip_list, by = c("journal_title", "publisher", "year")) -> indicator_df
 #' calculate publishers article volume and add this info to the dataset
