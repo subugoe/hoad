@@ -142,7 +142,7 @@ jn_facets <- purrr::map(issns_list, .f = purrr::safely(function(x) {
     filter = c(
       x,
       from_pub_date = "2013-01-01",
-      until_pub_date = "2019-12-31",
+      until_pub_date = "2020-12-31",
       type = "journal-article"
     ),
     # being explicit about facets improves API performance!
@@ -235,7 +235,7 @@ cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
                                                                   license.delay = 0,
                                                                   type = "journal-article",
                                                                   from_pub_date = "2013-01-01", 
-                                                                  until_pub_date = "2019-12-31"),
+                                                                  until_pub_date = "2020-12-31"),
                                                        cursor = "*", cursor_max = 5000L, 
                                                        limit = 1000L,
                                                        select = cr_md_fields) 
