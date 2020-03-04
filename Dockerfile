@@ -12,7 +12,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   proj-bin \
   libxml2-dev \
   libssl-dev \
-  libcurl4-openssl-dev
+  libcurl4-openssl-dev \
+  libproj-dev \
+  libgdal-dev
 
 # set shell to Rscript to make syntax shorter
 SHELL ["/usr/local/bin/Rscript", "-e"]
