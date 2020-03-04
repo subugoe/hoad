@@ -10,33 +10,25 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - run: echo $(Rscript -e 'cat(.libPaths()[1])')
-      - name: Cache R packages
-        uses: actions/cache@v1
-        with:
-          path: $(Rscript -e 'cat(.libPaths()[1])')
-          key: ${{ hashFiles('.Rprofile') }}-${{ hashFiles('DESCRIPTION') }}
-          restore-keys: |
-            ${{ hashFiles('.Rprofile') }}-
       - name: Build image
-        run: docker build --tag hoad .
+        run: docker build --tag hoad-dev .
       - name: Tag image
         run: |
-          docker tag hoad docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad:${{ github.sha }}
-          docker tag hoad maxheld83/hoad:${{ github.sha }}
+          docker tag hoad docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad-dev:${{ github.sha }}
+          docker tag hoad maxheld83/hoad-dev:${{ github.sha }}
       - name: Push image to github package registry
         run: |
           docker login -u $GITHUB_ACTOR -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
-          docker push docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad:${{ github.sha }}
+          docker push docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad-dev:${{ github.sha }}
       - name: Push image to docker hub
         run: |
           docker login -u maxheld83 -p ${{ secrets.DOCKER_TOKEN }}
-          docker push maxheld83/hoad:${{ github.sha }}
+          docker push maxheld83/hoad-dev:${{ github.sha }}
   check:
     runs-on: ubuntu-18.04
     needs: build
     container:
-      image: maxheld83/hoad:${{ github.sha }}
+      image: maxheld83/hoad-dev:${{ github.sha }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
