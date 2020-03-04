@@ -12,26 +12,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v1
       - name: Build image
-        run: docker build --tag subugoe/hoad:${{ github.sha }} .
-      - name: Upload image
-        uses: actions/upload-artifact@v1
-        with:
-          name: hoad
-          path: /var/lib/docker
+        run: docker build --tag docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad:${{ github.sha }} .
+      - name: Login
+        run: docker login -u $GITHUB_ACTOR -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
+      - name: Push image
+        run: docker push docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad:${{ github.sha }}
   Check:
     runs-on: ubuntu-18.04
     needs: build
     container:
-      image: subugoe/hoad:${{ github.sha }}
+      image: docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad:${{ github.sha }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v1
-      - name: Download image
-        uses: actions/download-artifact@v1
-        with:
-          name: hoad
-          path: /var/lib/docker
-      - run: ls /var/lib/docker
       - name: Check Package
         run: Rscript -e "rcmdcheck::rcmdcheck(error_on = 'error', check_dir = 'check')"
       - name: Run Code Coverage
