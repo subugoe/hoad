@@ -6,11 +6,18 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build Container
     runs-on: ubuntu-18.04
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - run: echo $(Rscript -e 'cat(.libPaths()[1])')
+      - name: Cache R packages
+        uses: actions/cache@v1
+        with:
+          path: $(Rscript -e 'cat(.libPaths()[1])')
+          key: ${{ hashFiles('.Rprofile') }}-${{ hashFiles('DESCRIPTION') }}
+          restore-keys: |
+            ${{ hashFiles('.Rprofile') }}-
       - name: Build image
         run: docker build --tag hoad .
       - name: Tag image
@@ -25,7 +32,7 @@ jobs:
         run: |
           docker login -u maxheld83 -p ${{ secrets.DOCKER_TOKEN }}
           docker push maxheld83/hoad:${{ github.sha }}
-  Check:
+  check:
     runs-on: ubuntu-18.04
     needs: build
     container:
