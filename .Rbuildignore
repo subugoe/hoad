@@ -17,3 +17,5 @@ dashboard.Rmd
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^vignettes$
+Dockerfile
+.dockerignore
