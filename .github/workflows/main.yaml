@@ -9,10 +9,15 @@ jobs:
     name: Build
     runs-on: ubuntu-18.04
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v1
       - name: Build image
         run: docker build --tag subugoe/hoad:${{ github.sha }} .
+      - name: Upload image
+        uses: actions/upload-artifact@v1
+        with:
+          name: hoad
+          path: /var/lib/docker
   Check:
     runs-on: ubuntu-18.04
     needs: build
@@ -21,6 +26,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v1
+      - name: Download image
+        uses: actions/download-artifact@v1
+        with:
+          name: hoad
+          path: /var/lib/docker
+      - run: ls /var/lib/docker
       - name: Check Package
         run: Rscript -e "rcmdcheck::rcmdcheck(error_on = 'error', check_dir = 'check')"
       - name: Run Code Coverage
