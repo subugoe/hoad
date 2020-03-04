@@ -14,8 +14,8 @@ jobs:
         run: docker build --tag hoad-dev .
       - name: Tag image
         run: |
-          docker tag hoad docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad-dev:${{ github.sha }}
-          docker tag hoad maxheld83/hoad-dev:${{ github.sha }}
+          docker tag hoad-dev docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad-dev:${{ github.sha }}
+          docker tag hoad-dev maxheld83/hoad-dev:${{ github.sha }}
       - name: Push image to github package registry
         run: |
           docker login -u $GITHUB_ACTOR -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
