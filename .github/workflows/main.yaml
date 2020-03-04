@@ -33,9 +33,15 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-      - name: Check Package
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+      - name: R CMD Check
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}
+      - name: Upload check results
+        if: failure()
+        uses: actions/upload-artifact@v1
+        with:
+          name: results
+          path: check
       - name: Run Code Coverage
         run: covr::codecov(quiet = FALSE, commit = '$GITHUB_SHA', branch = '$GITHUB_REF', token = '${{ secrets.CODECOV_TOKEN }}')
         shell: Rscript {0}
