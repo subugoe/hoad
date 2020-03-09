@@ -28,7 +28,8 @@ Authors@R:
         given = "Henrieke",
         family = "Walter",
         role = c("aut"),
-        email = "henrieke.walter@sub.uni-goettingen.de"
+        email = "henrieke.walter@sub.uni-goettingen.de",
+        comment = c(ORCID = "0000-0003-3313-7364")
       ),
       person(
         given = "Göttingen State and University Library",
