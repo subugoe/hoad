@@ -1,4 +1,4 @@
-FROM rocker/tidyverse:3.6.2
+FROM rstudio/r-base:3.6.3-bionic
 
 LABEL "name"="hoad-dev"
 LABEL "maintainer"="Maximilian Held <info@maxheld.de>"
@@ -16,11 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libproj-dev \
   libgdal-dev
 
-# set shell to Rscript to make syntax shorter
-SHELL ["/usr/local/bin/Rscript", "-e"]
-
 # install pkg deps
 COPY . .
-RUN remotes::install_deps(dependencies = TRUE, quiet = FALSE)
-
-ONBUILD SHELL ["/bin/sh", "-c"]
+RUN Rscript -e 'install.packages("remotes")'
+RUN Rscript -e 'remotes::install_deps(dependencies = TRUE, quiet = FALSE)'
