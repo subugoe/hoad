@@ -5,30 +5,22 @@ on:
   - pull_request
 
 jobs:
-  build:
-    name: Build Container
+  build_image:
     runs-on: ubuntu-18.04
+    name: Build and Push Container
     steps:
       - uses: actions/checkout@v2
-      - name: Build image
-        run: docker build --tag hoad .
-      - name: Tag image
-        run: |
-          docker tag hoad docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad:${{ github.sha }}
-          docker tag hoad docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad:${{ github.ref }}
-          docker tag hoad subugoe/hoad:${{ github.sha }}
-          docker tag hoad subugoe/hoad:${{ github.ref }}
-      - name: Push image to github package registry
-        run: |
-          docker login -u $GITHUB_ACTOR -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
-          docker push docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad:${{ github.sha }}
-      - name: Push image to docker hub
-        run: |
-          docker login -u maxheld83 -p ${{ secrets.DOCKER_TOKEN }}
-          docker push subugoe/hoad:${{ github.sha }}
+      - uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+          repository: subugoe/hoad
+          tag_with_sha: true
+          add_git_labels: true
+          tags: ${{ github.sha }}
   check:
     runs-on: ubuntu-18.04
-    needs: build
+    needs: build_image
     container:
       image: subugoe/hoad:${{ github.sha }}
     steps:
