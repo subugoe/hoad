@@ -15,7 +15,9 @@ jobs:
       - name: Tag image
         run: |
           docker tag hoad docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad:${{ github.sha }}
+          docker tag hoad docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad:${{ github.ref }}
           docker tag hoad subugoe/hoad:${{ github.sha }}
+          docker tag hoad subugoe/hoad:${{ github.ref }}
       - name: Push image to github package registry
         run: |
           docker login -u $GITHUB_ACTOR -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
