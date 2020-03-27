@@ -19,3 +19,4 @@ dashboard.Rmd
 ^vignettes$
 Dockerfile
 .dockerignore
+^\.github$

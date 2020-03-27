@@ -11,24 +11,24 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build image
-        run: docker build --tag hoad-dev .
+        run: docker build --tag hoad .
       - name: Tag image
         run: |
-          docker tag hoad-dev docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad-dev:${{ github.sha }}
-          docker tag hoad-dev maxheld83/hoad-dev:${{ github.sha }}
+          docker tag hoad docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad:${{ github.sha }}
+          docker tag hoad subugoe/hoad:${{ github.sha }}
       - name: Push image to github package registry
         run: |
           docker login -u $GITHUB_ACTOR -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
-          docker push docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad-dev:${{ github.sha }}
+          docker push docker.pkg.github.com/subugoe/hybrid_oa_dashboard/hoad:${{ github.sha }}
       - name: Push image to docker hub
         run: |
           docker login -u maxheld83 -p ${{ secrets.DOCKER_TOKEN }}
-          docker push maxheld83/hoad-dev:${{ github.sha }}
+          docker push maxheld83/hoad:${{ github.sha }}
   check:
     runs-on: ubuntu-18.04
     needs: build
     container:
-      image: maxheld83/hoad-dev:${{ github.sha }}
+      image: subugoe/hoad:${{ github.sha }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
