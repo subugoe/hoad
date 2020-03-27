@@ -1,6 +1,6 @@
 FROM rstudio/r-base:3.6.3-bionic
 
-LABEL "name"="hoad-dev"
+LABEL "name"="hoad"
 LABEL "maintainer"="Maximilian Held <info@maxheld.de>"
 LABEL "repository"="https://github.com/subugoe/hybrid_oa_dashboard"
 LABEL "homepage"="https://subugoe.github.io/hybrid_oa_dashboard/"
