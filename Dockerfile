@@ -17,6 +17,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libgdal-dev
 
 # install pkg deps
-COPY . .
-RUN Rscript -e 'install.packages("remotes")'
-RUN Rscript -e 'remotes::install_deps(dependencies = TRUE, quiet = FALSE)'
+RUN Rscript -e 'install.packages("devtools")'
+RUN Rscript -e 'devtools::install(dependencies = TRUE)'

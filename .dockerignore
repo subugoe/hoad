@@ -1,6 +1,4 @@
-# Ignore everything
-**
-
-# Allow these
-!/DESCRIPTION
-!/.Rprofile
+.git
+.github
+.gitignore
+vignettes/
