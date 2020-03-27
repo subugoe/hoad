@@ -23,7 +23,7 @@ jobs:
       - name: Push image to docker hub
         run: |
           docker login -u maxheld83 -p ${{ secrets.DOCKER_TOKEN }}
-          docker push maxheld83/hoad:${{ github.sha }}
+          docker push subugoe/hoad:${{ github.sha }}
   check:
     runs-on: ubuntu-18.04
     needs: build
