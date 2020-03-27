@@ -16,6 +16,7 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
           repository: subugoe/hoad
           tag_with_sha: true
+          tag_with_ref: true
           add_git_labels: true
           tags: ${{ github.sha }}
   check:
