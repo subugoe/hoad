@@ -16,6 +16,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libproj-dev \
   libgdal-dev
 
+COPY .Rprofile .Rprofile
+COPY DESCRIPTIOn DESCRIPTION
 # install pkg deps
 RUN Rscript -e 'install.packages("devtools")'
 RUN Rscript -e 'devtools::install(dependencies = TRUE)'

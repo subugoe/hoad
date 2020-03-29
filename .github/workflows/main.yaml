@@ -5,6 +5,47 @@ on:
   - pull_request
 
 jobs:
+  check:
+    runs-on: ubuntu-18.04
+    container:
+      image: rstudio/r-base:3.6.3-bionic
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Query dependencies
+        run: |
+          install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), "depends.Rds", version = 2)
+        shell: Rscript {0}
+      - name: Cache R packages
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ hashFiles('depends.Rds') }}
+      - name: Install system dependencies
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        run: |
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo -s eval "$sysreqs"
+      - name: Install dependencies
+        run: |
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("rcmdcheck")
+        shell: Rscript {0}
+      - name: Check
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
+      - name: Upload check results
+        if: failure()
+        uses: actions/upload-artifact@v1
+        with:
+          name: results
+          path: check
+      - name: Run Code Coverage
+        run: covr::codecov(commit = '$GITHUB_SHA', branch = '$GITHUB_REF', token = '${{ secrets.CODECOV_TOKEN }}')
+        shell: Rscript {0}
   build_image:
     runs-on: ubuntu-18.04
     name: Build and Push Container
@@ -19,23 +60,3 @@ jobs:
           tag_with_ref: true
           add_git_labels: true
           tags: ${{ github.sha }}
-  check:
-    runs-on: ubuntu-18.04
-    needs: build_image
-    container:
-      image: subugoe/hoad:${{ github.sha }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-      - name: R CMD Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
-        shell: Rscript {0}
-      - name: Upload check results
-        if: failure()
-        uses: actions/upload-artifact@v1
-        with:
-          name: results
-          path: check
-      - name: Run Code Coverage
-        run: covr::codecov(commit = '$GITHUB_SHA', branch = '$GITHUB_REF', token = '${{ secrets.CODECOV_TOKEN }}')
-        shell: Rscript {0}
