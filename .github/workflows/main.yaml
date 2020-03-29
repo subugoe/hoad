@@ -20,7 +20,7 @@ jobs:
       - name: Cache R packages
         uses: actions/cache@v1
         with:
-          path: ${{ env.R_LIBS_USER }}
+          path: /opt/R/3.6.3/lib/R/library
           key: ${{ hashFiles('depends.Rds') }}
       - name: Install system dependencies
         env:
