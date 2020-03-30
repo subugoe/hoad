@@ -50,6 +50,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      # frozen repos mess up r cmd check here
+      - run: rm .Rprofile
+
       - uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.config.r }}
