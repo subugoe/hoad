@@ -1,0 +1,72 @@
+on:
+  - push
+  - pull_request
+
+name: r-hub
+
+jobs:
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+    container:
+      image: rhub/${{ matrix.config.container }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.container }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {
+              os: ubuntu-16.04,
+              container: "ubuntu-gcc-release",
+              cran: "https://demo.rstudiopm.com/all/__linux__/xenial/latest",
+            }
+          - {
+              os: ubuntu-16.04,
+              container: "ubuntu-gcc-release",
+              cran: "https://cran.rstudio.com/",
+            }
+
+    env:
+      CRAN: ${{ matrix.config.cran }}
+    steps:
+      - uses: actions/checkout@v2
+
+      # frozen repos mess up r cmd check here
+      - run: rm .Rprofile
+
+      - name: Query dependencies
+        run: |
+          install.packages('remotes', repo = Sys.getenv("CRAN"))
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), "depends.Rds", version = 2)
+        shell: Rscript {0}
+
+      - name: Cache R packages
+        uses: actions/cache@v1
+        with:
+          path: /usr/local/lib/R/site-library
+          key: ${{ runner.os }}-${{ matrix.config.container }}-${{ hashFiles('depends.Rds') }}
+          restore-keys: ${{ runner.os }}-r-${{ matrix.config.container }}-
+
+      - name: Install system dependencies
+        if: runner.os != 'Windows'
+        run: |
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          Rscript -e "sysreqs::sysreqs(desc = 'DESCRIPTION')"
+
+      - name: Install dependencies
+        run: |
+          remotes::install_deps(dependencies = TRUE, repo = Sys.getenv("CRAN"))
+          remotes::install_cran("rcmdcheck", repo = Sys.getenv("CRAN"))
+        shell: Rscript {0}
+
+      - name: Check
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
+
+      - name: Upload check results
+        if: failure()
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ runner.os }}-r${{ matrix.config.container }}-results
+          path: check
