@@ -2,7 +2,7 @@
 title: "About the Hybrid OA Dashboard"
 date: "First published in November 2017, updated `r Sys.Date()`"
 output:
-  html_document:
+  bookdown::html_document2:
     df_print: paged
     keep_md: yes
     toc: yes
@@ -10,12 +10,6 @@ output:
     toc_float: yes
 bibliography: references.bib
 csl: frontiers.csl
-vignette: >
-  %\VignetteIndexEntry{about}
-  %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
 ---
 
 ```{r, echo = FALSE}
