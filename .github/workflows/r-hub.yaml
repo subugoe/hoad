@@ -52,6 +52,7 @@ jobs:
         if: runner.os != 'Windows'
         run: |
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          apt-get update && apt-get install -y --no-install-recommends pkg-config
           Rscript -e "sysreqs::sysreqs(desc = 'DESCRIPTION')"
 
       - name: Install dependencies
