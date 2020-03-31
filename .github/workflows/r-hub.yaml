@@ -56,8 +56,6 @@ jobs:
             apt-utils \
             pkg-config \
             proj-bin \
-            libxml2-dev \
-            libssl-dev \
             libcurl4-openssl-dev \
             libproj-dev \
             libgdal-dev
