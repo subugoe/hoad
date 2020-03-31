@@ -56,7 +56,6 @@ jobs:
             apt-utils \
             pkg-config \
             proj-bin \
-            libcurl4-openssl-dev \
             libproj-dev \
             libgdal-dev
           Rscript -e "sysreqs::sysreqs(desc = 'DESCRIPTION')"
