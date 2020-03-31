@@ -37,6 +37,7 @@ jobs:
 
       - name: Query dependencies
         run: |
+          options(warn = 2)
           install.packages('remotes', repos = Sys.getenv("CRAN"))
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), "depends.Rds", version = 2)
         shell: Rscript {0}
@@ -51,12 +52,13 @@ jobs:
       - name: Install system dependencies
         if: runner.os != 'Windows'
         run: |
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          Rscript -e "options(warn = 2); remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           eval "$sysreqs"
 
       - name: Install dependencies
         run: |
+          options(warn = 2)
           remotes::install_deps(dependencies = TRUE, repos = Sys.getenv("CRAN"))
           remotes::install_cran("rcmdcheck", repos = Sys.getenv("CRAN"))
         shell: Rscript {0}
