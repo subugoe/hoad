@@ -37,7 +37,7 @@ jobs:
 
       - name: Query dependencies
         run: |
-          install.packages('remotes', repo = Sys.getenv("CRAN"))
+          install.packages('remotes', repos = Sys.getenv("CRAN"))
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), "depends.Rds", version = 2)
         shell: Rscript {0}
 
@@ -60,8 +60,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          remotes::install_deps(dependencies = TRUE, repo = Sys.getenv("CRAN"))
-          remotes::install_cran("rcmdcheck", repo = Sys.getenv("CRAN"))
+          remotes::install_deps(dependencies = TRUE, repos = Sys.getenv("CRAN"))
+          remotes::install_cran("rcmdcheck", repos = Sys.getenv("CRAN"))
         shell: Rscript {0}
 
       - name: Check
