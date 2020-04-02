@@ -1,36 +1,33 @@
-name: CICD
+name: main
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+  - push
+  - pull_request
 
 jobs:
   check:
     runs-on: ubuntu-18.04
     container:
-      image: rstudio/r-base:3.6.3-bionic
+      image: rocker/rstudio:3.6.2
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
       - name: Query dependencies
         run: |
+          options(warn = 2)
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), "depends.Rds", version = 2)
         shell: Rscript {0}
       - name: Cache R packages
         uses: actions/cache@v1
         with:
-          path: /opt/R/3.6.3/lib/R/library
+          path: /usr/local/lib/R/site-library
           key: ${{ hashFiles('depends.Rds') }}
       - name: Install system dependencies
         env:
-          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+          RHUB_PLATFORM: linux-x86_64-debian-gcc
         run: |
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          Rscript -e "remotes::install_github('r-hub/sysreqs', ref='3860f2b512a9c3bd3db6791c2ff467a1158f4048')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
       - name: Install dependencies

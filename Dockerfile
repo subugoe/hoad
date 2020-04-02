@@ -1,23 +1,18 @@
-FROM rstudio/r-base:3.6.3-bionic
+FROM rocker/rstudio:3.6.2
 
 LABEL "name"="hoad"
 LABEL "maintainer"="Maximilian Held <info@maxheld.de>"
 LABEL "repository"="https://github.com/subugoe/hybrid_oa_dashboard"
-LABEL "homepage"="https://subugoe.github.io/hybrid_oa_dashboard/"
+LABEL "homepage"="https://subugoe.github.io/hybrid_oa_dashboards/"
 
-# install sysdeps
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  apt-utils \
-  pkg-config \
-  proj-bin \
-  libxml2-dev \
-  libssl-dev \
-  libcurl4-openssl-dev \
-  libproj-dev \
-  libgdal-dev
+COPY DESCRIPTION DESCRIPTION
 
-COPY .Rprofile .Rprofile
-COPY DESCRIPTIOn DESCRIPTION
-# install pkg deps
-RUN Rscript -e 'install.packages("devtools")'
-RUN Rscript -e 'devtools::install(dependencies = TRUE)'
+# install system dependencies
+RUN Rscript -e "options(warn = 2); install.packages('remotes')"
+RUN Rscript -e "options(warn = 2); remotes::install_github('r-hub/sysreqs', ref='3860f2b512a9c3bd3db6791c2ff467a1158f4048')"
+ENV RHUB_PLATFORM="linux-x86_64-debian-gcc"
+RUN sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))") && \
+  eval "$sysreqs"
+
+# install dependencies
+RUN Rscript -e "options(warn = 2); remotes::install_deps(dependencies = TRUE)"
