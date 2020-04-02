@@ -32,7 +32,7 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs', ref='3860f2b512a9c3bd3db6791c2ff467a1158f4048')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
-          apt-get -y update && apt-get install -y  ssh rsync
+          apt-get update -y && apt-get install -y ssh rsync
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
