@@ -32,9 +32,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # frozen repos mess up r cmd check here
-      - run: rm .Rprofile
-
       - name: Query dependencies
         run: |
           options(warn = 2)
