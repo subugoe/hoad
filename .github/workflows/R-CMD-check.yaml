@@ -57,10 +57,6 @@ jobs:
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('depends.Rds') }}
           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-
 
-      - name: Install system dependencies (mac)
-        if: runner.os == 'macOS'
-        run: brew update && brew install libxml2
-
       - name: Install system dependencies
         if: runner.os == 'Linux'
         env:
