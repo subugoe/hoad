@@ -2,8 +2,8 @@ FROM rocker/rstudio:3.6.2
 
 LABEL "name"="hoad"
 LABEL "maintainer"="Maximilian Held <info@maxheld.de>"
-LABEL "repository"="https://github.com/subugoe/hybrid_oa_dashboard"
-LABEL "homepage"="https://subugoe.github.io/hybrid_oa_dashboards/"
+LABEL "repository"="https://github.com/subugoe/hoad"
+LABEL "homepage"="https://subugoe.github.io/hoad/"
 
 COPY DESCRIPTION DESCRIPTION
 

@@ -107,9 +107,9 @@ The aim of this work is to address the following questions that are relevant to 
 
 Methods follow the Wickham-Grolemund approach to practice data science [@Wickham_2017]. After importing, cleaning  ("tidying") and transforming data from various sources, a process called "data wrangling", summary statistics were calculated and visualized to understand and communicate the uptake of hybrid open access publishing. For the latter, we created a dashboard, which allows visual interaction with our data. The workflow, illustrated in Figure 1 and described more detailed in this section, was implemented in R using open data and tools, making it transparent and re-usable. 
 
-This project, which is under active developement, started in November 2017, and is updated on a regular basis. Data used in the current version were gathered on `r format(file.info(path_extdat("hybrid_license_dois.json"))$ctime, "%Y-%m-%d")`. Along with the data, methods are shared in the source code repository of this project, which is hosted on [GitHub](https://github.com/subugoe/hybrid_oa_dashboard). 
+This project, which is under active developement, started in November 2017, and is updated on a regular basis. Data used in the current version were gathered on `r format(file.info(path_extdat("hybrid_license_dois.json"))$ctime, "%Y-%m-%d")`. Along with the data, methods are shared in the source code repository of this project, which is hosted on [GitHub](https://github.com/subugoe/hoad). 
 
-<!-- # TODO this plot is missing as per https://github.com/subugoe/hybrid_oa_dashboard/issues/72 -->
+<!-- # TODO this plot is missing as per https://github.com/subugoe/hoad/issues/72 -->
 <!-- ![Summary of data and methods used, following the Wickham-Grolemund approach to practice data science [@Wickham_2017]\label{flow}](flow.png) -->
 
 
@@ -127,7 +127,7 @@ After exploring the so obtained data, communication is the final step in the Wic
 
 Staying in the R-based data analytics workflow enabled re-using many R packages, which were also applied for data wrangling and exploration, particularly [dplyr](http://dplyr.tidyverse.org/) [@dplyr] and [tidyr](http://tidyr.tidyverse.org/) [@tidyr]. For data import and storage, I used the packages [readr](http://readr.tidyverse.org/) [@readr] for `csv` and jsonlite [@jsonlite] for `json` files. Furthermore, exploratory visualisations made with [ggplot2](http://ggplot2.tidyverse.org/), a domain specific language for statistical graphs [@ggplot2], were converted to interactive [plotly charts](https://github.com/ropensci/plotly) [@plotly], an open-source charting library written in JavaScript. Additionally, the [echarts4r package](https://echarts4r.john-coene.com/) [@echarts4r], an interface to the javascript-based [Echarts library](https://ecomfe.github.io/echarts-examples/public/index.html), was used for presenting the distribution of email domains and their parts as hierarchical treemaps. 
 
-The dashboard application, written as R Markdown document, is hosted by [shinyapps.io](https://www.shinyapps.io/), and is accessible under the following link: <https://subugoe.shinyapps.io/hybridoa>. Along with the source code for the data analysis and the dashboard, datasets used are available via GitHub along with a brief description about which the variables they contain: <https://github.com/subugoe/hybrid_oa_dashboard/blob/master/data/README.md>. Using Git, the history of the text-based datasets and source code was tracked, too. 
+The dashboard application, written as R Markdown document, is hosted by [shinyapps.io](https://www.shinyapps.io/), and is accessible under the following link: <https://subugoe.shinyapps.io/hybridoa>. Along with the source code for the data analysis and the dashboard, datasets used are available via GitHub along with a brief description about which the variables they contain: <https://github.com/subugoe/hoad/blob/master/data/README.md>. Using Git, the history of the text-based datasets and source code was tracked, too. 
 
 ### Data Accuracy
 
@@ -568,15 +568,15 @@ In the end, this open source dashboard demonstrates how existing pieces of an ev
 
 Dashboard and analysis have been developed in the open using open tools. There are a number of ways you can help make the this work better:
 
-- If you don’t understand something, please let us know and [submit an issue](https://github.com/subugoe/hybrid_oa_dashboard/issues).
+- If you don’t understand something, please let us know and [submit an issue](https://github.com/subugoe/hoad/issues).
 
-- Feel free to add new features or fix bugs by sending a [pull request](https://github.com/subugoe/hybrid_oa_dashboard/pulls).
+- Feel free to add new features or fix bugs by sending a [pull request](https://github.com/subugoe/hoad/pulls).
 
-Please note that this project is released with a [Contributor Code of Conduct](https://github.com/subugoe/hybrid_oa_dashboard/CONDUCT.md). By participating in this project you agree to abide by its terms.
+Please note that this project is released with a [Contributor Code of Conduct](https://github.com/subugoe/hoad/CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 Author: Najko Jahn (Scholarly Communication Analyst, [SUB Göttingen](https://www.sub.uni-goettingen.de/)), 2017.
 
-The R Markdown file, which includes the underlying source code for this document, is available [here](https://github.com/subugoe/hybrid_oa_dashboard/blob/master/docs/about.Rmd).
+The R Markdown file, which includes the underlying source code for this document, is available [here](https://github.com/subugoe/hoad/blob/master/docs/about.Rmd).
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 

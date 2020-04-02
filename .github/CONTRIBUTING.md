@@ -35,7 +35,7 @@ There are two sets of computing environments on which this project is guaranteed
   Because these tests can be quite extensive, they are only run on commits to `master`, as well as pull requests to `master`.
   Other branches are thus not guaranteed to work.
 2. All other elements of this projects can be reproduced using a custom docker image in the `Dockerfile`:
-    - the [{pkgdown}](http://pkgdown.r-lib.org) website for hoad (https://subugoe.github.io/hybrid_oa_dashboard/), including its articles (~ vignettes)
+    - the [{pkgdown}](http://pkgdown.r-lib.org) website for hoad (https://subugoe.github.io/hoad/), including its articles (~ vignettes)
     - the shiny web application
     - (batch) jobs to reproduce more expensive analyses
 

@@ -1,9 +1,9 @@
 # A reproducible dashboard for monitoring hybrid open acccess uptake with R
 
-[![R CMD check](https://github.com/subugoe/hybrid_oa_dashboard/workflows/R-CMD-check/badge.svg)](https://github.com/subugoe/hybrid_oa_dashboard/actions)
-[![Main](https://github.com/subugoe/hybrid_oa_dashboard/workflows/main/badge.svg)](https://github.com/subugoe/hybrid_oa_dashboard/actions)
+[![R CMD check](https://github.com/subugoe/hoad/workflows/R-CMD-check/badge.svg)](https://github.com/subugoe/hoad/actions)
+[![Main](https://github.com/subugoe/hoad/workflows/main/badge.svg)](https://github.com/subugoe/hoad/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/hoad)](https://CRAN.R-project.org/package=hoad)
-[![Codecov test coverage](https://codecov.io/gh/subugoe/hybrid_oa_dashboard/branch/master/graph/badge.svg)](https://codecov.io/gh/subugoe/hybrid_oa_dashboard?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/subugoe/hoad/branch/master/graph/badge.svg)](https://codecov.io/gh/subugoe/hoad?branch=master)
 
 Source code and data repository for the hybrid open access dashboard, using [flexdashboard](https://rstudio.github.io/flexdashboard) and [shiny](http://shiny.rstudio.com).
 
@@ -13,7 +13,7 @@ A live demo is available here:
 
 Summary of methods used and findings:
 
-<https://subugoe.github.io/hybrid_oa_dashboard/about.html>
+<https://subugoe.github.io/hoad/about.html>
 
 ![](img/screenshot.png)
 
