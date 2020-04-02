@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - name: Query dependencies
         run: |
           options(warn = 2)
@@ -50,6 +52,13 @@ jobs:
       - name: Build pkgdown website
         run: pkgdown::build_site()
         shell: Rscript {0}
+      - name: Deploy pkgdown website
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.GH_PAT }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: docs # The folder the action should deploy.
+          TARGET_FOLDER: ${{ github.ref }}
   build_image:
     runs-on: ubuntu-18.04
     name: Build and Push Container
