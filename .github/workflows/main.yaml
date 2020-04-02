@@ -47,6 +47,9 @@ jobs:
       - name: Run Code Coverage
         run: covr::codecov(commit = '$GITHUB_SHA', branch = '$GITHUB_REF', token = '${{ secrets.CODECOV_TOKEN }}')
         shell: Rscript {0}
+      - name: Build pkgdown website
+        run: pkgdown::build_site()
+        shell: Rscript {0}
   build_image:
     runs-on: ubuntu-18.04
     name: Build and Push Container
