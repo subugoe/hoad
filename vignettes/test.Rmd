@@ -1,0 +1,27 @@
+---
+title: "Test Article"
+output:
+  bookdown::html_document2:
+    df_print: paged
+    keep_md: yes
+    toc: yes
+    toc_depth: 2
+    toc_float: yes
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(hoad)
+```
+
+```{r}
+add_one_plus_one()
+```
+
+

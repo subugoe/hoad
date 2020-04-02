@@ -20,3 +20,4 @@ dashboard.Rmd
 Dockerfile
 .dockerignore
 ^\.github$
+^vignettes/test\.Rmd$
