@@ -21,3 +21,4 @@ Dockerfile
 .dockerignore
 ^\.github$
 ^vignettes/test\.Rmd$
+.rstudio/
