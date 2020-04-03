@@ -36,9 +36,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # only download source when absolutely necessary
-      - run: echo "options(install.packages.check.source = 'no')" > .Rprofile
-
       - uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.config.r }}
