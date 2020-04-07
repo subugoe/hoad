@@ -65,8 +65,10 @@ jobs:
           sudo -s eval "$sysreqs"
 
       - name: Install dependencies
+        env:
+          R_COMPILE_AND_INSTALL_PACKAGES: never
         run: |
-          options(warn = 2, install.packages.check.source = "no"); remotes::install_deps(dependencies = TRUE)
+          options(warn = 2, install.packages.check.source = "no", install.packages.compile.from.source = "never"); remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
       - name: Check
