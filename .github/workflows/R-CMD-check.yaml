@@ -65,6 +65,8 @@ jobs:
           sudo -s eval "$sysreqs"
 
       - name: Install dependencies
+        env:
+          R_COMPILE_AND_INSTALL_PACKAGES: never
         run: |
           options(warn = 2); remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
