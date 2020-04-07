@@ -66,8 +66,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          options(warn = 2, install.packages.check.source = "no")
-          remotes::install_deps(dependencies = TRUE)
+          options(warn = 2, install.packages.check.source = "no"); remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
       - name: Check
