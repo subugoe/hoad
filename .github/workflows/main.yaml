@@ -6,6 +6,7 @@ on:
 
 jobs:
   check:
+    name: Prepare compute environment and check package
     runs-on: ubuntu-18.04
     container:
       image: rocker/rstudio:3.6.2
@@ -38,6 +39,11 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
+      - name: Upload dependencies
+        uses: actions/upload-artifact@v1
+        with:
+          name: deps
+          path: /usr/local/lib/R/site-library
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}
@@ -65,10 +71,16 @@ jobs:
           FOLDER: docs # The folder the action should deploy.
           TARGET_FOLDER: ${{ steps.extract_branch.outputs.ref }}
   build_image:
+    name: Build and push docker image
+    needs: check
     runs-on: ubuntu-18.04
-    name: Build and Push Container
     steps:
       - uses: actions/checkout@v2
+      - name: download deps
+        uses: actions/download-artifact@v1
+        with:
+          name: deps
+          path: deps
       - uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
