@@ -78,3 +78,4 @@ jobs:
           tag_with_ref: true
           add_git_labels: true
           tags: ${{ github.sha }}
+          push: ${{ github.event == 'push' }}
