@@ -53,13 +53,17 @@ jobs:
       - name: Build pkgdown website
         run: pkgdown::build_site()
         shell: Rscript {0}
+      - name: Extract git ref
+        shell: bash
+        run: echo "##[set-output name=ref;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - name: Deploy pkgdown website
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           ACCESS_TOKEN: ${{ secrets.GH_PAT }}
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: docs # The folder the action should deploy.
-          TARGET_FOLDER: ${GITHUB_REF##*/}
+          TARGET_FOLDER: ${{ steps.extract_branch.outputs.ref }}
   build_image:
     runs-on: ubuntu-18.04
     name: Build and Push Container
