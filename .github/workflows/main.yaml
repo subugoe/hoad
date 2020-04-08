@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-18.04
     container:
       image: rocker/rstudio:3.6.2
+      volumes:
+        - deps:/usr/local/lib/R/site-library
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -43,7 +45,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: deps
-          path: /usr/local/lib/R/site-library
+          path: deps
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}
