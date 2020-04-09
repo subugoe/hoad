@@ -11,7 +11,7 @@ COPY DESCRIPTION DESCRIPTION
 # if this is run outside of github actions, will just copy empty dir
 COPY deps/ /usr/local/lib/R/site-library/
 # install system dependencies
-RUN echo ls /usr/local/lib/R/site-library/
+RUN ls /usr/local/lib/R/site-library/
 RUN Rscript -e "options(warn = 2); install.packages('remotes')"
 RUN Rscript -e "options(warn = 2); remotes::install_github('r-hub/sysreqs', ref='3860f2b512a9c3bd3db6791c2ff467a1158f4048')"
 ENV RHUB_PLATFORM="linux-x86_64-debian-gcc"
