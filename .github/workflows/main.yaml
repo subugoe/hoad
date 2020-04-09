@@ -1,12 +1,13 @@
 name: main
 
 on:
-  - push
-  - pull_request
+  push:
+  pull_request:
+  release:
+    types: [published, created, edited]
 
 jobs:
-  check:
-    name: Prepare compute environment and check package
+  cicd:
     runs-on: ubuntu-18.04
     container:
       image: rocker/rstudio:3.6.2
@@ -15,31 +16,25 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
-      - name: Query dependencies
-        run: |
-          options(warn = 2)
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), "depends.Rds", version = 2)
-        shell: Rscript {0}
       - name: Cache R packages
         uses: actions/cache@v1
         with:
           path: /usr/local/lib/R/site-library
-          key: ${{ hashFiles('depends.Rds') }}
+          key: ${{ hashFiles('DESCRIPTION') }}
       - name: Install system dependencies
         env:
           RHUB_PLATFORM: linux-x86_64-debian-gcc
         run: |
+          Rscript -e "install.packages('remotes')"
           Rscript -e "remotes::install_github('r-hub/sysreqs', ref='3860f2b512a9c3bd3db6791c2ff467a1158f4048')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
-          apt-get update -y && apt-get install -y ssh rsync
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
-      - name: Check
+      - name: Check package
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}
       - name: Upload check results
@@ -53,37 +48,8 @@ jobs:
         shell: Rscript {0}
       - name: Copy dependencies to working directory
         run: cp --recursive --force /usr/local/lib/R/site-library/ deps/
-      - name: Upload dependencies
-        uses: actions/upload-artifact@v1
-        with:
-          name: deps
-          path: deps
-      - name: Build pkgdown website
-        run: pkgdown::build_site()
-        shell: Rscript {0}
-      - name: Extract git ref
-        shell: bash
-        run: echo "##[set-output name=ref;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-      - name: Deploy pkgdown website
-        uses: JamesIves/github-pages-deploy-action@releases/v3
-        with:
-          ACCESS_TOKEN: ${{ secrets.GH_PAT }}
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: docs # The folder the action should deploy.
-          TARGET_FOLDER: ${{ steps.extract_branch.outputs.ref }}
-  build_image:
-    name: Build and push docker image
-    needs: check
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: download deps
-        uses: actions/download-artifact@v1
-        with:
-          name: deps
-          path: deps
-      - uses: docker/build-push-action@v1
+      - name: Build and push docker image
+        uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
@@ -92,4 +58,18 @@ jobs:
           tag_with_ref: true
           add_git_labels: true
           tags: ${{ github.sha }}
-          push: ${{ github.event == 'push' }}
+          push: ${{ github.event_name == 'push' | github.event_name == 'release' }}
+      - name: Build pkgdown website
+        run: pkgdown::build_site()
+        shell: Rscript {0}
+      - name: Get system dependencies for github pages deploy
+        if: github.event_name == 'push' | github.event_name == 'release'
+        run: apt-get update -y && apt-get install -y ssh rsync
+      - name: Deploy pkgdown website
+        if: github.event_name == 'push' | github.event_name == 'release'
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.GH_PAT }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: docs # The folder the action should deploy.
+          TARGET_FOLDER: ${{ steps.extract_branch.outputs.ref }}
