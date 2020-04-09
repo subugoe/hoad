@@ -3,6 +3,7 @@ name: main
 on:
   push:
   pull_request:
+    types: [assigned, opened, synchronize, reopened]
   release:
     types: [published, created, edited]
 
@@ -59,15 +60,14 @@ jobs:
           tag_with_ref: true
           add_git_labels: true
           tags: ${{ github.sha }}
-          push: ${{ github.event_name == 'push' }}
+          push: ${{ github.event_name != 'pull_request' }}
       - name: Build pkgdown website
         run: pkgdown::build_site()
         shell: Rscript {0}
       - name: Get system dependencies for github pages deploy
-        if: github.event_name == 'push'
         run: apt-get update -y && apt-get install -y ssh rsync
       - name: Deploy pkgdown website
-        if: github.event_name == 'push'
+        if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           ACCESS_TOKEN: ${{ secrets.GH_PAT }}
