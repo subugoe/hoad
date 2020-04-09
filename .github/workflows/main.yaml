@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-18.04
     container:
       image: rocker/rstudio:3.6.2
-      volumes:
-        - deps:/usr/local/lib/R/site-library
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -41,11 +39,6 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
-      - name: Upload dependencies
-        uses: actions/upload-artifact@v1
-        with:
-          name: deps
-          path: deps
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}
@@ -58,6 +51,13 @@ jobs:
       - name: Run Code Coverage
         run: covr::codecov(commit = '$GITHUB_SHA', branch = '$GITHUB_REF', token = '${{ secrets.CODECOV_TOKEN }}')
         shell: Rscript {0}
+      - name: Copy dependencies to working directory
+        run: cp --recursive --force /usr/local/lib/R/site-library/ deps/
+      - name: Upload dependencies
+        uses: actions/upload-artifact@v1
+        with:
+          name: deps
+          path: deps
       - name: Build pkgdown website
         run: pkgdown::build_site()
         shell: Rscript {0}
