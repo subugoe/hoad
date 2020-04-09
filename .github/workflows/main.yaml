@@ -64,6 +64,10 @@ jobs:
       - name: Build pkgdown website
         run: pkgdown::build_site()
         shell: Rscript {0}
+      - name: Extract git ref
+        shell: bash
+        run: echo "##[set-output name=ref;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - name: Get system dependencies for github pages deploy
         run: apt-get update -y && apt-get install -y ssh rsync
       - name: Deploy pkgdown website
