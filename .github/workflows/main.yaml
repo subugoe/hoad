@@ -49,7 +49,6 @@ jobs:
       - name: Copy dependencies to working directory
         run: |
           cp --recursive --force /usr/local/lib/R/site-library/* deps/
-          ls deps
       - name: Build and push docker image
         uses: docker/build-push-action@v1
         with:
