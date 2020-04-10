@@ -17,3 +17,7 @@ authors:
 template:
   params:
     bootswatch: cosmo
+home:
+  links:
+    - text: Project website (in german)
+      href: https://www.sub.uni-goettingen.de/projekte-forschung/projektdetails/projekt/hybrid-oa-dashboards/
