@@ -27,8 +27,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: /usr/local/lib/R/site-library
-          key: ${{ runner.os }}-${{ hashFiles('depends.Rds') }}
-          restore-keys: ${{ runner.os }}-
+          key: rocker-rstudio-latest-${{ hashFiles('depends.Rds') }}
+          restore-keys: rocker-rstudio-latest-
       - name: Install system dependencies
         env:
           RHUB_PLATFORM: linux-x86_64-debian-gcc
