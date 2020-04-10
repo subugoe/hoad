@@ -21,3 +21,5 @@ home:
   links:
     - text: Project website (in german)
       href: https://www.sub.uni-goettingen.de/projekte-forschung/projektdetails/projekt/hybrid-oa-dashboards/
+development:
+  mode: auto
