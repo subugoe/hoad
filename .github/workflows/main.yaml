@@ -11,22 +11,28 @@ jobs:
   cicd:
     runs-on: ubuntu-18.04
     container:
-      image: rocker/rstudio:3.6.2
+      image: rocker/rstudio:latest # needs to be the same as in dockerfile
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
           persist-credentials: false
+      - name: Query dependencies
+        run: |
+          options(warn = 2)
+          install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), "depends.Rds", version = 2)
+        shell: Rscript {0}
       - name: Cache R packages
         uses: actions/cache@v1
         with:
           path: /usr/local/lib/R/site-library
-          key: ${{ hashFiles('DESCRIPTION') }}
+          key: ${{ runner.os }}-${{ hashFiles('depends.Rds') }}
+          restore-keys: ${{ runner.os }}-
       - name: Install system dependencies
         env:
           RHUB_PLATFORM: linux-x86_64-debian-gcc
         run: |
-          Rscript -e "install.packages('remotes')"
           Rscript -e "remotes::install_github('r-hub/sysreqs', ref='3860f2b512a9c3bd3db6791c2ff467a1158f4048')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"

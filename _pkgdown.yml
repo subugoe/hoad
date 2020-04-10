@@ -1,5 +1,8 @@
 destination: docs
-url: https://subugoe.github.io/hoad/
+repo:
+  url:
+    home: https://github.com/subugoe/hoad/
+    issue: https://github.com/subugoe/hoad/issues/
 authors:
   Najko Jahn:
     href: https://www.sub.uni-goettingen.de/kontakt/personen-a-z/personendetails/person/najko-jahn/

@@ -1,4 +1,5 @@
-FROM rocker/rstudio:3.6.2
+# needs to be the same as in .github/workflows/main.yaml
+FROM rocker/rstudio:latest 
 
 LABEL "name"="hoad"
 LABEL "maintainer"="Maximilian Held <info@maxheld.de>"
