@@ -2,7 +2,7 @@ library(tidyverse)
 library(jsonlite)
 #' full data set
 license_df <- jsonlite::stream_in(file("../data/hybrid_license_md.json")) %>%
-  as_data_frame() %>%
+  as_tibble() %>%
   mutate(publisher = ifelse(grepl("Springer", publisher, fixed = FALSE, ignore.case = TRUE),
                             "Springer Nature", publisher)) 
 #' get duplicate dois
