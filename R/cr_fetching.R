@@ -23,13 +23,8 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library(countrycode)
 library(jsonlite)
-library(rcrossref) 
-library(future) # parallel computing
-library(future.apply) # functional programming with parallel computing
-library(progressr) # progress bars
-handlers("progress", "beepr")
-
-
+library(rcrossref)
+library(furrr)
 #' link to dataset
 u <-
   "https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/apc_de.csv"
@@ -143,9 +138,7 @@ issns_list <-
     issns
   })
 #' search crossref
-p <- progress_estimated(length(issns_list), min_time = 0)
 jn_facets <- purrr::map(issns_list, .f = purrr::safely(function(x) {
-  p$tick()$print()
   tt <- rcrossref::cr_works(
     filter = c(
       x,
@@ -181,6 +174,7 @@ jn_facets <- purrr::map(issns_list, .f = purrr::safely(function(x) {
 #' Dump:
 jn_facets_df <- purrr::map_df(jn_facets, "result")
 jsonlite::stream_out(jn_facets_df, file("../data/jn_facets_df.json"))
+jn_facets_df <- jsonlite::stream_in(file("../data/jn_facets_df.json"))
 #' Second, filter out open licenses and check:
 #' 
 #' Question: Which licenses indicate hybrid OA availability?
@@ -212,7 +206,7 @@ licence_patterns <- c("creativecommons.org/licenses/",
 #' now add indication to the dataset
 hybrid_licenses <- jn_facets_df %>%
   select(journal_title, publisher, license_refs) %>%
-  tidyr::unnest() %>%
+ tidyr::unnest(cols = c(license_refs)) %>%
   mutate(license_ref = tolower(.id)) %>%
   select(-.id) %>%
   mutate(hybrid_license = ifelse(grepl(
@@ -233,7 +227,9 @@ cr_md_fields <- c("URL", "member", "created", "license",
                   "indexed", "accepted", "DOI", "funder", "published-print", 
                   "subject", "published-online", "link", "type", "publisher", 
                   "issn-type", "deposited", "content-created")
-cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
+# parallel wih furrr
+plan(multisession)
+cr_license <- furrr::future_map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
                           .f = purrr::safely(function(x, y) {
                             u <- x
                             issn <- y
@@ -243,7 +239,7 @@ cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
                                                                   license.delay = 0,
                                                                   type = "journal-article",
                                                                   from_pub_date = "2013-01-01", 
-                                                                  until_pub_date = "2019-12-31"),
+                                                                  until_pub_date = "2020-12-31"),
                                                        cursor = "*", cursor_max = 5000L, 
                                                        limit = 1000L,
                                                        select = cr_md_fields) 
@@ -252,7 +248,7 @@ cr_license <- purrr::map2(hybrid_licenses$license_ref, hybrid_licenses$issn,
                               license = u,
                               md = list(tmp$data)
                             )
-                          }))
+                          }), .progress = TRUE)
 #' into one data frame!
 #' dump it
 cr_license_df <- cr_license %>% 
