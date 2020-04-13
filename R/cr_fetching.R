@@ -24,6 +24,12 @@ library(tidyverse)
 library(countrycode)
 library(jsonlite)
 library(rcrossref) 
+library(future) # parallel computing
+library(future.apply) # functional programming with parallel computing
+library(progressr) # progress bars
+handlers("progress", "beepr")
+
+
 #' link to dataset
 u <-
   "https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/apc_de.csv"
@@ -137,12 +143,14 @@ issns_list <-
     issns
   })
 #' search crossref
+p <- progress_estimated(length(issns_list), min_time = 0)
 jn_facets <- purrr::map(issns_list, .f = purrr::safely(function(x) {
+  p$tick()$print()
   tt <- rcrossref::cr_works(
     filter = c(
       x,
       from_pub_date = "2013-01-01",
-      until_pub_date = "2019-12-31",
+      until_pub_date = "2020-12-31",
       type = "journal-article"
     ),
     # being explicit about facets improves API performance!
