@@ -22,3 +22,4 @@ Dockerfile
 ^\.github$
 .rstudio
 deps/
+^vignettes/articles$

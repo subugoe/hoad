@@ -17,6 +17,12 @@ authors:
 template:
   params:
     bootswatch: cosmo
+navbar:
+  components:
+    dashboard:
+      text: "Dashboard"
+      icon: "fa fa-tachometer"
+      href: articles/dashboard.html
 home:
   links:
     - text: Project website (in german)
