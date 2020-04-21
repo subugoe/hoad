@@ -28,13 +28,13 @@ library(echarts4r)
 hybrid_df <- readr::read_csv("data/hybrid_publications.csv") %>%
   mutate(license = fct_infreq(license)) %>%
   mutate(publisher = fct_infreq(publisher)) %>%
-  mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019"))) %>% 
+  mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019", "2020"))) %>% 
   mutate(hybrid_type = ifelse(hybrid_type == "SCOAP", "SCOAP<sup>3</sup>", hybrid_type)) %>%
   mutate(hybrid_type = factor(hybrid_type, levels = c("Open APC (TA)", "Open APC (Hybrid)", "SCOAP<sup>3</sup>"))) %>%
   mutate(domain = paste(domain, suffix, sep =".")) %>%
   arrange(desc(yearly_publisher_volume))
 unpaywall_df <- readr::read_csv("data/unpaywall_df.csv") %>%
-  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019")))
+  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019", "2020")))
 ```
 
 Overview
@@ -206,11 +206,11 @@ renderPlotly({
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(
       labels = function(x)
-        format(x, big.mark = " ", scientific = FALSE),
-      breaks = pretty_breaks()
+        format(x, big.mark = " ", scientific = FALSE)
     ) +
     theme_minimal() +
     geom_col(position = position_stack(reverse = TRUE))
+ # p
   plotly::ggplotly(p)
 })
 ```
@@ -230,8 +230,7 @@ renderPlotly({
     scale_x_discrete(drop = FALSE) +  
     scale_y_continuous(
       labels = function(x)
-        format(x, big.mark = " ", scientific = FALSE),
-      breaks = scales::pretty_breaks()
+        format(x, big.mark = " ", scientific = FALSE)
     ) +
     scale_fill_manual(
       "OA articles with",
@@ -312,9 +311,11 @@ Row
 hybrid_all <-
   hybrid_df %>%
   count(year) %>%
-  mutate(year = gsub("20", "", year))
+  mutate(year = gsub("201", "1", year)) %>%
+  mutate(year = gsub("2020", "20", year))
 hybrid_df %>%
-  mutate(year = gsub("20", "", year)) %>%
+  mutate(year = gsub("201", "1", year)) %>%
+  mutate(year = gsub("2020", "20", year)) %>%
   mutate(publisher_group = fct_lump(publisher, prop = 0.05)) %>%
   group_by(year, publisher_group) %>% 
   summarize(n = n()) %>% 
@@ -358,7 +359,7 @@ fillCol(
       "Year",
       label = "Select Year",
       choices = c(rev(levels(hybrid_df$year))),
-      selected = c("2017", "2018"),
+      selected = c("2017", "2018", "2019"),
       multiple = TRUE
     ),
     checkboxInput("rb", "Display journals", FALSE)
@@ -573,8 +574,7 @@ output$oa_license <- renderPlotly({
     scale_x_discrete("", drop = FALSE) +
     scale_y_continuous("Articles",
       labels = function(x)
-        format(x, big.mark = " ", scientific = FALSE),
-      breaks = scales::pretty_breaks()
+        format(x, big.mark = " ", scientific = FALSE)
     ) +
     theme_minimal() -> p
      tt <- plotly::ggplotly(p, tooltip = c("y"))
@@ -593,8 +593,7 @@ output$oa_source <- renderPlotly({
     ylab("Articles") +
     scale_y_continuous(
       labels = function(x)
-        format(x, big.mark = " ", scientific = FALSE),
-      breaks = scales::pretty_breaks()
+        format(x, big.mark = " ", scientific = FALSE)
     ) +
     scale_fill_manual(
       "Sources",
