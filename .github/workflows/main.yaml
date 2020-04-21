@@ -74,7 +74,7 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           Rscript -e "rsconnect::setAccountInfo(name = 'subugoe', token = Sys.getenv('SHINYAPPS_TOKEN'), secret = Sys.getenv('SHINYAPPS_SECRET'))"
-          Rscript -e "rsconnect::deployApp(appName = paste0('hoad-', Sys.getenv('GITHUB_REF')"
+          Rscript -e "rsconnect::deployApp(appName = paste0('hoad-', Sys.getenv('GITHUB_REF')))"
         env:
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
           SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
