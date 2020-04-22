@@ -1,0 +1,42 @@
+---
+title: "Static Dashboard"
+date: "First published in November 2017, updated `r Sys.Date()`"
+output:
+  bookdown::html_document2:
+    df_print: paged
+    keep_md: yes
+    toc: yes
+    toc_depth: 2
+    toc_float: yes
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  fig.width = 9,
+  fig.height = 6,
+  dpi = 450
+)
+options(scipen = 999, digits = 2)
+knitr::knit_hooks$set(inline = function(x) {
+      if(is.numeric(x)){
+          return(prettyNum(x, big.mark=","))
+      }else{
+          return(x)
+       }
+   })
+library(hoad)
+library(ggplot2)
+```
+
+## Overview
+
+### Hybrid OA Licenses Found (relative)
+
+```{r}
+1+1
+```

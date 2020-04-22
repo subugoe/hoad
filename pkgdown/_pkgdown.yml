@@ -14,18 +14,40 @@ authors:
     href: https://www.sub.uni-goettingen.de/kontakt/personen-a-z/personendetails/person/henrieke-walter/
   Göttingen State and University Library:
     href: https://www.sub.uni-goettingen.de/
+    html: <img src="https://subugoe.github.io/metaR/reference/figures/sub_wordmark.jpg" height="15" />
+  Crossref:
+    href: https://www.crossref.org
+    html: <img src="https://assets.crossref.org/logo/metadata-from-crossref-logo-200.svg" height="15">
+  OpenAPC Initiative:
+    href: https://github.com/openapc
+    html: <img src="https://www.intact-project.org/public/img/openAPC_01+.png" height="15">
 template:
   params:
     bootswatch: cosmo
 navbar:
+  type: inverse
   components:
     dashboard:
-      text: "Dashboard"
+      text: "Demo"
       icon: "fa fa-tachometer"
-      href: articles/dashboard.html
+      href: articles/interactive.html
 home:
   links:
     - text: Project website (in german)
       href: https://www.sub.uni-goettingen.de/projekte-forschung/projektdetails/projekt/hybrid-oa-dashboards/
+reference:
+- title: ETL
+  desc: Extract, transform, load
+- contents:
+  - has_concept("ETL functions")
+- title: Visualisation
+  desc: Plotting functions
+- contents:
+  - has_concept("visualisation functions")
+- title: Data
+  desc: Functions to document data
+- contents:
+  - has_concept("data")
 development:
   mode: auto
+  destination: ""

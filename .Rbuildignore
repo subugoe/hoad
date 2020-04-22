@@ -1,7 +1,6 @@
 ^LICENSE\.md$
 ^codecov\.yml$
 ^\.github/workflows/main\.yaml$
-^_pkgdown\.yml$
 ^docs$
 ^img$
 ^pkgdown$

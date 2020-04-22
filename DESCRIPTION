@@ -34,6 +34,14 @@ Authors@R:
       person(
         given = "Göttingen State and University Library",
         role = c("cph", "fnd")
+      ),
+      person(
+        given = "Crossref",
+        role = c("dtc")
+      ),
+      person(
+        given = "OpenAPC Initiative",
+        role = c("dtc")
       )
     )
 Description: Analytics to increase cost transparency in business model transformation towards open access publishing.
