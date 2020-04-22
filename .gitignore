@@ -5,3 +5,4 @@
 *.DS_Store
 docs/
 .rstudio/
+inst/doc

@@ -1,0 +1,23 @@
+---
+title: "jan-sandbox"
+output:
+  bookdown::html_document2:
+    df_print: paged
+    keep_md: yes
+    toc: yes
+    toc_depth: 2
+    toc_float: yes
+bibliography: references.bib
+csl: frontiers.csl
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(hoad)
+```
