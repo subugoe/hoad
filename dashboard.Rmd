@@ -11,29 +11,8 @@ output:
 runtime: shiny
 ---
 
-```{r setup, include=FALSE}
-library(flexdashboard)
-library(viridis)
-library(tidyverse)
-library(plotly)
-library(shiny)
-library(scales)
-library(DT)
-library(writexl)
-library(echarts4r)
-```
-
 ```{r global}
-# access to data
-hybrid_df <- readr::read_csv("data/hybrid_publications.csv") %>%
-  mutate(license = fct_infreq(license)) %>%
-  mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019"))) %>% 
-  mutate(hybrid_type = ifelse(hybrid_type == "SCOAP", "SCOAP<sup>3</sup>", hybrid_type)) %>%
-  mutate(hybrid_type = factor(hybrid_type, levels = c("Open APC (TA)", "Open APC (Hybrid)", "SCOAP<sup>3</sup>"))) %>%
-  mutate(domain = paste(domain, suffix, sep =".")) %>%
-  arrange(desc(yearly_publisher_volume))
-unpaywall_df <- readr::read_csv("data/unpaywall_df.csv") %>%
-  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019")))
+library(hoad)
 ```
 
 Overview
