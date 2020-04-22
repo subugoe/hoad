@@ -28,7 +28,7 @@ navbar:
   type: inverse
   components:
     dashboard:
-      text: "Dashboard"
+      text: "Demo"
       icon: "fa fa-tachometer"
       href: articles/interactive.html
 home:
@@ -37,3 +37,4 @@ home:
       href: https://www.sub.uni-goettingen.de/projekte-forschung/projektdetails/projekt/hybrid-oa-dashboards/
 development:
   mode: auto
+  destination: ""
