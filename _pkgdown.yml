@@ -14,6 +14,12 @@ authors:
     href: https://www.sub.uni-goettingen.de/kontakt/personen-a-z/personendetails/person/henrieke-walter/
   Göttingen State and University Library:
     href: https://www.sub.uni-goettingen.de/
+  Crossref:
+    href: https://www.crossref.org
+    html: <img src="https://assets.crossref.org/logo/metadata-from-crossref-logo-200.svg" height="15">
+  OpenAPC Initiative:
+    href: https://github.com/openapc
+    html: <img src="https://www.intact-project.org/public/img/openAPC_01+.png" height="15">
 template:
   params:
     bootswatch: cosmo

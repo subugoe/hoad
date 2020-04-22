@@ -90,14 +90,6 @@ Notice that only those hybrid open access journals were included where
 academic institutions sponsored the open access publication according to the [Open APC initiative](https://github.com/openapc/openapc-de) 
 and where publishers shared license information about immediate open access with [Crossref](https://github.com/CrossRef/rest-api-doc).
 
-Data sources:
-
-<a href="https://github.com/CrossRef/rest-api-doc"><img src="https://assets.crossref.org/logo/metadata-from-crossref-logo-200.svg" width="200" height="68" alt="Metadata from Crossref logo"></a>
-
-<a href= "https://github.com/openapc/openapc-de"><img src="https://www.intact-project.org/public/img/openAPC_01+.png" width="200"  alt="Metadata from open apc logo"></a>
-
-Build by: <a href= "https://www.sub.uni-goettingen.de/sub-aktuell/"><img src="img/sub_logo.svg" width="200"  alt="SUB Göttingen"></a>.
-
 Row
 -----------------------------------------------------------------------
 
