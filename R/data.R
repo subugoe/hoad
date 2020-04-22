@@ -33,44 +33,50 @@
 #' @section License:
 #' See Crossref [Terms and Conditions](https://www.crossref.org/requestaccount/termsandconditions.html)
 #' 
+#' @family data
+#' 
 #' @export
-# storing this as an object ensures this is read in only at compile time, not run time
-# downside: automatic collation order does not work for objects (instead of functions), so this file needs to be called zzz and called last
-hybrid_publications <- read_csv(
-  file = path_extdat("hybrid_publications.csv"),
-  col_types = cols(
-    license = col_factor(),
-    journal_title = col_factor(),
-    publisher = col_factor(),
-    doi_oa = col_character(),
-    issued = col_integer(),
-    yearly_jn_volume = col_integer(),
-    license_ref_n = col_integer(),
-    yearly_publisher_volume = col_integer(),
-    yearly_all = col_integer(),
-    institution = col_factor(),
-    period = col_integer(),
-    euro = col_double(),
-    hybrid_type = col_factor(),
-    country = col_factor(),
-    country_name = col_factor(),
-    license_url = col_factor(),
-    host = col_character(),
-    subdomain = col_character(),
-    domain = col_character(),
-    suffix = col_character()
+# storing this as a function ensures this is read in only at compile time, not run time
+hybrid_publications <- function() {
+  read_csv(
+    file = path_extdat("hybrid_publications.csv"),
+    col_types = cols(
+      license = col_factor(),
+      journal_title = col_factor(),
+      publisher = col_factor(),
+      doi_oa = col_character(),
+      issued = col_integer(),
+      yearly_jn_volume = col_integer(),
+      license_ref_n = col_integer(),
+      yearly_publisher_volume = col_integer(),
+      yearly_all = col_integer(),
+      institution = col_factor(),
+      period = col_integer(),
+      euro = col_double(),
+      hybrid_type = col_factor(),
+      country = col_factor(),
+      country_name = col_factor(),
+      license_url = col_factor(),
+      host = col_character(),
+      subdomain = col_character(),
+      domain = col_character(),
+      suffix = col_character()
+    )
   )
-)
+}
   
 #' Unpaywall data
 # TODO improve docs
+#' @family data
 #' @export
-unpaywall_df <- readr::read_csv(
-  file = path_extdat("unpaywall_df.csv"),
-  col_types = cols(
-    year = col_integer(),
-    journal_title = col_factor(),
-    source = col_factor(),
-    articles = col_integer()
+unpaywall_df <- function() {
+  readr::read_csv(
+    file = path_extdat("unpaywall_df.csv"),
+    col_types = cols(
+      year = col_integer(),
+      journal_title = col_factor(),
+      source = col_factor(),
+      articles = col_integer()
+    )
   )
-)
+}
