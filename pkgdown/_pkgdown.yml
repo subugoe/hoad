@@ -30,7 +30,7 @@ navbar:
     dashboard:
       text: "Dashboard"
       icon: "fa fa-tachometer"
-      href: articles/dashboard.html
+      href: articles/interactive.html
 home:
   links:
     - text: Project website (in german)
