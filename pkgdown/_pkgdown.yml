@@ -24,6 +24,10 @@ authors:
 template:
   params:
     bootswatch: cosmo
+  opengraph:
+    twitter:
+      site: "@subugoe"
+      card: summary_large_image
 navbar:
   type: inverse
   components:
