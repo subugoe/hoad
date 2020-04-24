@@ -45,7 +45,7 @@ Authors@R:
       )
     )
 Description: Analytics to increase cost transparency in business model transformation towards open access publishing.
-License: MIT + file LICENSE
+License: AGPL-3
 Encoding: UTF-8
 Language: en
 LazyData: true
