@@ -14,7 +14,6 @@ authors:
     href: https://www.sub.uni-goettingen.de/kontakt/personen-a-z/personendetails/person/henrieke-walter/
   Göttingen State and University Library:
     href: https://www.sub.uni-goettingen.de/
-    html: <img src="https://subugoe.github.io/metaR/reference/figures/sub_wordmark.jpg" height="15" />
   Crossref:
     href: https://www.crossref.org
     html: <img src="https://assets.crossref.org/logo/metadata-from-crossref-logo-200.svg" height="15">
@@ -22,14 +21,12 @@ authors:
     href: https://github.com/openapc
     html: <img src="https://www.intact-project.org/public/img/openAPC_01+.png" height="15">
 template:
-  params:
-    bootswatch: cosmo
+  package: metaR
   opengraph:
     twitter:
       site: "@subugoe"
       card: summary_large_image
 navbar:
-  type: inverse
   components:
     dashboard:
       text: "Demo"
