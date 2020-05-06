@@ -12,7 +12,6 @@
 ^R/.scoap\.R$
 ^R/.unpaywall_integration\.R$
 dashboard.Rmd
-^CODE_OF_CONDUCT\.md$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^vignettes$
