@@ -1,6 +1,6 @@
 # A reproducible dashboard for monitoring hybrid open acccess uptake with R
 
-[![Main](https://github.com/subugoe/hoad/workflows/main/badge.svg)](https://github.com/subugoe/hoad/actions)
+[![Main](https://github.com/subugoe/hoad/workflows/main.yaml/badge.svg)](https://github.com/subugoe/hoad/actions)
 [![R CMD check](https://github.com/subugoe/hoad/workflows/R-CMD-check/badge.svg)](https://github.com/subugoe/hoad/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/hoad)](https://CRAN.R-project.org/package=hoad)
 [![Codecov test coverage](https://codecov.io/gh/subugoe/hoad/branch/master/graph/badge.svg)](https://codecov.io/gh/subugoe/hoad)
