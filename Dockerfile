@@ -18,6 +18,11 @@ COPY DESCRIPTION DESCRIPTION
 COPY deps/ ${LIB_PATH}
 # install system dependencies
 RUN Rscript -e "options(warn = 2); install.packages('remotes', repos = Sys.getenv('RSPM'))"
+
+# stupid hack to fix https://github.com/r-hub/sysreqsdb/issues/77
+RUN apt update && apt install -y software-properties-common
+RUN add-apt-repository ppa:cran/libgit2
+
 RUN Rscript -e "options(warn = 2); remotes::install_github('r-hub/sysreqs', ref='3860f2b512a9c3bd3db6791c2ff467a1158f4048')"
 ENV RHUB_PLATFORM="linux-x86_64-ubuntu-gcc"
 RUN sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))") && \
