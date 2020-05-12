@@ -7,23 +7,22 @@ on:
 
 jobs:
   cicd:
-    # below until steps needs to be the same in dockerfile
     runs-on: ubuntu-18.04
     env:
       # this freezes the package versions
-      RSPM: "https://packagemanager.rstudio.com/cran/__linux__/bionic/279"
+      RSPM: "https://packagemanager.rstudio.com/all/__linux__/bionic/279"
       # unfortunately this has to be updated by hand
-      LIB_PATH: "/opt/R/4.0.0/lib/R/library"
+      LIB_PATH: "/usr/local/lib/R/site-library"
     container:
       # this freezes the r version
-      image: "rstudio/r-base:4.0-bionic"
+      image: "rocker/rstudio:3.6.3-ubuntu18.04"
     steps:
       - uses: actions/checkout@v2
       - name: Query dependencies
         run: |
           options(warn = 2)
           install.packages('remotes', repos = Sys.getenv('RSPM'))
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE, repos = Sys.getenv("RSPM")), ".github/depends.Rds", version = 2)
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE, repos = Sys.getenv('RSPM')), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
       - name: Cache R packages
         uses: actions/cache@v1
@@ -35,10 +34,10 @@ jobs:
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
-          # stupid hack to fix https://github.com/r-hub/sysreqsdb/issues/77
+          # hack-fix for https://github.com/r-hub/sysreqsdb/issues/77
           apt update && apt install -y software-properties-common
           add-apt-repository ppa:cran/libgit2
-          Rscript -e "remotes::install_github('r-hub/sysreqs', ref='3860f2b512a9c3bd3db6791c2ff467a1158f4048')"
+          Rscript -e "remotes::install_github('r-hub/sysreqs', ref='3860f2b512a9c3bd3db6791c2ff467a1158f4048', repos = Sys.getenv('RSPM'))"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
       - name: Install Package Dependencies
@@ -56,31 +55,20 @@ jobs:
         shell: Rscript {0}
       - name: Copy dependencies to working directory
         run: |
-          cp --recursive --force ${{ env.LIB_PATH }}/* deps/
-      - name: Build and push docker image
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-          repository: subugoe/hoad
-          tag_with_sha: true
-          tag_with_ref: true
-          add_git_labels: true
-          tags: ${{ github.sha }}
-          push: ${{ github.event_name != 'pull_request' }}
+          cp --recursive --force ${{ env.LIB_PATH }}/* .deps/
       - name: Build Package Website
         run: |
           pkgdown::build_site(override = list(new_process = FALSE))
         shell: Rscript {0}
-#      - name: Deploy Shiny Application to shinyapps.io ref
-#        if: github.event_name != 'pull_request'
-#        run: |
-#          Rscript -e "rsconnect::setAccountInfo(name = 'subugoe', token = Sys.getenv('SHINYAPPS_TOKEN'), secret = Sys.getenv('SHINYAPPS_SECRET'))"
-#          Rscript -e "rsconnect::deployApp(appName = paste0('hoad-', Sys.getenv('GITHUB_REF')))"
-#        env:
-#          SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
-#          SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
-#          GITHUB_REF: ${{ github.ref }}
+      #      - name: Deploy Shiny Application to shinyapps.io ref
+      #        if: github.event_name != 'pull_request'
+      #        run: |
+      #          Rscript -e "rsconnect::setAccountInfo(name = 'subugoe', token = Sys.getenv('SHINYAPPS_TOKEN'), secret = Sys.getenv('SHINYAPPS_SECRET'))"
+      #          Rscript -e "rsconnect::deployApp(appName = paste0('hoad-', Sys.getenv('GITHUB_REF')))"
+      #        env:
+      #          SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
+      #          SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
+      #          GITHUB_REF: ${{ github.ref }}
       - name: Get system dependencies for github pages deploy
         run: apt-get update -y && apt-get install -y ssh rsync
       - name: Deploy pkgdown website to ref
