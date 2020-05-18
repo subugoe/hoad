@@ -17,8 +17,6 @@ jobs:
       image: "rocker/rstudio:3.6.3-ubuntu18.04"
     steps:
       - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
       - name: Query dependencies
         run: |
           options(warn = 2)
@@ -87,22 +85,9 @@ jobs:
       #          SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
       #          SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
       #          GITHUB_REF: ${{ github.ref }}
-      - name: Get system dependencies for github pages deploy
-        run: apt-get update -y && apt-get install -y ssh rsync git-all
-      - name: Deploy pkgdown website to ref
-        if: github.event_name != 'pull_request'
-        uses: JamesIves/github-pages-deploy-action@releases/v3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ACCESS_TOKEN: ${{ secrets.GH_PAT }}
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: docs # The folder the action should deploy.
-          TARGET_FOLDER: ${{ github.ref }}
-      - name: Deploy pkgdown website to root
-        if: github.event_name == 'release'
-        uses: JamesIves/github-pages-deploy-action@releases/v3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ACCESS_TOKEN: ${{ secrets.GH_PAT }}
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: docs # The folder the action should deploy.
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/master'
+        uses: maxheld83/ghpages@v0.2.0
+        env:
+          BUILD_DIR: docs
+          GH_PAT: ${{ secrets.GH_PAT }}
