@@ -18,9 +18,15 @@ COPY .deps/ ${LIB_PATH}
 # install system dependencies
 RUN Rscript -e "options(warn = 2); install.packages('remotes')"
 
-# stupid hack to fix https://github.com/r-hub/sysreqsdb/issues/77
-RUN apt-get update && apt-get install -y software-properties-common
-RUN add-apt-repository ppa:cran/libgit2
+# below block needs to be the same as in .github/workflows/main.yaml
+RUN apt-get update
+# TODO hack for missing time zone data base, bug in rocker?
+RUN apt-get install -y tzdata
+# hack-fix for https://github.com/r-hub/sysreqsdb/issues/77
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository -y ppa:cran/libgit2
+# hack for missing sysdeps for ggalt as per https://github.com/hrbrmstr/ggalt/issues/22
+RUN apt-get install -y libproj-dev
 
 RUN Rscript -e "options(warn = 2); remotes::install_github('r-hub/sysreqs', ref='3860f2b512a9c3bd3db6791c2ff467a1158f4048')"
 ENV RHUB_PLATFORM="linux-x86_64-ubuntu-gcc"
