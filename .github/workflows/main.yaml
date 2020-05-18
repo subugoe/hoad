@@ -61,25 +61,25 @@ jobs:
         run: |
           cp --recursive --force ${{ env.LIB_PATH }}/* .deps/
       - name: Build and push docker image
-         uses: docker/build-push-action@v1
-         with:
-           username: ${{ secrets.DOCKER_USERNAME }}
-           password: ${{ secrets.DOCKER_TOKEN }}
-           repository: subugoe/hoad
-           tag_with_sha: true
-           tag_with_ref: true
-           add_git_labels: true
-           tags: ${{ github.sha }}
-           push: ${{ github.event_name != 'pull_request' }}
-#      - name: Deploy Shiny Application to shinyapps.io ref
-#        if: github.event_name != 'pull_request'
-#        run: |
-#          Rscript -e "rsconnect::setAccountInfo(name = 'subugoe', token = Sys.getenv('SHINYAPPS_TOKEN'), secret = Sys.getenv('SHINYAPPS_SECRET'))"
-#          Rscript -e "rsconnect::deployApp(appName = paste0('hoad-', Sys.getenv('GITHUB_REF')))"
-#        env:
-#          SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
-#          SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
-#          GITHUB_REF: ${{ github.ref }}
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+          repository: subugoe/hoad
+          tag_with_sha: true
+          tag_with_ref: true
+          add_git_labels: true
+          tags: ${{ github.sha }}
+          push: ${{ github.event_name != 'pull_request' }}
+      #      - name: Deploy Shiny Application to shinyapps.io ref
+      #        if: github.event_name != 'pull_request'
+      #        run: |
+      #          Rscript -e "rsconnect::setAccountInfo(name = 'subugoe', token = Sys.getenv('SHINYAPPS_TOKEN'), secret = Sys.getenv('SHINYAPPS_SECRET'))"
+      #          Rscript -e "rsconnect::deployApp(appName = paste0('hoad-', Sys.getenv('GITHUB_REF')))"
+      #        env:
+      #          SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
+      #          SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
+      #          GITHUB_REF: ${{ github.ref }}
       - name: Get system dependencies for github pages deploy
         run: apt-get update -y && apt-get install -y ssh rsync
       - name: Deploy pkgdown website to ref
