@@ -2,9 +2,13 @@
 
 export("%>%")
 export(hybrid_publications)
+export(oa_by_license)
+export(oa_by_license_plot)
 export(path_extdat)
 export(unpaywall_df)
 import(checkmate)
 import(dplyr)
+import(ggplot2)
 import(readr)
 importFrom(magrittr,"%>%")
+importFrom(rlang,.data)

@@ -1,7 +1,7 @@
 Package: hoad
 Title: Hybrid Open Access Dashboard
 Version: 1.0.0.9000
-Authors@R: 
+Authors@R:
     c(
       person(
         given = "Najko",
@@ -50,7 +50,7 @@ Encoding: UTF-8
 Language: en
 LazyData: true
 Roxygen: list(markdown = TRUE)
-Suggests: 
+Suggests:
     covr (>= 3.4.0),
     rcmdcheck (>= 1.3.3),
     pkgdown (>= 1.4.1),
@@ -60,7 +60,6 @@ Suggests:
     jsonlite (>= 1.6.1),
     ggalt (>= 0.4.0),
     scales (>= 1.1.0),
-    ggplot2 (>= 3.2.1),
     forcats (>= 0.4.0),
     cowplot (>= 1.0.0),
     readxl (>= 1.3.1),
@@ -78,12 +77,14 @@ Suggests:
 URL: https://subugoe.github.io/hoad, https://github.com/subugoe/hoad/
 BugReports: https://github.com/subugoe/hoad/issues
 RoxygenNote: 7.1.0
-Imports: 
+Imports:
     dplyr (>= 0.8.4),
     checkmate (>= 2.0.0),
     magrittr (>= 1.5),
     readr (>= 1.3.1),
-    fs (>= 1.3.1)
+    fs (>= 1.3.1),
+    ggplot2 (>= 3.2.1),
+    rlang (>= 0.4.6)
 VignetteBuilder: knitr
-Remotes:  
+Remotes:
     subugoe/metaR@5543b34c49b339c8e91217912d07662415384cbe

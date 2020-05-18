@@ -21,3 +21,4 @@ Dockerfile
 .rstudio
 deps/
 ^vignettes/articles$
+hoad.code-workspace
