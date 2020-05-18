@@ -35,12 +35,13 @@ jobs:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
           apt-get update
+          # TODO hack for missing time zone data base, bug in rocker?
           apt-get install -y tzdata
+          # hack for missing sysdeps for ggalt as per https://github.com/hrbrmstr/ggalt/issues/22
+          apt-get install -y libproj-dev libgal-dev
           # hack-fix for https://github.com/r-hub/sysreqsdb/issues/77
           apt-get install -y software-properties-common
           add-apt-repository ppa:cran/libgit2
-          # hack for missing sysdeps for ggalt as per https://github.com/hrbrmstr/ggalt/issues/22
-          apt-get install libproj-dev libgal-dev
           Rscript -e "remotes::install_github('r-hub/sysreqs', ref='3860f2b512a9c3bd3db6791c2ff467a1158f4048')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
