@@ -86,7 +86,7 @@ jobs:
       #          SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
       #          GITHUB_REF: ${{ github.ref }}
       - name: Get system dependencies for github pages deploy
-        run: apt-get update -y && apt-get install -y ssh rsync
+        run: apt-get update -y && apt-get install -y ssh rsync git-all
       - name: Deploy pkgdown website to ref
         if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@releases/v3
