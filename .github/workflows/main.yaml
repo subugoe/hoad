@@ -17,6 +17,8 @@ jobs:
       image: "rocker/rstudio:3.6.3-ubuntu18.04"
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - name: Query dependencies
         run: |
           options(warn = 2)
