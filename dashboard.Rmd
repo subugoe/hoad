@@ -11,8 +11,31 @@ output:
 runtime: shiny
 ---
 
-```{r global}
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(viridis)
+library(tidyverse)
+library(plotly)
+library(shiny)
+library(scales)
+library(DT)
+library(writexl)
+library(echarts4r)
 library(hoad)
+```
+
+```{r global}
+# access to data
+hybrid_df <- readr::read_csv(file = path_extdat("hybrid_publications.csv")) %>%
+  mutate(license = fct_infreq(license)) %>%
+  mutate(publisher = fct_infreq(publisher)) %>%
+  mutate(year = factor(issued, levels = c("2013", "2014", "2015", "2016", "2017", "2018", "2019"))) %>%
+  mutate(hybrid_type = ifelse(hybrid_type == "SCOAP", "SCOAP<sup>3</sup>", hybrid_type)) %>%
+  mutate(hybrid_type = factor(hybrid_type, levels = c("Open APC (TA)", "Open APC (Hybrid)", "SCOAP<sup>3</sup>"))) %>%
+  mutate(domain = paste(domain, suffix, sep = ".")) %>%
+  arrange(desc(yearly_publisher_volume))
+unpaywall_df <- readr::read_csv(file = path_extdat("unpaywall_df.csv")) %>%
+  mutate(year = factor(year, levels = c("2013", "2014", "2015", "2016", "2017", "2018", "2019")))
 ```
 
 Overview
@@ -24,28 +47,44 @@ Inputs {.sidebar}
 
 ```{r}
 # from https://stackoverflow.com/questions/42148177/how-can-i-build-multiple-inputs-into-my-shiny-app-with-both-updating-and-multipl
-
-selectizeInput("publisherinput", "Publisher", c("All", unique(hybrid_df$publisher)), selected =
-              "All")
-selectizeInput("journalinput", "Journal", c("All", unique(hybrid_df$journal_title)), selected =
-              "All", options = list(maxOptions = 5000))
+# TODO factor this out
+selectizeInput(
+  inputId = "publishers",
+  label = "Selected Publishers",
+  choices = c(All = "", levels(hybrid_df$publisher)),
+  multiple = TRUE,
+)
+selectizeInput(
+  inputId = "journals",
+  label = "Selected Journals",
+  choices = c(All = "", sort(unique(hybrid_df$journal_title))),
+  multiple = TRUE
+)
 
 # publisher filter
-jn_filtered <-
-  reactive(hybrid_df[input$publisherinput == "All" |
-                       hybrid_df$publisher == input$publisherinput,])
+jn_filtered <- reactive({
+  if (is.null(input$publishers)) {
+    return(hybrid_df)
+  } else {
+    return(hybrid_df[hybrid_df$publisher %in% input$publishers, ])
+  }
+})
 
-observe(updateSelectInput(
+observe(updateSelectizeInput(
   session,
-  "journalinput",
-  choices = c("All", sort(unique(jn_filtered()$journal_title))),
-  selected = "All"
+  "journals",
+  choices = c(All = "", sort(unique(jn_filtered()$journal_title)))
 ))
 
 # journal_title filter
-jn_f <-
-  reactive(jn_filtered()[input$journalinput == "All" |
-  jn_filtered()$journal_title == input$journalinput, ])
+jn_f <- reactive({
+  if (is.null(input$journals)) {
+    return(jn_filtered())
+  } else {
+    return(jn_filtered()[jn_filtered()$journal_title %in% input$journals, ])
+  }
+})
+
 # prepare dataset for plotting
 hybrid_sub <- reactive({
 if (length(unique(jn_f()$publisher)) > 1) {
