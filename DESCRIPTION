@@ -73,7 +73,8 @@ Suggests:
     DT (>= 0.13),
     writexl (>= 1.2),
     echarts4r (>= 0.2.3),
-    metaR (>= 0.0.0.9000)
+    metaR (>= 0.0.0.9000),
+    DBI (>= 1.1.0)
 URL: https://subugoe.github.io/hoad, https://github.com/subugoe/hoad/
 BugReports: https://github.com/subugoe/hoad/issues
 RoxygenNote: 7.1.0
