@@ -84,7 +84,8 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           rsconnect::setAccountInfo(name = 'subugoe', token = Sys.getenv('SHINYAPPS_TOKEN'), secret = Sys.getenv('SHINYAPPS_SECRET'))
-          rsconnect::deployDoc(doc = "inst/app/dashboard.Rmd", appName = paste0('hoad-', Sys.getenv('GITHUB_REF')))
+          app_name <- paste0("hoad-", gsub("/", "-", Sys.getenv('GITHUB_REF')))
+          rsconnect::deployDoc(doc = "inst/app/dashboard.Rmd", appName = app_name)
         shell: Rscript {0}
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/master'
