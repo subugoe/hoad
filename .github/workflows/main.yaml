@@ -83,7 +83,7 @@ jobs:
           GITHUB_REF: ${{ github.ref }}
         if: github.event_name != 'pull_request'
         run: |
-          remotes::install_github(repo = "subugoe/hoad", ref = "refactor-as-pkg")
+          remotes::install_github(repo = "subugoe/hoad", ref = "refactor-as-pkg", force = TRUE, dependencies = TRUE)
           rsconnect::setAccountInfo(name = 'subugoe', token = Sys.getenv('SHINYAPPS_TOKEN'), secret = Sys.getenv('SHINYAPPS_SECRET'))
           app_name <- paste0("hoad-", gsub("/", "-", Sys.getenv('GITHUB_REF')))
           rsconnect::deployDoc(doc = "inst/app/dashboard.Rmd", appName = app_name)
