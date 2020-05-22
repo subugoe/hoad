@@ -21,6 +21,8 @@ library(DT)
 library(writexl)
 library(echarts4r)
 library(hoad)
+library(forcats)
+library(dplyr)
 ```
 
 ```{r global}
