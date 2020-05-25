@@ -17,7 +17,9 @@ title: "Interactive Dashboard"
 }
 </style>
 
+
+<!–– TODO this needs to be updated manually, until https://github.com/subugoe/hoad/issues/180 ––>
 <div class="shiny-app-frame">
-<iframe id="637139" src="https://subugoe.shinyapps.io/hybridoa/">
+<iframe id="2343078" src="https://subugoe.shinyapps.io/hoad-refs-heads-refactor-as-pkg/">
 </iframe>
 </div>
