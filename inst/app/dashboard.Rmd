@@ -171,7 +171,6 @@ renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, prop, fill = license)) +
     xlab("Year") +
     ylab("Hybrid OA / Articles published") +
-    # palette https://twitter.com/debivort/status/994583058031546369
     scale_fill_manual(
       "License",
       values = colors_license
@@ -192,7 +191,6 @@ renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, n, fill = license)) +
     xlab("Year") +
     ylab("Hybrid OA Articles") +
-    # pallette https://twitter.com/debivort/status/994583058031546369
     scale_fill_manual(
       "License",
       values = colors_license
@@ -290,7 +288,7 @@ renderEcharts4r({
 Compare
 =====================================
 
-Row
+Row {data-height=250}
 --------------------------------------------
 
 ### Hybrid open access uptake by Publisher, shown as the proportion of the total number of hybrid open articles found
@@ -330,20 +328,19 @@ hybrid_df %>%
 plotly::ggplotly(publishers_comp_plot, tooltip = c("label", "y"))
 ```
 
-Row
+Row {data-height=500}
 --------------------------------------------
 
 
 ### Journal hybrid open access share by publisher
 
 ```{r}
-fillCol(
-  height = 600,
-  flex = c(NA, 1),
+fillRow(
+  flex = c(1, 3),
   inputPanel(
     selectInput(
-      "Year",
-      label = "Select Year",
+      inputId = "Year",
+      label = "Select Years",
       choices = c(rev(levels(hybrid_df$year))),
       selected = c("2017", "2018"),
       multiple = TRUE
@@ -456,10 +453,10 @@ output$yearplot <- renderPlotly({
 ```
 
 
-Row
+Row {data-height=500}
 ---------------------------------------------
 
-### Table view {data-height=700}
+### Table view
 
 ```{r}
 hybrid_data <- reactive({
@@ -485,44 +482,38 @@ hybrid_data <- reactive({
     )
 })
 
-renderDataTable({
+renderDataTable(
+  expr = {
   hybrid_data()
 },
 rownames = FALSE,
-filter = 'bottom',
+  filter = "bottom",
 options = list(
-  pageLength = 10,
-  lengthMenu = c(5, 10, 25, 50),
+    pageLength = 4,
+    dom = "ftp",
   columnDefs = list(list(
-    className = 'dt-head-left', targets = "_all"
-  ))
+      className = "dt-head-left", targets = "_all"
 ))
-
-# download button
-tags$h4("Export to Excel")
-downloadHandler(
-  filename = function() {
-    paste('hybridoa-', Sys.Date(), '.xlsx', sep = '')
-  },
-  content = function(file) {
-    writexl::write_xlsx(hybrid_data(), file)
-  }
+  )
 )
 ```
 
+
 Institutional View
-=================================================================
+================================================================
 
 ```{r}
 my_data <- reactive({
-  if(!is.null(input$plot_clicked_data$name)) {
+  if (!is.null(input$plot_clicked_data$name)) {
     hybrid_df %>%
     filter(suffix == input$plot_clicked_data$name | domain == input$plot_clicked_data$name) %>%
     mutate(plot_title = ifelse(!input$plot_clicked_data$name %in% suffix,
                                domain,
-                               suffix))
-    } else
+        suffix
+      ))
+  } else {
       hybrid_df
+  }
 })
 ```
 
@@ -590,7 +581,8 @@ output$oa_source <- renderPlotly({
   tt
 })
 
-fillRow(flex = c(1, 2),
+fillRow(
+  flex = c(1, 2),
   fillCol(echarts4rOutput("plot")),
   fillCol(plotlyOutput("oa_license"), plotlyOutput("oa_source"))
 )
@@ -605,10 +597,16 @@ Row
 ### Top Publishers
 
 ```{r}
-renderDataTable({
+renderDataTable(
+  expr = {
  my_data() %>%
       count(publisher) %>%
       arrange(desc(n)) %>%
-      mutate(prop = round(n / sum(n) * 100,2))
-})
+      mutate(prop = round(n / sum(n) * 100, 2))
+  },
+  options = list(
+    pageLength = 8,
+    dom = "ftp"
+  )
+)
 ```
