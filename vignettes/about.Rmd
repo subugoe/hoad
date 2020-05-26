@@ -383,14 +383,7 @@ prop_p <- ggplot(hybrid_all, aes(year, prop, fill = license)) +
     # palette https://twitter.com/debivort/status/994583058031546369
     scale_fill_manual(
       "License",
-      values =  c(
-        "#65BADA",
-        "#068E8C",
-        "#00A757",
-        "#E5BA52",
-        "#D86F27",
-        "#C82E6B"
-      )
+    values = colors_license
     ) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels = scales::percent) +
@@ -408,14 +401,7 @@ prop_n <- ggplot(hybrid_all, aes(year, n, fill = license)) +
     # palette https://twitter.com/debivort/status/994583058031546369
     scale_fill_manual(
       "License",
-      values =  c(
-        "#65BADA",
-        "#068E8C",
-        "#00A757",
-        "#E5BA52",
-        "#D86F27",
-        "#C82E6B"
-      )
+    values = colors_license
     ) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous() +
@@ -473,10 +459,7 @@ license_plot <- unpaywall_df %>%
   ) +
   scale_fill_manual(
     "OA articles with",
-    values = c(
-      "Crossref immediate license" = "#56B4E9",
-      "Other license information\n(Unpaywall)" = "#b3b3b3a0"
-    )
+    values = colors_license_unpaywall
   ) +
   facet_wrap( ~ publisher) +
   # theme_minimal(base_family="Roboto", base_size = 12) +
@@ -534,12 +517,8 @@ spending_plot <- hybrid_cr %>%
     ) +
   scale_fill_manual(
       "Sources:",
-      values = c(
-        "Open APC (TA)" = "#23445D",
-        "Open APC (Hybrid)" = "#AE4132",
-        "SCOAP³" = "#12AAB5"
-      ),
-      na.value = "#b3b3b3a0"
+    values = colors_source_disclosure,
+    na.value = "#E9E1D7"
     ) +
     facet_wrap( ~ publisher) +
   # theme_minimal(base_family="Roboto", base_size = 12) +
@@ -619,7 +598,7 @@ hybrid_cr %>%
   ) +
   geom_bar(aes(fill = "per Publisher"), color = "transparent", stat = "identity") +
   facet_wrap(~publisher_group, nrow = 1) +
-  scale_fill_manual(values = c("#b3b3b3a0", "#56B4E9"), name = "") +
+  scale_fill_manual(values = c("#b3b3b3a0", "#153268"), name = "") +
    labs(x = "Year", y = "Hybrid OA Articles", title = "Uptake of Hybrid Open Access since 2013") +
   # theme_minimal(base_family = "Roboto") +
   theme(legend.position = "top",
@@ -697,11 +676,7 @@ hybrid_cr %>%
   facet_wrap(~factor(suffix, levels = rev(levels(email_df$suffix)))) +
   scale_fill_manual(
       "Sources:",
-      values = c(
-        "Open APC (TA)" = "#23445D",
-        "Open APC (Hybrid)" = "#AE4132",
-        "SCOAP³" = "#12AAB5"
-      ),
+    values = colors_source_disclosure,
       na.value = "#b3b3b3a0"
     ) +
   labs(x = "Year", y = "Hybrid OA Articles",

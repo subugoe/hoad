@@ -20,6 +20,7 @@ library(echarts4r)
 library(hoad)
 library(forcats)
 library(dplyr)
+library(stringr)
 ```
 
 ```{r global}
@@ -173,14 +174,7 @@ renderPlotly({
     # palette https://twitter.com/debivort/status/994583058031546369
     scale_fill_manual(
       "License",
-      values =  c(
-        "#65BADA",
-        "#068E8C",
-        "#00A757",
-        "#E5BA52",
-        "#D86F27",
-        "#C82E6B"
-      )
+      values = colors_license
     ) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(labels = scales::percent) +
@@ -201,14 +195,7 @@ renderPlotly({
     # pallette https://twitter.com/debivort/status/994583058031546369
     scale_fill_manual(
       "License",
-      values =  c(
-        "#65BADA",
-        "#068E8C",
-        "#00A757",
-        "#E5BA52",
-        "#D86F27",
-        "#C82E6B"
-      )
+      values = colors_license
     ) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(
@@ -226,7 +213,7 @@ renderPlotly({
 
 ```{r}
 renderPlotly({
-  p <- unpaywall_df %>%
+  p <- unpaywall_df() %>%
     filter(journal_title %in% jn_f()$journal_title) %>%
     group_by(year, source) %>%
     summarise(articles = sum(articles, na.rm = TRUE)) %>%
@@ -242,10 +229,7 @@ renderPlotly({
     ) +
     scale_fill_manual(
       "OA articles with",
-      values = c(
-        "Crossref immediate license" = "#56B4E9",
-        "Other license information\n(Unpaywall)" = "#b3b3b3a0"
-      )
+      values = colors_license_unpaywall
     ) +
     theme_minimal()
   plotly::ggplotly(p)
@@ -273,12 +257,8 @@ renderPlotly({
     ) +
     scale_fill_manual(
       "Sources",
-      values = c(
-        "Open APC (TA)" = "#23445D",
-        "Open APC (Hybrid)" = "#AE4132",
-        "SCOAP<sup>3</sup>" = "#12AAB5"
-      ),
-      na.value = "#b3b3b3a0"
+      values = colors_source_disclosure,
+      na.value = "#E9E1D7"
     ) +
     theme_minimal()
 
@@ -336,7 +316,7 @@ hybrid_df %>%
   ) +
   geom_bar(aes(fill = "by Publisher", label = `Proportion in %`), color = "transparent", stat = "identity") +
   facet_wrap(~publisher_group, nrow = 1) +
-  scale_fill_manual(values = c("#b3b3b3a0", "#56B4E9"), name = "") +
+  scale_fill_manual(values = c("#b3b3b3a0", "#153268"), name = "") +
    labs(x = "Year", y = "Hybrid OA Articles") +
   theme_minimal() +
   theme(legend.position = "top",
@@ -568,14 +548,7 @@ output$oa_license <- renderPlotly({
     ggtitle(unique(my_data()$plot_title)) +
     scale_fill_manual(
       "License",
-      values =  c(
-        "#65BADA",
-        "#068E8C",
-        "#00A757",
-        "#E5BA52",
-        "#D86F27",
-        "#C82E6B"
-      )
+      values = colors_license
     ) +
     scale_x_discrete("", drop = FALSE) +
     scale_y_continuous("Articles",
@@ -605,11 +578,7 @@ output$oa_source <- renderPlotly({
     ) +
     scale_fill_manual(
       "Sources",
-      values = c(
-        "Open APC (TA)" = "#23445D",
-        "Open APC (Hybrid)" = "#AE4132",
-        "SCOAP<sup>3</sup>" = "#12AAB5"
-      ),
+      values = colors_source_disclosure,
       na.value = "#b3b3b3a0"
     ) +
     theme_minimal()
