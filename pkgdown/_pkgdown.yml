@@ -25,7 +25,7 @@ template:
 navbar:
   components:
     dashboard:
-      text: "Demo"
+      text: "Dashboard"
       icon: "fa fa-tachometer"
       href: articles/interactive.html
 home:

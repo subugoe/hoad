@@ -1,13 +1,10 @@
 ---
-title: "Hybrid OA Journal Monitor"
+title: "Hybrid OA Dashboard"
 output:
   flexdashboard::flex_dashboard:
-    navbar:
-      - { title: "About", href: "https://subugoe.github.io/hoad"}
-      - { title: "Data", href: "https://github.com/subugoe/hoad/tree/master/data/README.md"}
     orientation: rows
-    source_code: "https://github.com/subugoe/hoad/"
-    vertical_layout: scroll
+    vertical_layout: fill
+    css: ugoe_bootswatch.css
 runtime: shiny
 ---
 
