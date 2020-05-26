@@ -33,18 +33,22 @@ home:
     - text: Project website (in german)
       href: https://www.sub.uni-goettingen.de/projekte-forschung/projektdetails/projekt/hybrid-oa-dashboards/
 reference:
-- title: ETL
-  desc: Extract, transform, load
-- contents:
-  - has_concept("ETL functions")
-- title: Visualisation
-  desc: Plotting functions
-- contents:
-  - has_concept("visualisation functions")
-- title: Data
-  desc: Functions to document data
-- contents:
-  - has_concept("data")
+  - title: ETL
+    desc: Extract, transform, load
+  - contents:
+      - has_concept("ETL functions")
+  - title: Visualisation
+    desc: Plotting functions
+  - contents:
+      - has_concept("visualisation functions")
+  - title: Data
+    desc: Functions to document data
+  - contents:
+      - has_concept("data")
+  - title: CICD
+    desc: Functions to run and deploy the dashboard
+  - contents:
+      - has_concept("CICD")
 development:
   mode: auto
   destination: ""
