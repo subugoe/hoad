@@ -4,11 +4,12 @@ output:
   flexdashboard::flex_dashboard:
     orientation: rows
     vertical_layout: fill
-    css: ugoe_bootswatch.css
-runtime: shiny
+    css: css/ugoe_bootswatch.css
+runtime: shiny_prerendered
 ---
 
 ```{r setup, include=FALSE}
+# notice that above chunk name is taken as `context=setup`
 library(flexdashboard)
 library(viridis)
 library(plotly)
@@ -23,7 +24,8 @@ library(dplyr)
 library(stringr)
 ```
 
-```{r global}
+```{r data, include=FALSE}
+# notice that above chunk name is taken as `context=data`
 # access to data
 hybrid_df <- readr::read_csv(file = path_extdat("hybrid_publications.csv")) %>%
   mutate(license = fct_infreq(license)) %>%
@@ -59,7 +61,9 @@ selectizeInput(
   choices = c(All = "", sort(unique(hybrid_df$journal_title))),
   multiple = TRUE
 )
+```
 
+```{r context="server"}
 # publisher filter
 jn_filtered <- reactive({
   if (is.null(input$publishers)) {
@@ -142,7 +146,7 @@ renderValueBox({
 
 ### Journals selected
 
-```{r}
+```{r context="server"}
 renderValueBox({
   journal_n <- length(unique(jn_f()$journal_title))
   valueBox(format(journal_n, big.mark = " ", scientific = FALSE),
@@ -152,7 +156,7 @@ renderValueBox({
 
 ### Hybrid OA articles indexed in Crossref
 
-```{r}
+```{r context="server"}
 renderValueBox({
   hybrid_n <- nrow(jn_f())
   valueBox(format(hybrid_n, big.mark = " ", scientific = FALSE),
@@ -166,7 +170,7 @@ Column {.tabset .tabset-fade}
 
 ### Hybrid OA licenses found (relative)
 
-```{r}
+```{r context="server"}
 renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, prop, fill = license)) +
     xlab("Year") +
@@ -186,7 +190,7 @@ renderPlotly({
 
 ### Hybrid OA licenses found (absolute)
 
-```{r}
+```{r context="server"}
 renderPlotly({
   p <- ggplot(hybrid_sub(), aes(year, n, fill = license)) +
     xlab("Year") +
@@ -209,7 +213,7 @@ renderPlotly({
 
 ### Other types of OA license information detected by Unpaywall
 
-```{r}
+```{r context="server"}
 renderPlotly({
   p <- unpaywall_df() %>%
     filter(journal_title %in% jn_f()$journal_title) %>%
@@ -239,7 +243,7 @@ Row {data-width=400 data-height=350}
 
 ### Sources of disclosure of OA sponsorship
 
-```{r}
+```{r context="server"}
 renderPlotly({
   p <- hybrid_df %>%
     filter(journal_title %in% jn_f()$journal_title) %>%
@@ -272,7 +276,7 @@ renderPlotly({
 
 ### Text-mined author emails (first match per article)
 
-```{r}
+```{r context="server"}
 renderEcharts4r({
   hybrid_df %>%
     filter(journal_title %in% jn_f()$journal_title) %>%
@@ -334,7 +338,7 @@ Row {data-height=500}
 
 ### Journal hybrid open access share by publisher
 
-```{r}
+```{r context="server"}
 fillRow(
   flex = c(1, 3),
   inputPanel(
@@ -414,7 +418,10 @@ fillCol(
   ),
   plotlyOutput("yearplot", height = "100%")
 )
+```
 
+
+```{r context="server"}
 output$yearplot <- renderPlotly({
   if (input$Publisher == "All") {
     tt <-   hybrid_df %>%
@@ -458,7 +465,7 @@ Row {data-height=500}
 
 ### Table view
 
-```{r}
+```{r context="server"}
 hybrid_data <- reactive({
   if (input$Publisher == "All") {
     hybrid_df
@@ -502,7 +509,7 @@ options = list(
 Institutional View
 ================================================================
 
-```{r}
+```{r context="server"}
 my_data <- reactive({
   if (!is.null(input$plot_clicked_data$name)) {
     hybrid_df %>%
@@ -522,7 +529,7 @@ Column
 
 ### Text-mined author emails (first match per article) - Double click for selection!
 
-```{r}
+```{r context="server"}
 output$plot <- renderEcharts4r({
   hybrid_df %>%
      count(suffix, domain) %>%
@@ -596,7 +603,7 @@ Row
 
 ### Top Publishers
 
-```{r}
+```{r context="server"}
 renderDataTable(
   expr = {
  my_data() %>%
