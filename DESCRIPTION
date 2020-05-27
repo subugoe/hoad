@@ -1,6 +1,6 @@
 Package: hoad
 Title: Hybrid Open Access Dashboard
-Version: 1.0.0.9000
+Version: 1.0.0
 Authors@R:
     c(
       person(
@@ -34,6 +34,10 @@ Authors@R:
       person(
         given = "Göttingen State and University Library",
         role = c("cph", "fnd")
+      ),
+      person(
+        given = "German Research Foundation",
+        role = c("spn")
       ),
       person(
         given = "Crossref",

@@ -10,18 +10,23 @@ authors:
     href: https://www.sub.uni-goettingen.de/kontakt/personen-a-z/personendetails/person/henrieke-walter/
   Göttingen State and University Library:
     href: https://www.sub.uni-goettingen.de/
+  German Research Foundation:
+    href: https://www.dfg.de
+    html: <img src="reference/figures/dfg_logo_schriftzug_blau_foerderung_en.jpg" height="15">
   Crossref:
     href: https://www.crossref.org
-    html: <img src="https://assets.crossref.org/logo/metadata-from-crossref-logo-200.svg" height="15">
+    html: <img src="reference/figures/metadata-from-crossref-logo-200.svg" height="15">
   OpenAPC Initiative:
     href: https://github.com/openapc
-    html: <img src="https://www.intact-project.org/public/img/openAPC_01+.png" height="15">
+    html: <img src="reference/figures/openAPC_01+.png" height="15">
 template:
   package: metaR
   opengraph:
     twitter:
       site: "@subugoe"
       card: summary_large_image
+  params:
+    ganalytics: UA-48816137-14
 navbar:
   components:
     dashboard:
@@ -30,8 +35,8 @@ navbar:
       href: articles/interactive.html
 home:
   links:
-    - text: Project website (in german)
-      href: https://www.sub.uni-goettingen.de/projekte-forschung/projektdetails/projekt/hybrid-oa-dashboards/
+    - text: Project description
+      href: https://www.sub.uni-goettingen.de/en/projects-research/project-details/projekt/hybrid-oa-dashboards/
 reference:
   - title: ETL
     desc: Extract, transform, load

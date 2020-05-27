@@ -1,62 +1,38 @@
-# A reproducible dashboard for monitoring hybrid open acccess uptake with R
+# Hybrid Open Access Dashboard (HOAD)
 
+<!-- badges: start -->
 [![Main](https://github.com/subugoe/hoad/workflows/.github/workflows/main.yaml/badge.svg)](https://github.com/subugoe/hoad/actions)
 [![R CMD check](https://github.com/subugoe/hoad/workflows/R-CMD-check/badge.svg)](https://github.com/subugoe/hoad/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/hoad)](https://CRAN.R-project.org/package=hoad)
 [![Codecov test coverage](https://codecov.io/gh/subugoe/hoad/branch/master/graph/badge.svg)](https://codecov.io/gh/subugoe/hoad)
+[![Docker Pulls](https://img.shields.io/docker/pulls/subugoe/hoad)](https://hub.docker.com/repository/docker/subugoe/hoad)
+<!-- badges: end -->
 
-Source code and data repository for the hybrid open access dashboard, using [flexdashboard](https://rstudio.github.io/flexdashboard) and [shiny](http://shiny.rstudio.com).
 
-A live demo is available here:
+## Overview
 
-<https://subugoe.shinyapps.io/hybridoa/>
+Many academic publishers offer hybrid (hybrid OA) open access journals, where some articles in an otherwise subscription-based publication are made openly available.
+Recently, some funders have pushed for a transformation towards such a hybrid OA business model, where publishing houses are paid for open access publication.
+To draft, monitor and evaluate such transformative agreements, libraries and their consortia need data on the uptake, costs and impact of hybrid OA.
 
-Summary of methods used and findings:
+{HOAD} is a data product to meet this need.
+The dashboard is packaged as an extension to the [R Project for Statistical Computing](https://www.r-project.org) (an R package), and released under an open source license.
+The project is based on data gathered by the [Crossref](http://www.crossref.org/) DOI registration agency and the [OpenAPC initiative](https://github.com/openapc).
 
-<https://subugoe.github.io/hoad/about.html>
 
-![](img/screenshot.png)
-
-## Requirements
-
-```r
-install.packages(c("flexdashboard", "dplyr", "readr", "plotly", "scales", "ggalt"), dependencies = TRUE)
-```
-
-## Running the dashboard locally
+## Installation
 
 ```r
-rmarkdown::run("dashboard.Rmd")
+remotes::install_github("subugoe/hoad")
 ```
 
-## Methods and data
 
-Methods used are available in the R folder. [`R/cr_fetching.R`](R/cr_fetching.R) describes how licensing and journal metadata were obtained from [Crossref](https://www.crossref.org/), using the [rcrossref](https://github.com/ropensci/rcrossref) client, developed and maintained by the rOpenSci initiative (https://ropensci.org/). [`R/cr_match.R`](R/cr_match.R) shows how the dataset were merged together and how the count data used for the dashboard were calculated. 
+## Getting Started
 
-<!--For a long-form documentation, see [about.md](about.md)-->
+```r
+library(hoad)
+```
 
-Comprehenive metadata about hybrid open access articles found are shared as well. See this [overview](data/README.md) about how datasets are coded to facilitate analysis.
+You can start the dashboard locally, by running `runHOAD()`.
 
-
-## How to contribute?
-
-This dashboard has been developed in the open using open tools. There are a number of ways you can help make the dashboard better:
-
-- If you don’t understand something, please let me know and submit an issue.
-
-- Feel free to add new features or fix bugs by sending a pull request.
-
-Please note that the 'hoad' project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
-By contributing to this project, you agree to abide by its terms.
-
-## Meta
-
-License: MIT
-
-Datasets are released into the public domain.
-
-Anyone is free to copy, modify, publish, use, compile, sell, or distribute these materials in any form, for any purpose, commercial or non-commercial, and by any means.
-
-Crossref asserts no claims of ownership to individual items of bibliographic metadata and associated Digital Object Identifiers (DOIs) acquired through the use of the Crossref Free Services. Individual items of bibliographic metadata and associated DOIs may be cached and incorporated into the user's content and systems.
-
-Open APC Data are made available under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in individual contents of the database are licensed under the Database Contents License: http://opendatacommons.org/licenses/dbcl/1.0/.
+More functions and data will be exposed in the future for modular reuse.
