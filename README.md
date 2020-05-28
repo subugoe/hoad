@@ -9,6 +9,21 @@
 <!-- badges: end -->
 
 
+<div class="jumbotron">
+  <h1>Hybrid OA Dashboard</h1>
+  <p>
+    Bibliometric data analytics to increase cost transparency in hybrid open access transformation contracts.
+  </p>
+  <p>
+    <a class="btn btn-danger btn-lg" href="articles/interactive.html" role="button">
+      Try out the dashboard
+    </a>
+    <a class="btn btn-primary btn-lg" href="newsletter.html" role="button">
+      Sign up to the newsletter
+    </a>
+  </p>
+</div>
+
 ## Overview
 
 Many academic publishers offer hybrid (hybrid OA) open access journals, where some articles in an otherwise subscription-based publication are made openly available.
