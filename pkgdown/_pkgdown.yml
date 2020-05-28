@@ -1,4 +1,3 @@
-url: https://subugoe.github.io/hoad/
 authors:
   Najko Jahn:
     href: https://www.sub.uni-goettingen.de/kontakt/personen-a-z/personendetails/person/najko-jahn/
@@ -29,7 +28,7 @@ template:
     ganalytics: UA-48816137-14
 navbar:
   structure:
-    left: [home, dashboard, reference, changelog, articles]
+    left: [home, dashboard]
     right: [webinars, newsletter, about, github]
   components:
     dashboard:
@@ -71,6 +70,3 @@ reference:
       - has_concept("CICD")
 home:
   strip_header: true
-development:
-  mode: auto
-  destination: ""
