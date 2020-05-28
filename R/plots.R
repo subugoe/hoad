@@ -18,8 +18,8 @@ colors_license <- c(
 #' @describeIn colors other types of OA license information detected by Unpaywall
 #' @export
 colors_license_unpaywall <- c(
-  # TODO there must not be a linebreak in the label
   `Crossref immediate license` = "#153268",
+  # TODO there must not be a linebreak in the label
   `Other license information\n(Unpaywall)` = "#454545"
 )
 
@@ -28,6 +28,7 @@ colors_license_unpaywall <- c(
 colors_source_disclosure <- c(
   `Open APC (TA)` = "#0093c7",
   `Open APC (Hybrid)` = "#84BFEA",
+  # TODO remove these non ascis; cause warnings https://github.com/subugoe/hoad/issues/193
   `SCOAP<sup>3</sup>` = "#006597",
   # TODO in some datasets this is coded as
   `SCOAP³` = "#006597"

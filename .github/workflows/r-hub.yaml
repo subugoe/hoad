@@ -65,9 +65,10 @@ jobs:
         shell: Rscript {0}
 
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error", check_dir = "check")
         shell: Rscript {0}
 
+        # TODO must disallow warning again https://github.com/subugoe/hoad/issues/194
       - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@master

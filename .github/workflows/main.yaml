@@ -54,6 +54,7 @@ jobs:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
         run: |
           rcmdcheck::rcmdcheck(args = c("--no-manual"), error_on = "error", check_dir = "check")
+        # TODO must disallow warning again https://github.com/subugoe/hoad/issues/194
         shell: Rscript {0}
       - name: Test coverage
         run: covr::codecov()
