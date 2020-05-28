@@ -30,7 +30,7 @@ template:
 navbar:
   structure:
     left: [home, dashboard, reference, changelog, articles]
-    right: [newsletter, about, github]
+    right: [webinars, newsletter, about, github]
   components:
     dashboard:
       text: "Dashboard"
@@ -40,6 +40,10 @@ navbar:
       text: "Newsletter"
       icon: "fa fa-envelope-open-text"
       href: newsletter.html
+    webinars:
+      text: "Webinars"
+      icon: "fa fa-chalkboard-teacher"
+      href: webinars.html
     about:
       text: "About"
       icon: "fa fa-info-circle"
