@@ -57,7 +57,7 @@ Roxygen: list(markdown = TRUE)
 Suggests:
     covr (>= 3.4.0),
     rcmdcheck (>= 1.3.3),
-    pkgdown (>= 1.4.1),
+    pkgdown (>= 1.5.1),
     testthat (>= 2.1.0),
     rmarkdown (>= 2.1),
     knitr (>= 1.28),
