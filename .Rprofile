@@ -33,10 +33,7 @@ set_rspm <- function(snapshot = "latest") {
     )
   } else {
     options(
-      repos = paste0(
-        "https://packagemanager.rstudio.com/all/",
-        snapshot
-      )
+      repos = "https://cran.rstudio.com"
     )
   }
 }
