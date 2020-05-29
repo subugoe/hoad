@@ -1,28 +1,14 @@
-# Hybrid Open Access Dashboard (HOAD)
+# hoad
 
-<!-- badges: start -->
+<!-- # these have to be demarkated by divs, otherwise they're not properly stripped out -->
+<div id="badges">
 [![Main](https://github.com/subugoe/hoad/workflows/.github/workflows/main.yaml/badge.svg)](https://github.com/subugoe/hoad/actions)
 [![R CMD check](https://github.com/subugoe/hoad/workflows/R-CMD-check/badge.svg)](https://github.com/subugoe/hoad/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/hoad)](https://CRAN.R-project.org/package=hoad)
 [![Codecov test coverage](https://codecov.io/gh/subugoe/hoad/branch/master/graph/badge.svg)](https://codecov.io/gh/subugoe/hoad)
 [![Docker Pulls](https://img.shields.io/docker/pulls/subugoe/hoad)](https://hub.docker.com/repository/docker/subugoe/hoad)
-<!-- badges: end -->
-
-
-<div class="jumbotron">
-  <h1>Hybrid OA Dashboard</h1>
-  <p>
-    Bibliometric data analytics to increase cost transparency in hybrid open access transformation contracts.
-  </p>
-  <p>
-    <a class="btn btn-danger btn-lg" href="articles/interactive.html" role="button">
-      Try out the dashboard
-    </a>
-    <a class="btn btn-primary btn-lg" href="newsletter.html" role="button">
-      Sign up to the newsletter
-    </a>
-  </p>
 </div>
+
 
 ## Overview
 

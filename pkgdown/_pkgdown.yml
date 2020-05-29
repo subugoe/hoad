@@ -69,5 +69,3 @@ reference:
     desc: Functions to run and deploy the dashboard
   - contents:
       - has_concept("CICD")
-home:
-  strip_header: true
