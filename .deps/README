@@ -1,0 +1,3 @@
+This directory is empty in local use.
+On GitHub Actions, the cache from a previous job is downloaded into this folder.
+To make sure that the Dockerfile can be build locally, some (empty) folder must exist.

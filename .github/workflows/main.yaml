@@ -1,0 +1,99 @@
+on:
+  push:
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
+  release:
+    types: [published, created, edited]
+
+jobs:
+  cicd:
+    runs-on: ubuntu-18.04
+    # env and container need to be the same in dockerfile
+    env:
+      # unfortunately this has to be updated by hand
+      LIB_PATH: "/usr/local/lib/R/site-library"
+    container:
+      # this freezes the r version
+      image: "rocker/rstudio:3.6.3-ubuntu18.04"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Query dependencies
+        run: |
+          options(warn = 2)
+          install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+        shell: Rscript {0}
+      - name: Cache R packages
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.LIB_PATH }}
+          # key must be manually updated to match snapshot
+          key: 279-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: 279-
+      - name: Install System dependencies
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        run: |
+          apt-get update
+          # TODO hack for missing time zone data base, bug in rocker?
+          apt-get install -y tzdata
+          # hack-fix for https://github.com/r-hub/sysreqsdb/issues/77
+          apt-get install -y software-properties-common
+          add-apt-repository -y ppa:cran/libgit2
+          # hack for missing sysdeps for ggalt as per https://github.com/hrbrmstr/ggalt/issues/22
+          apt-get install -y libproj-dev
+          Rscript -e "remotes::install_github('r-hub/sysreqs', ref='3860f2b512a9c3bd3db6791c2ff467a1158f4048')"
+          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo -s eval "$sysreqs"
+      - name: Install Package Dependencies
+        run: |-
+          remotes::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
+      - name: Check
+        env:
+          _R_CHECK_CRAN_INCOMING_REMOTE_: false
+        run: |
+          rcmdcheck::rcmdcheck(args = c("--no-manual"), error_on = "error", check_dir = "check")
+        # TODO must disallow warning again https://github.com/subugoe/hoad/issues/194
+        shell: Rscript {0}
+      - name: Test coverage
+        run: covr::codecov()
+        shell: Rscript {0}
+      - name: Build Package Website
+        run: |
+          # extra step is necessary to build index.md to integrate readme and landing page
+          rmarkdown::render("pkgdown/index.Rmd")
+          pkgdown::build_site(override = list(new_process = FALSE))
+        shell: Rscript {0}
+      - name: Copy dependencies to working directory
+        run: |
+          cp --recursive --force ${{ env.LIB_PATH }}/* .deps/
+      - name: Build and push docker image
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+          repository: subugoe/hoad
+          tag_with_sha: true
+          tag_with_ref: true
+          add_git_labels: true
+          tags: ${{ github.sha }}
+          push: ${{ github.event_name != 'pull_request' }}
+      - name: Deploy Shiny Application to shinyapps.io ref
+        env:
+          SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
+          SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
+          GITHUB_REF: ${{ github.ref }}
+        if: github.event_name != 'pull_request'
+        run: |
+          remotes::install_github(repo = "subugoe/hoad", ref = "master", force = TRUE, dependencies = TRUE)
+          rsconnect::setAccountInfo(name = 'subugoe', token = Sys.getenv('SHINYAPPS_TOKEN'), secret = Sys.getenv('SHINYAPPS_SECRET'))
+          app_name <- paste0("hoad-", gsub("/", "-", Sys.getenv('GITHUB_REF')))
+          rsconnect::deployDoc(doc = "inst/app/dashboard.Rmd", appName = app_name)
+        shell: Rscript {0}
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/master'
+        uses: maxheld83/ghpages@v0.2.0
+        env:
+          BUILD_DIR: docs
+          GH_PAT: ${{ secrets.GH_PAT }}
