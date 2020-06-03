@@ -191,9 +191,18 @@ jn_facets_df <- jsonlite::stream_in(file("../data/jn_facets_df.json"))
 #'  `http://www.ieee.org/publications_standards/publications/rights/oapa.pdf`
 #'  
 #'  We include Elseviers Open Access license, needs more evaluation
-#'  We also add @ioverka suggestions:
-#'  https://github.com/Impactstory/oadoi/issues/49 :
-licence_patterns <- readr::read_csv(licence_patterns, "../licence_patterns.csv")
+licence_patterns <- c("creativecommons.org/licenses/",
+                      "http://koreanjpathol.org/authors/access.php",
+                      "http://olabout.wiley.com/WileyCDA/Section/id-815641.html",
+                      "http://pubs.acs.org/page/policy/authorchoice_ccby_termsofuse.html",
+                      "http://pubs.acs.org/page/policy/authorchoice_ccbyncnd_termsofuse.html",
+                      "http://pubs.acs.org/page/policy/authorchoice_termsofuse.html",
+                      "http://www.elsevier.com/open-access/userlicense/1.0/",
+                      "http://www.ieee.org/publications_standards/publications/rights/oapa.pdf",
+                      # we also add @ioverka suggestions:
+                      # https://github.com/Impactstory/oadoi/issues/49 :
+                      "http://aspb.org/publications/aspb-journals/open-articles",
+                      "https://doi.org/10.1364/OA_License_v1")
 #' now add indication to the dataset
 hybrid_licenses <- jn_facets_df %>%
   select(journal_title, publisher, license_refs) %>%
