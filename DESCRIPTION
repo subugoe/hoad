@@ -85,7 +85,9 @@ Suggests:
     modelr (>= 0.1.7),
     reprex (>= 0.3.0),
     rvest (>= 0.3.5),
-    selectr (>= 0.4.2)
+    selectr (>= 0.4.2),
+    httr (>= 1.4.1),
+    purrr (>= 0.3.4)
 URL: https://subugoe.github.io/hoad, https://github.com/subugoe/hoad/
 BugReports: https://github.com/subugoe/hoad/issues
 RoxygenNote: 7.1.0

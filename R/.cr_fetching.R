@@ -179,25 +179,6 @@ jn_facets_df <- purrr::map_df(jn_facets, "result")
 jsonlite::stream_out(jn_facets_df, file("../data/jn_facets_df.json"))
 jn_facets_df <- jsonlite::stream_in(file("../data/jn_facets_df.json"))
 #' Second, filter out open licenses and check:
-#'
-#' Question: Which licenses indicate hybrid OA availability?
-#'
-#' [dissemin](https://dissem.in/) compiled a list of licenses used in Crossref,
-#' which indicate OA availability. [oaDOI](https://oadoi.org) re-uses this list.
-#' This list can be found here:
-#'
-#' <https://github.com/dissemin/dissemin/blob/0aa00972eb13a6a59e1bc04b303cdcab9189406a/backend/crossref.py#L89>
-#'  license per publisher and year
-#' (replace group_by argument, i.e., journal wehen you want to calculate license per journal)
-#'
-#'  oaDOI added to this list  IEEE's OA license:
-#'  `http://www.ieee.org/publications_standards/publications/rights/oapa.pdf`
-#'
-#'  We include Elseviers Open Access license, needs more evaluation
-#'  We also add @ioverka suggestions:
-#'  https://github.com/Impactstory/oadoi/issues/49 :
-licence_patterns <- readr::read_csv("..a/licence_patterns.csv")
-licence_patterns <- as.vector(licence_patterns$licence_patterns)
 #' now add indication to the dataset
 hybrid_licenses <- jn_facets_df %>%
   select(journal_title, publisher, license_refs) %>%
@@ -205,7 +186,7 @@ hybrid_licenses <- jn_facets_df %>%
   mutate(license_ref = tolower(.id)) %>%
   select(-.id) %>%
   mutate(hybrid_license = ifelse(grepl(
-    paste(licence_patterns, collapse = "|"),
+    paste(license_patterns$url, collapse = "|"),
     license_ref
   ), TRUE, FALSE)) %>%
   filter(hybrid_license == TRUE) %>%

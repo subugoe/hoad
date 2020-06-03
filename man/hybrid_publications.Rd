@@ -44,6 +44,7 @@ See Crossref \href{https://www.crossref.org/requestaccount/termsandconditions.ht
 
 \seealso{
 Other data: 
+\code{\link{license_patterns}},
 \code{\link{unpaywall_df}()}
 }
 \concept{data}

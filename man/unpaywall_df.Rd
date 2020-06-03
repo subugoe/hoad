@@ -11,6 +11,7 @@ Unpaywall data
 }
 \seealso{
 Other data: 
-\code{\link{hybrid_publications}()}
+\code{\link{hybrid_publications}()},
+\code{\link{license_patterns}}
 }
 \concept{data}
