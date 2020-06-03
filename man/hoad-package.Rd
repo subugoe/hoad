@@ -30,6 +30,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Göttingen State and University Library [copyright holder, funder]
+  \item German Research Foundation [sponsor]
   \item Crossref [data contributor]
   \item OpenAPC Initiative [data contributor]
 }

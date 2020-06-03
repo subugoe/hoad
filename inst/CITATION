@@ -1,0 +1,23 @@
+citHeader("To cite hoad in publications use:")
+
+citHeader("To cite hoad in publications use:")
+
+citEntry(
+  entry = "Manual",
+  title = "Hybrid Open Access Dashboard",
+  author = personList(
+    as.person("Najko Jahn"),
+    as.person("Maximilian Held"),
+    as.person("Jan Höffler"),
+    as.person("Henrieke Walter")
+  ),
+  address = "Göttingen, Germany",
+  institution = "State- and University Library Göttingen",
+  url = "http://subugoe.github.io/hoad/",
+  year = 2020,
+  textVersion = paste(
+    "Najko Jahn et al. (2020).",
+    "Hybrid Open Access Dashboard.",
+    "URL http://subugoe.github.io/hoad/."
+  )
+)

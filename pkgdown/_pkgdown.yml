@@ -1,8 +1,4 @@
-destination: docs
-repo:
-  url:
-    home: https://github.com/subugoe/hoad/
-    issue: https://github.com/subugoe/hoad/issues/
+url: http://subugoe.github.io/hoad
 authors:
   Najko Jahn:
     href: https://www.sub.uni-goettingen.de/kontakt/personen-a-z/personendetails/person/najko-jahn/
@@ -14,40 +10,62 @@ authors:
     href: https://www.sub.uni-goettingen.de/kontakt/personen-a-z/personendetails/person/henrieke-walter/
   Göttingen State and University Library:
     href: https://www.sub.uni-goettingen.de/
-    html: <img src="https://subugoe.github.io/metaR/reference/figures/sub_wordmark.jpg" height="15" />
+  German Research Foundation:
+    href: https://www.dfg.de
+    html: <img src="reference/figures/dfg_logo_schriftzug_blau_foerderung_en.jpg" height="15">
   Crossref:
     href: https://www.crossref.org
-    html: <img src="https://assets.crossref.org/logo/metadata-from-crossref-logo-200.svg" height="15">
+    html: <img src="reference/figures/metadata-from-crossref-logo-200.svg" height="15">
   OpenAPC Initiative:
     href: https://github.com/openapc
-    html: <img src="https://www.intact-project.org/public/img/openAPC_01+.png" height="15">
+    html: <img src="reference/figures/openAPC_01+.png" height="15">
 template:
+  package: metaR
+  opengraph:
+    twitter:
+      site: "@subugoe"
+      card: summary_large_image
   params:
-    bootswatch: cosmo
+    ganalytics: UA-48816137-14
 navbar:
-  type: inverse
+  structure:
+    left: [home, dashboard]
+    right: [webinars, newsletter, about, github]
   components:
     dashboard:
-      text: "Demo"
+      text: "Dashboard"
       icon: "fa fa-tachometer"
       href: articles/interactive.html
-home:
-  links:
-    - text: Project website (in german)
-      href: https://www.sub.uni-goettingen.de/projekte-forschung/projektdetails/projekt/hybrid-oa-dashboards/
+    newsletter:
+      text: "Newsletter"
+      icon: "fa fa-envelope-open-text"
+      href: newsletter.html
+    webinars:
+      text: "Webinars"
+      icon: "fa fa-chalkboard-teacher"
+      href: webinars.html
+    about:
+      text: "About"
+      icon: "fa fa-info-circle"
+      href: https://www.sub.uni-goettingen.de/en/projects-research/project-details/projekt/hybrid-oa-dashboards/
+    github:
+      text: "Source"
+      icon: "fa fa-github"
+      href: https://github.com/subugoe/hoad
 reference:
-- title: ETL
-  desc: Extract, transform, load
-- contents:
-  - has_concept("ETL functions")
-- title: Visualisation
-  desc: Plotting functions
-- contents:
-  - has_concept("visualisation functions")
-- title: Data
-  desc: Functions to document data
-- contents:
-  - has_concept("data")
-development:
-  mode: auto
-  destination: ""
+  - title: ETL
+    desc: Extract, transform, load
+  - contents:
+      - has_concept("ETL functions")
+  - title: Visualisation
+    desc: Plotting functions
+  - contents:
+      - has_concept("visualisation functions")
+  - title: Data
+    desc: Functions to document data
+  - contents:
+      - has_concept("data")
+  - title: CICD
+    desc: Functions to run and deploy the dashboard
+  - contents:
+      - has_concept("CICD")

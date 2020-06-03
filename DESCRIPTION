@@ -1,7 +1,7 @@
 Package: hoad
 Title: Hybrid Open Access Dashboard
-Version: 1.0.0.9000
-Authors@R: 
+Version: 1.0.0
+Authors@R:
     c(
       person(
         given = "Najko",
@@ -36,6 +36,10 @@ Authors@R:
         role = c("cph", "fnd")
       ),
       person(
+        given = "German Research Foundation",
+        role = c("spn")
+      ),
+      person(
         given = "Crossref",
         role = c("dtc")
       ),
@@ -45,22 +49,21 @@ Authors@R:
       )
     )
 Description: Analytics to increase cost transparency in business model transformation towards open access publishing.
-License: MIT + file LICENSE
+License: AGPL-3
 Encoding: UTF-8
 Language: en
 LazyData: true
 Roxygen: list(markdown = TRUE)
-Suggests: 
+Suggests:
     covr (>= 3.4.0),
     rcmdcheck (>= 1.3.3),
-    pkgdown (>= 1.4.1),
+    pkgdown (>= 1.5.1),
     testthat (>= 2.1.0),
     rmarkdown (>= 2.1),
     knitr (>= 1.28),
     jsonlite (>= 1.6.1),
     ggalt (>= 0.4.0),
     scales (>= 1.1.0),
-    ggplot2 (>= 3.2.1),
     forcats (>= 0.4.0),
     cowplot (>= 1.0.0),
     readxl (>= 1.3.1),
@@ -73,14 +76,26 @@ Suggests:
     shiny (>= 1.4.0.2),
     DT (>= 0.13),
     writexl (>= 1.2),
-    echarts4r (>= 0.2.3)
+    echarts4r (>= 0.2.3),
+    metaR (>= 0.0.0.9000),
+    DBI (>= 1.1.0),
+    dbplyr (>= 1.4.3),
+    haven (>= 2.2.0),
+    lubridate (>= 1.7.8),
+    modelr (>= 0.1.7),
+    reprex (>= 0.3.0),
+    rvest (>= 0.3.5),
+    selectr (>= 0.4.2)
 URL: https://subugoe.github.io/hoad, https://github.com/subugoe/hoad/
 BugReports: https://github.com/subugoe/hoad/issues
 RoxygenNote: 7.1.0
-Imports: 
+Imports:
     dplyr (>= 0.8.4),
     checkmate (>= 2.0.0),
     magrittr (>= 1.5),
     readr (>= 1.3.1),
-    fs (>= 1.3.1)
-VignetteBuilder: knitr
+    fs (>= 1.3.1),
+    ggplot2 (>= 3.2.1),
+    rlang (>= 0.4.6)
+Remotes:
+    subugoe/metaR@5543b34c49b339c8e91217912d07662415384cbe
