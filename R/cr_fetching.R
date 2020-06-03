@@ -125,7 +125,7 @@ o_apc_issn %>%
 #' Next, we will retrieve the yearly publication volume for each journal.
 #' We want to apply mutliple filters on issn, which results in an OR search
 #'
-#' create a data frame wiht distinc journal_title and publisher names
+#' create a data frame with distinct journal_title and publisher names
 distinct_combs <- o_apc_issn %>%
   distinct(publisher, journal_full_title)
 #' create multiple issn filters
@@ -193,7 +193,8 @@ jn_facets_df <- jsonlite::stream_in(file("../data/jn_facets_df.json"))
 #'  We include Elseviers Open Access license, needs more evaluation
 #'  We also add @ioverka suggestions:
 #'  https://github.com/Impactstory/oadoi/issues/49 :
-licence_patterns <- readr::read_csv(licence_patterns, "../licence_patterns.csv")
+licence_patterns <- readr::read_csv("../data/licence_patterns.csv")
+licence_patterns <- as.vector(licence_patterns$licence_patterns)
 #' now add indication to the dataset
 hybrid_licenses <- jn_facets_df %>%
   select(journal_title, publisher, license_refs) %>%
