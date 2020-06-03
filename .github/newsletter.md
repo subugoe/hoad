@@ -1,11 +1,10 @@
-# Sign up to our newsletter
+# Newsletter abonnieren
 
-Sign up to our newsletter to stay up to date with the {hoad} package and project.
-We will periodically send out information about new features, related events and data releases.
+In unserem deutschsprachigen Newsletter informieren wir Sie über neue Entwicklungen und Veranstaltungen rund um das Projekt.
 
 <form method="post" action="https://listserv.gwdg.de/mailman/subscribe/hoad">
   <div class="form-group">
-    <label for="InputEmail">Email address</label>
+    <label for="InputEmail">Email addresse</label>
     <input name="email" type="email" class="form-control" id="InputEmail" placeholder="Email">
   </div>
   <div class="form-group">
@@ -13,14 +12,18 @@ We will periodically send out information about new features, related events and
     <input name="fullname" type="text" class="form-control" id="InputName" placeholder="Name (optional)">
   </div>
   <button type="submit" class="btn btn-default" name="email-button" value=
-  "Subscribe">Submit</button>
+  "Subscribe">Abonnieren</button>
 </form>
 
-Complete your signup by clicking on the link in the confirmation email.
+Um Ihr Abonnement abzuschließen, klicken Sie bitte auf den Link in der an Sie versandten Bestätigungsemail.
+Ohne diese Bestätigung erhalten Sie keine weiteren Nachrichten
 
 ----
 
-The newsletter is run as a send-only mailing list at the [GWDG](http://gwdg.de), the IT service provider for the State and University Library Göttingen.
-This means that only the project maintainers can send to the mailing list.
+Der Newsletter wird als Mailingliste bei der [GWDG mbH Göttingen](http://gwdg.de) betrieben, dem IT Serviceanbieter der Universität Göttingen.
+Nur Projektmitarbeiter können Nachrichten an den Newsletter verschicken sowie die Liste der Abonnenten einsehen.
+Weitere Informationen zum Datenschutz betreffend den Newsletter erhalten Sie in der [Datenschutzerklärung der GWDG](https://www.gwdg.de/privacy-notice).
 
-To respond, please reply to the sender or get in touch with one of the [project](https://www.sub.uni-goettingen.de/projekte-forschung/projektdetails/projekt/hybrid-oa-dashboards/) staffers.
+Um sich vom Newsletter wieder abzumelden und für weitere Bedienungshinweise, lesen Sie bitte die [Hilfeseite](https://listserv.gwdg.de/mailman/listinfo/hoad).
+
+Wenn Sie Rückfragen oder Kommentare haben, antworten Sie dem Absender oder wenden Sie sich direkt an die [Projektmitarbeiter](https://www.sub.uni-goettingen.de/projekte-forschung/projektdetails/projekt/hybrid-oa-dashboards/).

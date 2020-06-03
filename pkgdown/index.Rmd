@@ -16,7 +16,7 @@ output:
       Try out the dashboard
     </a>
     <a class="btn btn-primary btn-lg" href="newsletter.html" role="button">
-      Sign up to the newsletter
+      Sign up to the newsletter (german only)
     </a>
   </p>
 </div>

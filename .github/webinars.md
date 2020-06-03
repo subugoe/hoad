@@ -1,10 +1,6 @@
-# Webinars
+# Webinare
 
 <!-- the seminars are planned in this document: https://pad.gwdg.de/h_NNI0R_QyWvx8AEp7z3TQ?both -->
-
-<div class="alert alert-info">
-  The webinar series is currently targeted to the german speaking library community and held in german only.
-</div>
 
 Für die Verhandlung von Open Access-Transformationsverträgen ist eine einheitliche Datengrundlage unerlässlich, um Kostentransparenz zu gewährleisten.
 Die SUB Göttingen entwickelt einen Analysedienst, um Verlage, Bibliotheken und Institutionen mithilfe von aufbereiteten Metadaten bei diesem Vorhaben zu unterstützen.

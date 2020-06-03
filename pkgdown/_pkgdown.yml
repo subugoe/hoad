@@ -30,20 +30,26 @@ template:
 navbar:
   structure:
     left: [home, dashboard]
-    right: [webinars, newsletter, about, github]
+    right: [community, about, github]
   components:
     dashboard:
       text: "Dashboard"
       icon: "fa fa-tachometer"
       href: articles/interactive.html
-    newsletter:
-      text: "Newsletter"
-      icon: "fa fa-envelope-open-text"
-      href: newsletter.html
-    webinars:
-      text: "Webinars"
-      icon: "fa fa-chalkboard-teacher"
-      href: webinars.html
+    community:
+      text: "Deutsche Nutzer"
+      icon: "flag germany"
+      menu:
+        - text: Only available in german
+        - text: "Projektbeschreibung"
+          icon: "fa fa-info-circle"
+          href: https://www.sub.uni-goettingen.de/projekte-forschung/projektdetails/projekt/hybrid-oa-dashboards/
+        - text: "Newsletter"
+          icon: "fa fa-envelope-open-text"
+          href: newsletter.html
+        - text: "Webinare"
+          icon: "fa fa-chalkboard-teacher"
+          href: webinars.html
     about:
       text: "About"
       icon: "fa fa-info-circle"
