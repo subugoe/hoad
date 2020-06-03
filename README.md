@@ -6,6 +6,7 @@
 [![CRAN status](https://www.r-pkg.org/badges/version/hoad)](https://CRAN.R-project.org/package=hoad)
 [![Codecov test coverage](https://codecov.io/gh/subugoe/hoad/branch/master/graph/badge.svg)](https://codecov.io/gh/subugoe/hoad)
 [![Docker Pulls](https://img.shields.io/docker/pulls/subugoe/hoad)](https://hub.docker.com/repository/docker/subugoe/hoad)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 
