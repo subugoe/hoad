@@ -3,14 +3,14 @@
 \name{oa_by_license}
 \alias{oa_by_license}
 \alias{oa_by_license_plot}
-\title{Open Access Articles by License and Year}
+\title{Open Access Articles by Year and License}
 \usage{
 oa_by_license()
 
 oa_by_license_plot()
 }
 \description{
-Open Access Articles by License and Year
+Open Access Articles by Year and License
 }
 \section{Functions}{
 \itemize{
@@ -20,6 +20,10 @@ Open Access Articles by License and Year
 \examples{
 oa_by_license()
 oa_by_license_plot()
+}
+\seealso{
+Other ETL functions: 
+\code{\link{oa_by_other}()}
 }
 \concept{ETL functions}
 \concept{visualisation function_}

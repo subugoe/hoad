@@ -211,25 +211,11 @@ renderPlotly({
 
 ```{r}
 renderPlotly({
-  p <- unpaywall_df() %>%
+  unpaywall_df() %>%
     filter(journal_title %in% jn_f()$journal_title) %>%
-    group_by(year, source) %>%
-    summarise(articles = sum(articles, na.rm = TRUE)) %>%
-  ggplot(aes(year, articles, fill = source)) +
-    geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
-    xlab("Year") +
-    ylab("Articles") +
-    scale_x_discrete(drop = FALSE) +
-    scale_y_continuous(
-      labels = function(x)
-        format(x, big.mark = " ", scientific = FALSE)
-    ) +
-    scale_fill_manual(
-      "OA articles with",
-      values = colors_license_unpaywall
-    ) +
-    theme_minimal()
-  plotly::ggplotly(p)
+    oa_by_other() %>%
+    oa_by_other_plot() %>%
+    plotly::ggplotly()
 })
 ```
 

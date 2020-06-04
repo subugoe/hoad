@@ -445,31 +445,11 @@ A prominent example is the life-science journal [Cell](https://www.cell.com/cell
 On the other hand, the number of additional Springer Nature articles obtained using Unpaywall's license evidence is much lower, suggesting that delayed open access plays a smaller role in Springer Nature's hybrid open access journal portfolio, and that license statements were shared to a large extent with Crossref.
 
 ```{r license-plot, fig.cap="Hybrid Open Access License Statements", fig.subcap="By publisher and source"}
-license_plot <- unpaywall_df %>%
-  mutate(publisher = fct_other(publisher, keep = c("Elsevier BV", "Springer Nature"))) %>%
-  group_by(year, publisher, source) %>%
-  summarise(articles = sum(articles, na.rm = TRUE)) %>%
-  ggplot(aes(year, articles, fill = source)) +
-  geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
-  labs(x = "Year", y = "Articles", title = "Hybrid Open Access License Statements") +
-  scale_y_continuous(
-    labels = function(x)
-      format(x, big.mark = " ", scientific = FALSE),
-    breaks = scales::pretty_breaks()
-  ) +
-  scale_fill_manual(
-    "OA articles with",
-    values = colors_license_unpaywall
-  ) +
-  facet_wrap( ~ publisher) +
-  # theme_minimal(base_family="Roboto", base_size = 12) +
-  theme(plot.margin=margin(30,30,30,30)) +
-  theme(panel.grid.minor=element_blank()) +
-  theme(axis.ticks=element_blank()) +
-  theme(panel.grid.major.x=element_blank()) +
-  theme(panel.border=element_blank()) +
-  theme(legend.position="top")
-license_plot
+unpaywall_df() %>%
+  oa_by_other(by_pub = TRUE) %>%
+  oa_by_other_plot() +
+  facet_wrap(vars(publisher), ncol = 1) +
+  ggtitle("Hybrid Open Access License Statements")
 ```
 
 ```{r}
