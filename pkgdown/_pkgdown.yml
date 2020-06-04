@@ -27,6 +27,9 @@ template:
       card: summary_large_image
   params:
     ganalytics: UA-48816137-14
+    docsearch:
+      api_key: 13f4fe309e30d18dcf23516610160625
+      index_name: hoad
 navbar:
   structure:
     left: [home, dashboard]
