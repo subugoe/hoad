@@ -32,35 +32,32 @@ template:
       index_name: hoad
 navbar:
   structure:
-    left: [home, dashboard]
-    right: [community, about, github]
+    left: [dashboard]
+    right: [about, github]
   components:
     dashboard:
       text: "Dashboard"
       icon: "fa fa-tachometer"
       href: articles/interactive.html
-    community:
-      text: "Deutsche Nutzer"
-      icon: "flag germany"
+    about:
+      text: "About"
       menu:
-        - text: Only available in german
+        - text: "English"
+        - text: "Project Description"
+          icon: "fa fa-external-link-alt"
+          href: https://www.sub.uni-goettingen.de/en/projects-research/project-details/projekt/hybrid-oa-dashboards/
+        - text: ----
+        - text: "Deutsch"
         - text: "Projektbeschreibung"
-          icon: "fa fa-info-circle"
+          icon: "fa fa-external-link-alt"
           href: https://www.sub.uni-goettingen.de/projekte-forschung/projektdetails/projekt/hybrid-oa-dashboards/
+        - text: Only available in german
         - text: "Newsletter"
           icon: "fa fa-envelope-open-text"
           href: newsletter.html
         - text: "Webinare"
           icon: "fa fa-chalkboard-teacher"
           href: webinars.html
-    about:
-      text: "About"
-      icon: "fa fa-info-circle"
-      href: https://www.sub.uni-goettingen.de/en/projects-research/project-details/projekt/hybrid-oa-dashboards/
-    github:
-      text: "Source"
-      icon: "fa fa-github"
-      href: https://github.com/subugoe/hoad
 reference:
   - title: ETL
     desc: Extract, transform, load
