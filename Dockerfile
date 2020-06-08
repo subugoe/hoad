@@ -9,12 +9,12 @@ LABEL "maintainer"="Maximilian Held <info@maxheld.de>"
 LABEL "repository"="https://github.com/subugoe/hoad"
 LABEL "homepage"="https://subugoe.github.io/hoad/"
 
-COPY .Rprofile .Rprofile
-COPY DESCRIPTION DESCRIPTION
+COPY .Rprofile DESCRIPTION /hoad/
 
 # copy in cache
 # if this is run outside of github actions, will just copy empty dir
 COPY .deps/ ${LIB_PATH}
+WORKDIR "/hoad"
 # install system dependencies
 RUN Rscript -e "options(warn = 2); install.packages('remotes')"
 
@@ -35,3 +35,10 @@ RUN sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))") && \
 
 # install dependencies
 RUN Rscript -e "options(warn = 2); remotes::install_deps(dependencies = TRUE)"
+
+COPY . /hoad/
+
+# install package into container
+RUN Rscript -e "remotes::install_local(upgrade = FALSE)"
+
+ENTRYPOINT ["Rscript", "-e", "hoad::runHOAD(shiny_args = list(port = 3939, host = '0.0.0.0'))"]

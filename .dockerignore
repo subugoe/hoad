@@ -2,3 +2,6 @@
 .github
 .gitignore
 vignettes/
+Dockerfile
+docs/
+vignettes/
