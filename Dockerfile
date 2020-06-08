@@ -41,4 +41,5 @@ COPY . /hoad/
 # install package into container
 RUN Rscript -e "remotes::install_local(upgrade = FALSE)"
 
+EXPOSE 3939
 ENTRYPOINT ["Rscript", "-e", "hoad::runHOAD(shiny_args = list(port = 3939, host = '0.0.0.0'))"]
