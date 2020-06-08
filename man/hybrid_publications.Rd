@@ -2,6 +2,7 @@
 % Please edit documentation in R/data.R
 \name{hybrid_publications}
 \alias{hybrid_publications}
+\alias{articles_by_jp}
 \title{Hybrid open access articles via \href{https://www.crossref.org}{Crossref}}
 \format{
 A data frame with the following variables:\tabular{ll}{
@@ -33,16 +34,30 @@ A data frame with the following variables:\tabular{ll}{
 }
 \usage{
 hybrid_publications()
+
+articles_by_jp()
 }
 \description{
 Contains information about the overall publication volume, and, if available, cost information from the Open APC Initiative.
 }
+\section{Functions}{
+\itemize{
+\item \code{articles_by_jp}: number of articles by journal and publisher
+}}
+
 \section{License}{
 
 See Crossref \href{https://www.crossref.org/requestaccount/termsandconditions.html}{Terms and Conditions}
 }
 
+\examples{
+articles_by_jp()
+}
 \seealso{
+Other data: 
+\code{\link{license_patterns}},
+\code{\link{unpaywall_df}()}
+
 Other data: 
 \code{\link{license_patterns}},
 \code{\link{unpaywall_df}()}

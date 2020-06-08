@@ -41,3 +41,44 @@ find_all_ints <- function(x) {
   x <- as.integer(x)
   min(x):max(x)
 }
+
+#' Run a shiny module
+#'
+#' Used for testing and development.
+#' Based on [Cole Arendt](https://github.com/colearendt)s [suggestion](https://community.rstudio.com/t/tips-for-module-development/14510).
+#'
+#' @inheritParams shiny::NS
+#'
+#' @param ui part of the module
+#'
+#' @inheritParams shiny::callModule
+#'
+#' @param ui_params, module_params list of parameters to be passed to the `ui` and `module` (= server function) of the module, respectively.
+#'
+#' @family CICD
+#'
+#' @examples
+#' runModule(ui = jpPickerInput, module = jpPicker)
+#' @export
+#' @keywords internal
+# TODO this should be factored out to a separate pkg as per https://github.com/subugoe/metaR/issues/94
+runModule <- function(id = "test_module",
+                      ui,
+                      module,
+                      ui_params = list(),
+                      module_params = list()) {
+  actualUI <- do.call(ui, c(id = id, ui_params))
+
+  actualServer <- function(input, output, session) {
+    do.call(
+      callModule,
+      c(
+        module = module,
+        id = id,
+        module_params
+      )
+    )
+  }
+
+  shinyApp(actualUI, actualServer)
+}

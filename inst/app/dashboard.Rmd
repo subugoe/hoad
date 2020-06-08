@@ -3,16 +3,16 @@ title: "Hybrid OA Dashboard"
 output:
   flexdashboard::flex_dashboard:
     orientation: rows
-    vertical_layout: fill
+    vertical_layout: scroll
     css: ugoe_bootswatch.css
 runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
+library(shiny)
 library(flexdashboard)
 library(viridis)
 library(plotly)
-library(shiny)
 library(scales)
 library(DT)
 library(writexl)
@@ -24,58 +24,27 @@ library(stringr)
 ```
 
 ```{r global}
-# access to data
-hybrid_df <- readr::read_csv(file = path_extdat("hybrid_publications.csv")) %>%
-  mutate(license = fct_infreq(license)) %>%
-  mutate(publisher = fct_infreq(publisher)) %>%
-  mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019", "2020"))) %>%
-  mutate(hybrid_type = ifelse(hybrid_type == "SCOAP", "SCOAP<sup>3</sup>", hybrid_type)) %>%
-  mutate(hybrid_type = factor(hybrid_type, levels = c("Open APC (TA)", "Open APC (Hybrid)", "SCOAP<sup>3</sup>"))) %>%
-  mutate(domain = paste(domain, suffix, sep = ".")) %>%
-  arrange(desc(yearly_publisher_volume))
-unpaywall_df <- readr::read_csv(file = path_extdat("unpaywall_df.csv")) %>%
-  mutate(year = factor(year, levels = c("2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")))
+
 ```
 
 Overview
-=================================================================
+========
 
 Inputs {.sidebar}
------------------------------------------------------------------------
+-----------------
 
+```{r context="render"}
 
-```{r}
-# from https://stackoverflow.com/questions/42148177/how-can-i-build-multiple-inputs-into-my-shiny-app-with-both-updating-and-multipl
-# TODO factor this out
-selectizeInput(
-  inputId = "publishers",
-  label = "Selected Publishers",
-  choices = c(All = "", levels(hybrid_df$publisher)),
-  multiple = TRUE,
-)
-selectizeInput(
-  inputId = "journals",
-  label = "Selected Journals",
-  choices = c(All = "", sort(unique(hybrid_df$journal_title))),
-  multiple = TRUE
-)
+```
 
-# publisher filter
-jn_filtered <- reactive({
-  if (is.null(input$publishers)) {
-    return(hybrid_df)
-  } else {
-    return(hybrid_df[hybrid_df$publisher %in% input$publishers, ])
-  }
+```{r context="server"}
+
 })
 
-observe(updateSelectizeInput(
-  session,
-  "journals",
-  choices = c(All = "", sort(unique(jn_filtered()$journal_title)))
-))
 
-# journal_title filter
+```
+
+```{r context="server"}
 jn_f <- reactive({
   if (is.null(input$journals)) {
     return(jn_filtered())
@@ -86,42 +55,24 @@ jn_f <- reactive({
 
 # prepare dataset for plotting
 hybrid_sub <- reactive({
-if (length(unique(jn_f()$publisher)) > 1) {
+  if (length(unique(jn_f()$publisher)) > 1) {
     hybrid_sub <- jn_f() %>%
-      group_by(year, yearly_all, license) %>%
+      group_by(issued, yearly_all, license) %>%
       count() %>%
       mutate(prop = n / yearly_all)
   } else if (length(unique(jn_f()$journal_title)) > 1 &&
-             length(unique(jn_f()$publisher)) == 1) {
+    length(unique(jn_f()$publisher)) == 1) {
     hybrid_sub <- jn_f() %>%
-      group_by(year, license, yearly_publisher_volume) %>%
+      group_by(issued, license, yearly_publisher_volume) %>%
       count() %>%
       mutate(prop = n / yearly_publisher_volume)
   } else {
     hybrid_sub <- jn_f() %>%
-      group_by(year, license, yearly_jn_volume) %>%
+      group_by(issued, license, yearly_jn_volume) %>%
       count() %>%
       mutate(prop = n / yearly_jn_volume)
   }
 })
-# using unpaywall indicators
-# unpaywall <- reactive({
-#   hybrid_df %>%
-#     filter(journal_title %in% jn_f()$journal_title) %>%
-#     group_by(year, journal_title, publisher, jn_y_unpaywall_others) %>%
-#     summarise(n = n_distinct(doi_oa)) %>%
-#     gather(n, jn_y_unpaywall_others, key = "source", value = "articles") %>%
-#     ungroup() %>%
-#     group_by(year, source) %>%
-#     summarise(articles = sum(articles, na.rm = TRUE)) %>%
-#     mutate(
-#       source = ifelse(
-#         source == "n",
-#         "Crossref immediate license",
-#         "Other license information\n(Unpaywall)"
-#       )
-#     )
-# })
 ```
 
 Notice that only those hybrid open access journals were included where
@@ -146,7 +97,8 @@ renderValueBox({
 renderValueBox({
   journal_n <- length(unique(jn_f()$journal_title))
   valueBox(format(journal_n, big.mark = " ", scientific = FALSE),
-           icon = "fa-filter")
+    icon = "fa-filter"
+  )
 })
 ```
 
@@ -156,7 +108,8 @@ renderValueBox({
 renderValueBox({
   hybrid_n <- nrow(jn_f())
   valueBox(format(hybrid_n, big.mark = " ", scientific = FALSE),
-           icon = "fa-creative-commons")
+    icon = "fa-creative-commons"
+  )
 })
 ```
 
@@ -168,7 +121,7 @@ Column {.tabset .tabset-fade}
 
 ```{r}
 renderPlotly({
-  p <- ggplot(hybrid_sub(), aes(year, prop, fill = license)) +
+  p <- ggplot(hybrid_sub(), aes(issued, prop, fill = license)) +
     xlab("Year") +
     ylab("Hybrid OA / Articles published") +
     scale_fill_manual(
@@ -188,7 +141,7 @@ renderPlotly({
 
 ```{r}
 renderPlotly({
-  p <- ggplot(hybrid_sub(), aes(year, n, fill = license)) +
+  p <- ggplot(hybrid_sub(), aes(issued, n, fill = license)) +
     xlab("Year") +
     ylab("Hybrid OA Articles") +
     scale_fill_manual(
@@ -197,12 +150,13 @@ renderPlotly({
     ) +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(
-      labels = function(x)
+      labels = function(x) {
         format(x, big.mark = " ", scientific = FALSE)
+      }
     ) +
     theme_minimal() +
     geom_col(position = position_stack(reverse = TRUE))
- # p
+  # p
   plotly::ggplotly(p)
 })
 ```
@@ -228,14 +182,15 @@ Row {data-width=400 data-height=350}
 renderPlotly({
   p <- hybrid_df %>%
     filter(journal_title %in% jn_f()$journal_title) %>%
-    ggplot(aes(year, ..count.., fill = hybrid_type)) +
+    ggplot(aes(issued, ..count.., fill = hybrid_type)) +
     geom_bar(position = position_stack(reverse = TRUE)) +
     xlab("Year") +
     ylab("Articles") +
     scale_x_discrete(drop = FALSE) +
     scale_y_continuous(
-      labels = function(x)
-        format(x, big.mark = " ", scientific = FALSE),
+      labels = function(x) {
+        format(x, big.mark = " ", scientific = FALSE)
+      },
       breaks = scales::pretty_breaks()
     ) +
     scale_fill_manual(
@@ -264,8 +219,10 @@ renderEcharts4r({
     count(suffix, domain) %>%
     filter(!is.na(domain)) %>%
     e_charts() %>%
-    e_treemap(suffix, domain, n, leafDepth = "1",
-              name = "Corresponding Email") %>%
+    e_treemap(suffix, domain, n,
+      leafDepth = "1",
+      name = "Corresponding Email"
+    ) %>%
     e_tooltip(trigger = "item")
 })
 ```
@@ -281,18 +238,18 @@ Row {data-height=250}
 ```{r}
 hybrid_all <-
   hybrid_df %>%
-  count(year) %>%
-  mutate(year = gsub("201", "1", year)) %>%
-  mutate(year = gsub("2020", "20", year))
+  count(issued) %>%
+  mutate(issued = gsub("201", "1", issued)) %>%
+  mutate(issued = gsub("2020", "20", issued))
 hybrid_df %>%
-  mutate(year = gsub("201", "1", year)) %>%
-  mutate(year = gsub("2020", "20", year)) %>%
+  mutate(issued = gsub("201", "1", issued)) %>%
+  mutate(issued = gsub("2020", "20", issued)) %>%
   mutate(publisher_group = fct_lump(publisher, prop = 0.05)) %>%
-  group_by(year, publisher_group) %>%
+  group_by(issued, publisher_group) %>%
   summarize(n = n()) %>%
   mutate(prop = n / sum(n)) %>%
   mutate(`Proportion in %` = round(prop * 100, 2)) %>%
-  ggplot(aes(year, n)) +
+  ggplot(aes(issued, n)) +
   geom_bar(
     data = hybrid_all,
     aes(fill = "All Hybrid OA Articles"),
@@ -302,10 +259,12 @@ hybrid_df %>%
   geom_bar(aes(fill = "by Publisher", label = `Proportion in %`), color = "transparent", stat = "identity") +
   facet_wrap(~publisher_group, nrow = 1) +
   scale_fill_manual(values = c("#b3b3b3a0", "#153268"), name = "") +
-   labs(x = "Year", y = "Hybrid OA Articles") +
+  labs(x = "Year", y = "Hybrid OA Articles") +
   theme_minimal() +
-  theme(legend.position = "top",
-        legend.justification = "right") +
+  theme(
+    legend.position = "top",
+    legend.justification = "right"
+  ) +
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
   theme(panel.grid.minor = element_blank()) +
   theme(axis.ticks = element_blank()) +
@@ -328,7 +287,7 @@ fillRow(
     selectInput(
       inputId = "Year",
       label = "Select Years",
-      choices = c(rev(levels(hybrid_df$year))),
+      choices = c(rev(levels(hybrid_df$issued))),
       selected = c("2017", "2018", "2019"),
       multiple = TRUE
     ),
@@ -339,18 +298,18 @@ fillRow(
 
 output$pubplot <- renderPlotly({
   if (input$Year == "All") {
-    tt <-   hybrid_df %>%
+    tt <- hybrid_df %>%
       filter(!is.na(license)) %>%
       mutate(publisher = forcats::as_factor(publisher)) %>%
-      group_by(year, publisher, journal_title, yearly_jn_volume) %>%
+      group_by(issued, publisher, journal_title, yearly_jn_volume) %>%
       summarize(oa = n()) %>%
       mutate(prop = oa / yearly_jn_volume)
   } else {
-    tt <-  hybrid_df %>%
+    tt <- hybrid_df %>%
       filter(!is.na(license)) %>%
       mutate(publisher = forcats::as_factor(publisher)) %>%
-      filter(year %in% input$Year) %>%
-      group_by(year, publisher, journal_title, yearly_jn_volume) %>%
+      filter(issued %in% input$Year) %>%
+      group_by(issued, publisher, journal_title, yearly_jn_volume) %>%
       summarize(oa = n()) %>%
       mutate(prop = oa / yearly_jn_volume)
   }
@@ -366,8 +325,9 @@ output$pubplot <- renderPlotly({
     scale_x_discrete(
       drop = FALSE,
       limits = rev(levels(tt$publisher)),
-      labels = function(x)
+      labels = function(x) {
         str_wrap(x, width = 30)
+      }
     ) +
     scale_y_continuous(labels = scales::percent)
   if (input$rb == TRUE) {
@@ -404,21 +364,21 @@ fillCol(
 
 output$yearplot <- renderPlotly({
   if (input$Publisher == "All") {
-    tt <-   hybrid_df %>%
+    tt <- hybrid_df %>%
       filter(!is.na(license)) %>%
-      group_by(year, publisher, journal_title, yearly_jn_volume) %>%
+      group_by(issued, publisher, journal_title, yearly_jn_volume) %>%
       summarize(oa = n()) %>%
       mutate(prop = oa / yearly_jn_volume)
   } else {
-    tt <-  hybrid_df %>%
+    tt <- hybrid_df %>%
       filter(!is.na(license)) %>%
       filter(publisher == input$Publisher) %>%
-      group_by(year, publisher, journal_title, yearly_jn_volume) %>%
+      group_by(issued, publisher, journal_title, yearly_jn_volume) %>%
       summarize(oa = n()) %>%
       mutate(prop = oa / yearly_jn_volume)
   }
 
-  p <- ggplot(tt, aes(y = prop, x = as.factor(year))) +
+  p <- ggplot(tt, aes(y = prop, x = as.factor(issued))) +
     geom_boxplot() +
     coord_flip() +
     theme_minimal() +
@@ -454,11 +414,11 @@ hybrid_data <- reactive({
       filter(publisher == input$Publisher)
   }
   hybrid_df %>%
-    filter(year %in% input$Year) %>%
-    group_by(year, publisher, journal_title, yearly_jn_volume) %>%
+    filter(issued %in% input$Year) %>%
+    group_by(issued, publisher, journal_title, yearly_jn_volume) %>%
     summarize(oa = n()) %>%
     mutate(prop = round((oa / yearly_jn_volume) * 100, 2)) %>%
-    arrange(desc(year)) %>%
+    arrange(desc(issued)) %>%
     select(
       Year = year,
       Publisher = publisher,
@@ -471,16 +431,16 @@ hybrid_data <- reactive({
 
 renderDataTable(
   expr = {
-  hybrid_data()
-},
-rownames = FALSE,
+    hybrid_data()
+  },
+  rownames = FALSE,
   filter = "bottom",
-options = list(
+  options = list(
     pageLength = 4,
     dom = "ftp",
-  columnDefs = list(list(
+    columnDefs = list(list(
       className = "dt-head-left", targets = "_all"
-))
+    ))
   )
 )
 ```
@@ -493,13 +453,13 @@ Institutional View
 my_data <- reactive({
   if (!is.null(input$plot_clicked_data$name)) {
     hybrid_df %>%
-    filter(suffix == input$plot_clicked_data$name | domain == input$plot_clicked_data$name) %>%
-    mutate(plot_title = ifelse(!input$plot_clicked_data$name %in% suffix,
-                               domain,
+      filter(suffix == input$plot_clicked_data$name | domain == input$plot_clicked_data$name) %>%
+      mutate(plot_title = ifelse(!input$plot_clicked_data$name %in% suffix,
+        domain,
         suffix
       ))
   } else {
-      hybrid_df
+    hybrid_df
   }
 })
 ```
@@ -512,16 +472,18 @@ Column
 ```{r}
 output$plot <- renderEcharts4r({
   hybrid_df %>%
-     count(suffix, domain) %>%
-     filter(!is.na(domain)) %>%
-     e_charts() %>%
-     e_treemap(suffix, domain, n, leafDepth = "1",
-               name = "Corresponding Email") %>%
-     e_tooltip(trigger = "item")
+    count(suffix, domain) %>%
+    filter(!is.na(domain)) %>%
+    e_charts() %>%
+    e_treemap(suffix, domain, n,
+      leafDepth = "1",
+      name = "Corresponding Email"
+    ) %>%
+    e_tooltip(trigger = "item")
 })
 
 output$oa_license <- renderPlotly({
-    ggplot(my_data(), aes(factor(year), fill = license)) +
+  ggplot(my_data(), aes(factor(issued), fill = license)) +
     geom_bar(position = position_stack(reverse = TRUE)) +
     ggtitle(unique(my_data()$plot_title)) +
     scale_fill_manual(
@@ -530,11 +492,12 @@ output$oa_license <- renderPlotly({
     ) +
     scale_x_discrete("", drop = FALSE) +
     scale_y_continuous("Articles",
-      labels = function(x)
+      labels = function(x) {
         format(x, big.mark = " ", scientific = FALSE)
+      }
     ) +
     theme_minimal() -> p
-     tt <- plotly::ggplotly(p, tooltip = c("y"))
+  tt <- plotly::ggplotly(p, tooltip = c("y"))
   tt$x$data <- lapply(tt$x$data, function(x) {
     x$text <- paste(x$name, x$y, sep = ": ")
     x
@@ -544,13 +507,14 @@ output$oa_license <- renderPlotly({
 
 output$oa_source <- renderPlotly({
   p <-
-    ggplot(my_data(), aes(factor(year), ..count.., fill = hybrid_type)) +
+    ggplot(my_data(), aes(factor(issued), ..count.., fill = hybrid_type)) +
     geom_bar(position = position_stack(reverse = TRUE)) +
     xlab("Year") +
     ylab("Articles") +
     scale_y_continuous(
-      labels = function(x)
+      labels = function(x) {
         format(x, big.mark = " ", scientific = FALSE)
+      }
     ) +
     scale_fill_manual(
       "Sources",
@@ -558,7 +522,7 @@ output$oa_source <- renderPlotly({
       na.value = "#b3b3b3a0"
     ) +
     theme_minimal()
-   tt <- plotly::ggplotly(p, tooltip = c("y"))
+  tt <- plotly::ggplotly(p, tooltip = c("y"))
   tt$x$data <- lapply(tt$x$data, function(x) {
     x$text <- paste(x$name, x$y, sep = ": ")
     x
@@ -584,7 +548,7 @@ Row
 ```{r}
 renderDataTable(
   expr = {
- my_data() %>%
+    my_data() %>%
       count(publisher) %>%
       arrange(desc(n)) %>%
       mutate(prop = round(n / sum(n) * 100, 2))

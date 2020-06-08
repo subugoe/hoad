@@ -47,17 +47,12 @@ jn_facets <- jsonlite::stream_in(
   file(path_extdat(x = "jn_facets_df.json")),
   verbose = FALSE
 )
-# get hybrid journals that have open licensing information in the period 2013-18
-hybrid_cr <- read_csv(path_extdat("hybrid_publications.csv")) %>%
-  mutate(license = fct_infreq(license)) %>%
-  mutate(year = factor(issued, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019"))) %>%
-  arrange(desc(yearly_publisher_volume))
 
 o_apc_df <- read_csv(path_extdat("oapc_hybrid.csv")) %>%
-  mutate(year = factor(period, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019")))
+  mutate(year = factor(period, levels = c("2013", "2014", "2015", "2016", "2017", "2018", "2019")))
 
 unpaywall_df <- read_csv(path_extdat("unpaywall_df.csv")) %>%
-  mutate(year = factor(year, levels = c("2013", "2014", "2015","2016", "2017", "2018", "2019")))
+  mutate(year = factor(year, levels = c("2013", "2014", "2015", "2016", "2017", "2018", "2019")))
 ```
 
 
@@ -278,10 +273,12 @@ cvr_df <- left_join(n_journals_df, n_hoa_df, by = "publisher") %>%
   mutate(publisher = forcats::fct_other(publisher, drop = publisher[21:length(publisher)])) %>%
   ungroup() %>%
   group_by(publisher) %>%
-  summarise(n_journals = sum(n_journals),
-            n_hoa_journals = sum(n_hoa_journals))
+  summarise(
+    n_journals = sum(n_journals),
+    n_hoa_journals = sum(n_hoa_journals)
+  )
 #
-cvr_df_2 <- tidyr::gather(cvr_df, group, value,-publisher)
+cvr_df_2 <- tidyr::gather(cvr_df, group, value, -publisher)
 
 #' plot
 gg <- ggplot(cvr_df, aes(y = publisher)) +
@@ -378,52 +375,53 @@ hybrid_all <- hybrid_cr %>%
   mutate(prop = n / yearly_all)
 prop_p <- ggplot(hybrid_all, aes(year, prop, fill = license)) +
   geom_col(position = position_stack(reverse = TRUE)) +
-    xlab("Year") +
-    ylab("Relative") +
-    # palette https://twitter.com/debivort/status/994583058031546369
-    scale_fill_manual(
-      "License",
+  xlab("Year") +
+  ylab("Relative") +
+  # palette https://twitter.com/debivort/status/994583058031546369
+  scale_fill_manual(
+    "License",
     values = colors_license
-    ) +
-    scale_x_discrete(drop = FALSE) +
-    scale_y_continuous(labels = scales::percent) +
-    # theme_minimal(base_family="Roboto", base_size = 12) +
-  theme(plot.margin=margin(30,30,30,30)) +
-  theme(panel.grid.minor=element_blank()) +
-  theme(axis.ticks=element_blank()) +
-  theme(panel.grid.major.x=element_blank()) +
-  theme(panel.border=element_blank()) +
-  theme(legend.position="none")
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(labels = scales::percent) +
+  # theme_minimal(base_family="Roboto", base_size = 12) +
+  theme(plot.margin = margin(30, 30, 30, 30)) +
+  theme(panel.grid.minor = element_blank()) +
+  theme(axis.ticks = element_blank()) +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(panel.border = element_blank()) +
+  theme(legend.position = "none")
 prop_n <- ggplot(hybrid_all, aes(year, n, fill = license)) +
   geom_col(position = position_stack(reverse = TRUE)) +
-    xlab("Year") +
-    ylab("Absolute") +
-    # palette https://twitter.com/debivort/status/994583058031546369
-    scale_fill_manual(
-      "License",
+  xlab("Year") +
+  ylab("Absolute") +
+  # palette https://twitter.com/debivort/status/994583058031546369
+  scale_fill_manual(
+    "License",
     values = colors_license
-    ) +
-    scale_x_discrete(drop = FALSE) +
-    scale_y_continuous() +
-   # theme_minimal(base_family="Roboto", base_size = 12) +
-  theme(plot.margin=margin(30,30,30,30)) +
-  theme(panel.grid.minor=element_blank()) +
-  theme(axis.ticks=element_blank()) +
-  theme(panel.grid.major.x=element_blank()) +
-  theme(panel.border=element_blank())
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous() +
+  # theme_minimal(base_family="Roboto", base_size = 12) +
+  theme(plot.margin = margin(30, 30, 30, 30)) +
+  theme(panel.grid.minor = element_blank()) +
+  theme(axis.ticks = element_blank()) +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(panel.border = element_blank())
 prow <- cowplot::plot_grid(prop_p, prop_n +
-  theme(legend.position="none"),
-  align = 'vh',
-           labels = c("A", "B"),
-           hjust = -1,
-           nrow = 1)
+  theme(legend.position = "none"),
+align = "vh",
+labels = c("A", "B"),
+hjust = -1,
+nrow = 1
+)
 
-legend_b <- get_legend(prop_n + theme(legend.position="bottom"))
+legend_b <- get_legend(prop_n + theme(legend.position = "bottom"))
 p_license <- plot_grid(prow, legend_b, ncol = 1, rel_heights = c(1, .2))
 title <- ggdraw() +
   # draw_label("Hybrid Open Access Uptake 2013-2019", fontfamily = "Roboto")
   draw_label("Hybrid Open Access Uptake 2013-2019")
-p <- plot_grid(title, p_license, ncol=1, rel_heights=c(0.1, 1))
+p <- plot_grid(title, p_license, ncol = 1, rel_heights = c(0.1, 1))
 p
 ```
 
@@ -455,8 +453,10 @@ unpaywall_df() %>%
 ```{r}
 hybrid_overview <- hybrid_cr %>%
   group_by(publisher) %>%
-  summarize(`Number of journals` = n_distinct(journal_title),
-            `Hybrid OA article volume` = n_distinct(doi_oa))
+  summarize(
+    `Number of journals` = n_distinct(journal_title),
+    `Hybrid OA article volume` = n_distinct(doi_oa)
+  )
 top3 <- hybrid_overview %>%
   arrange(desc(`Number of journals`)) %>%
   slice(1:3)
@@ -484,30 +484,33 @@ In total, spending information for `r hybrid_cr %>% filter(!is.na(hybrid_type)) 
 ```{r spending, fig.cap="Development of spending disclosure", fig.subcap="Selected for hybrid open access articles across publishers. Sources include expenditures for individual articles ('Open APC (Hybrid)') and articles from transformative agreements ('Open APC (TA)') provided by the Open APC Initiative. Overlap between hybrid open access articles found via Crossref and the SCOAP$^3$ repository is displayed as well. The light gray stack areas represent the number of articles where no information about open access sponsorship was available. Notice that it is very likely that the overall decrease of spending for hybrid open access reported to the Open APC initiative in 2019 is due to a lag between the time  payments were made and reporting of payments to the initiative."}
 spending_plot <- hybrid_cr %>%
   mutate(publisher = fct_other(publisher, keep = c("Elsevier BV", "Springer Nature"))) %>%
-    mutate(hybrid_type = ifelse(hybrid_type == "SCOAP","SCOAP³", hybrid_type)) %>%
+  mutate(hybrid_type = ifelse(hybrid_type == "SCOAP", "SCOAP³", hybrid_type)) %>%
   ggplot(aes(year, ..count.., fill = hybrid_type)) +
-    geom_bar(position = position_stack(reverse = TRUE)) +
-  labs(x = "Year", y = "Hybrid OA Articles",
-       title = "Availability of Spending Information for Hybrid Open Access Articles") +
-    scale_x_discrete(drop = FALSE) +
-    scale_y_continuous(
-      labels = function(x)
-        format(x, big.mark = " ", scientific = FALSE),
-      breaks = scales::pretty_breaks()
-    ) +
+  geom_bar(position = position_stack(reverse = TRUE)) +
+  labs(
+    x = "Year", y = "Hybrid OA Articles",
+    title = "Availability of Spending Information for Hybrid Open Access Articles"
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(
+    labels = function(x) {
+      format(x, big.mark = " ", scientific = FALSE)
+    },
+    breaks = scales::pretty_breaks()
+  ) +
   scale_fill_manual(
-      "Sources:",
+    "Sources:",
     values = colors_source_disclosure,
     na.value = "#E9E1D7"
-    ) +
-    facet_wrap( ~ publisher) +
+  ) +
+  facet_wrap(~publisher) +
   # theme_minimal(base_family="Roboto", base_size = 12) +
-  theme(plot.margin=margin(30,30,30,30)) +
-  theme(panel.grid.minor=element_blank()) +
-  theme(axis.ticks=element_blank()) +
-  theme(panel.grid.major.x=element_blank()) +
-  theme(panel.border=element_blank()) +
-  theme(legend.position="top")
+  theme(plot.margin = margin(30, 30, 30, 30)) +
+  theme(panel.grid.minor = element_blank()) +
+  theme(axis.ticks = element_blank()) +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(panel.border = element_blank()) +
+  theme(legend.position = "top")
 spending_plot
 ```
 
@@ -541,11 +544,11 @@ email_plot <- ggplot(email_df, aes(suffix, prop)) +
   scale_y_continuous("Percentage", labels = scales::percent_format(accuracy = 5L)) +
   labs(x = "Email Domain Suffix", title = "Hybrid Open Access Articles: Corresponding Authors Affiliation") +
   # theme_minimal(base_family="Roboto", base_size = 12) +
-  theme(plot.margin=margin(30,30,30,30)) +
-  theme(panel.grid.minor=element_blank()) +
-  theme(axis.ticks=element_blank()) +
-  theme(panel.grid.major.y=element_blank()) +
-  theme(panel.border=element_blank())
+  theme(plot.margin = margin(30, 30, 30, 30)) +
+  theme(panel.grid.minor = element_blank()) +
+  theme(axis.ticks = element_blank()) +
+  theme(panel.grid.major.y = element_blank()) +
+  theme(panel.border = element_blank())
 email_plot
 ```
 
@@ -579,10 +582,12 @@ hybrid_cr %>%
   geom_bar(aes(fill = "per Publisher"), color = "transparent", stat = "identity") +
   facet_wrap(~publisher_group, nrow = 1) +
   scale_fill_manual(values = c("#b3b3b3a0", "#153268"), name = "") +
-   labs(x = "Year", y = "Hybrid OA Articles", title = "Uptake of Hybrid Open Access since 2013") +
+  labs(x = "Year", y = "Hybrid OA Articles", title = "Uptake of Hybrid Open Access since 2013") +
   # theme_minimal(base_family = "Roboto") +
-  theme(legend.position = "top",
-        legend.justification = "right") +
+  theme(
+    legend.position = "top",
+    legend.justification = "right"
+  ) +
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
   theme(plot.margin = margin(30, 30, 30, 30)) +
   theme(panel.grid.minor = element_blank()) +
@@ -610,15 +615,17 @@ q <- ggplot(my_df, aes(publisher_group, prop)) +
   geom_boxplot() +
   scale_x_discrete(limits = rev(levels(my_df$publisher_group))) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 5L)) +
-  coord_flip(ylim = c(0,0.3)) +
-  labs(y = "Percentage", x = "Publishers (Top 3)",
-       title = "Journal hybrid open access share during 2017 and 2018") +
+  coord_flip(ylim = c(0, 0.3)) +
+  labs(
+    y = "Percentage", x = "Publishers (Top 3)",
+    title = "Journal hybrid open access share during 2017 and 2018"
+  ) +
   # theme_minimal(base_family = "Roboto")  +
-  theme(plot.margin=margin(30,30,30,30)) +
-  theme(panel.grid.minor=element_blank()) +
-  theme(axis.ticks=element_blank()) +
-  theme(panel.grid.major.y=element_blank()) +
-  theme(panel.border=element_blank())
+  theme(plot.margin = margin(30, 30, 30, 30)) +
+  theme(panel.grid.minor = element_blank()) +
+  theme(axis.ticks = element_blank()) +
+  theme(panel.grid.major.y = element_blank()) +
+  theme(panel.border = element_blank())
 q
 ```
 
@@ -647,28 +654,30 @@ The sponsors of these open access publications were therefore unknow to us.
 ```{r institutions, fig.cap = "Availability of spending information", fig.subcap="For hybrid open access articles by email top-level domain from first respective corresponding authors"}
 hybrid_cr %>%
   mutate(year = gsub("20", "", year)) %>%
-  mutate(hybrid_type = ifelse(hybrid_type == "SCOAP","SCOAP³", hybrid_type)) %>%
+  mutate(hybrid_type = ifelse(hybrid_type == "SCOAP", "SCOAP³", hybrid_type)) %>%
   filter(!is.na(suffix)) %>%
   mutate(suffix = fct_lump(suffix, prop = 0.02, other_level = "other")) %>%
   count(hybrid_type, year, suffix, sort = TRUE) %>%
   ggplot(aes(year, n, fill = hybrid_type)) +
   geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
-  facet_wrap(~factor(suffix, levels = rev(levels(email_df$suffix)))) +
+  facet_wrap(~ factor(suffix, levels = rev(levels(email_df$suffix)))) +
   scale_fill_manual(
-      "Sources:",
+    "Sources:",
     values = colors_source_disclosure,
-      na.value = "#b3b3b3a0"
-    ) +
-  labs(x = "Year", y = "Hybrid OA Articles",
-       title = "Availability of Spending Information for Hybrid Open Access Articles",
-       subtitle = "Breakdown by email top-level domain from corresponding authors") +
+    na.value = "#b3b3b3a0"
+  ) +
+  labs(
+    x = "Year", y = "Hybrid OA Articles",
+    title = "Availability of Spending Information for Hybrid Open Access Articles",
+    subtitle = "Breakdown by email top-level domain from corresponding authors"
+  ) +
   # theme_minimal(base_family = "Roboto", base_size = 12) +
-  theme(plot.margin=margin(30,30,30,30)) +
-  theme(panel.grid.minor=element_blank()) +
-  theme(axis.ticks=element_blank()) +
-  theme(panel.grid.major.x=element_blank()) +
-  theme(panel.border=element_blank()) +
-  theme(legend.position="top") -> plot_institutions
+  theme(plot.margin = margin(30, 30, 30, 30)) +
+  theme(panel.grid.minor = element_blank()) +
+  theme(axis.ticks = element_blank()) +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(panel.border = element_blank()) +
+  theme(legend.position = "top") -> plot_institutions
 plot_institutions
 ```
 

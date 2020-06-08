@@ -1,10 +1,11 @@
+# crossref ====
 #' Hybrid open access articles via [Crossref](https://www.crossref.org)
-#' 
+#'
 #' Contains information about the overall publication volume, and, if available, cost information from the Open APC Initiative.
-#' 
-#' @format 
+#'
+#' @format
 #' A data frame with the following variables:
-#' 
+#'
 #' | **Variable**               | **Description**                                                    |
 #' | -------------------------- | ------------------------------------------------------------------ |
 #' | `license`                  | Normalized open content license statement                          |
@@ -27,14 +28,14 @@
 #' | `subdomain`                | Email subdomain first or corresponding author                      |
 #' | `domain`                   | Email domain first or corresponding author                         |
 #' | `suffix`                   | Email suffix first or corresponding author                         |
-#' 
+#'
 #' @source [Crossref](https://www.crossref.org)
-#' 
+#'
 #' @section License:
 #' See Crossref [Terms and Conditions](https://www.crossref.org/requestaccount/termsandconditions.html)
-#' 
+#'
 #' @family data
-#' 
+#'
 #' @export
 # storing this as a function ensures this is read in only at compile time, not run time
 hybrid_publications <- function() {
@@ -62,9 +63,29 @@ hybrid_publications <- function() {
       domain = col_character(),
       suffix = col_character()
     )
-  )
+  ) %>%
+    # reorder factor levels for better cosmetic results
+    mutate(
+      license = forcats::fct_infreq(.data$license),
+      journal_title = forcats::fct_relevel(.data$journal_title, sort),
+      publisher = forcats::fct_infreq(.data$publisher),
+    )
 }
-  
+
+#' @describeIn hybrid_publications number of articles by journal and publisher
+#'
+#' @examples
+#' articles_by_jp()
+#' @export
+#' @family data
+articles_by_jp <- function() {
+  # this is smaller by a factor of 100 than the whole thing, useful for shiny UI functions as well as plots
+  hybrid_publications() %>%
+    group_by(.data$journal_title, .data$publisher) %>%
+    summarise(n = n())
+}
+
+# unpaywall ====
 #' Unpaywall data
 # TODO improve docs
 #' @family data
