@@ -79,13 +79,13 @@ jobs:
           add_git_labels: true
           tags: ${{ github.sha }}
           push: ${{ github.event_name != 'pull_request' }}
-      - name: GCP Auth
-        uses: actions-hub/gcloud@master
-        env:
-          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-          APPLICATION_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - name: Setup GCP Cloud SDK
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@0.1.2
         with:
-          args: auth configure-docker
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+      - run: gcloud info
       - name: Deploy Shiny Application to shinyapps.io ref
         env:
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
