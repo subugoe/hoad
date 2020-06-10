@@ -99,7 +99,7 @@ jobs:
         shell: Rscript {0}
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/master'
-        uses: maxheld83/ghpages@v0.2.0
+        uses: maxheld83/ghpages@github-token
         env:
           BUILD_DIR: docs
-          GH_PAT: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
