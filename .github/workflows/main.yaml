@@ -103,4 +103,4 @@ jobs:
         uses: maxheld83/ghpages@v0.2.0
         env:
           BUILD_DIR: docs
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_PAT: ${{ secrets.GITHUB_TOKEN }}
