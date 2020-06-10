@@ -80,7 +80,7 @@ jobs:
           tags: ${{ github.sha }}
           push: ${{ github.event_name != 'pull_request' }}
       - name: Setup GCP Cloud SDK
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@0.1.2
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
