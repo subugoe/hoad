@@ -4,11 +4,6 @@ FROM rocker/rstudio:3.6.3-ubuntu18.04
 # unfortunately this has to be updated by hand
 ENV LIB_PATH="/usr/local/lib/R/site-library"
 
-LABEL "name"="hoad"
-LABEL "maintainer"="Maximilian Held <info@maxheld.de>"
-LABEL "repository"="https://github.com/subugoe/hoad"
-LABEL "homepage"="https://subugoe.github.io/hoad/"
-
 COPY .Rprofile DESCRIPTION /hoad/
 
 # copy in cache
@@ -41,5 +36,5 @@ COPY . /hoad/
 # install package into container
 RUN Rscript -e "remotes::install_local(upgrade = FALSE)"
 
-EXPOSE 80
-ENTRYPOINT ["Rscript", "-e", "hoad::runHOAD(shiny_args = list(port = 80, host = '0.0.0.0'))"]
+EXPOSE 8080
+ENTRYPOINT ["Rscript", "-e", "hoad::runHOAD(shiny_args = list(port = 8080, host = '0.0.0.0'))"]

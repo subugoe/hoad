@@ -84,7 +84,12 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
-      - run: gcloud info
+      - name: Push Image to GCR
+        if: github.event_name != 'pull_request'
+        run: |
+          gcloud auth configure-docker --quiet
+          docker build --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/hoad .
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/hoad
       - name: Deploy Shiny Application to shinyapps.io ref
         env:
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
