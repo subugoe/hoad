@@ -41,10 +41,9 @@ Aggregate license URLs per publisher
 
 ```{r}
 license_ind <- license_df %>% 
-  select(license_refs,  publisher) %>%
+  select(license_refs) %>%
   tidyr::unnest(license_refs) %>%
-  group_by(license_ref = .id, publisher) %>%
-  summarise(n_cases = sum(V1)) 
+  rename(license_ref = .id, n_cases = V1)
 ```
 
 Which licenses would be tagged as open content licenses using our current approach?
@@ -58,7 +57,6 @@ We normalize licenses URLs directing to `http` and tag the hybrid ones.
 
 ```{r}
 license_hybrid <- license_ind %>%
-  ungroup %>%
   mutate(license_ref = gsub("s://", "://", license_ref),
          hybrid_license = ifelse(grepl(
     paste(hoad::license_patterns$url, collapse = "|"),
@@ -80,13 +78,14 @@ license_cc <- license_hybrid %>%
   mutate(cc_type = gsub("/legalcode", "", cc_type)) %>%
   mutate(cc_type = toupper(cc_type)) %>%
   mutate(cc_type = gsub("CC-BY-NCND", "CC-BY-NC-ND", cc_type)) %>%
+  mutate(cc_type = gsub("/", "", cc_type)) %>%
   mutate(cc_type = tolower(cc_type)) %>%
   mutate(cc_type = ifelse(grepl("*cc-", cc_type), cc_type, NA))
 ```
 
 ```{r}
 license_val <- license_cc %>%
-  group_by(license_ref, publisher, hybrid_license, cc_type) %>%
+  group_by(license_ref, hybrid_license, cc_type) %>%
   summarise(n_cases = sum(n_cases)) %>%
   arrange(desc(n_cases))
 
