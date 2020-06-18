@@ -1,0 +1,100 @@
+---
+title: "Identifying open content licenses in Crossref"
+description: "Background and Methodology"
+author: "Najko Jahn"
+date: "`r Sys.Date()`"
+opengraph:
+  twitter:
+    card: summary
+    creator: "@najkoja"
+pkgdown:
+  as_is: true
+output:
+  bookdown::html_document2:
+    number_sections: false
+    df_print: paged
+    toc: yes
+---
+
+```{r setup, echo = FALSE, message=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  echo = TRUE
+)
+library(hoad)
+library(ggplot2)
+library(dplyr)
+library(jsonlite)
+library(tidyr)
+```
+
+For each journal tagged as hybrid in the Open APC dataset, we retrieved all license URLs found in Crossref. After that, we identified open content licenses using string matching. In order to validate this approach, we will create a spreadsheet with all license URLs and how they are classified using our current method.
+
+The license URLs are stored in `jn_facets_df.json`, in the list-column license_refs.
+
+```{r}
+license_df <- jsonlite::stream_in(file(hoad::path_extdat("jn_facets_df.json")), verbose = FALSE)
+```
+
+Aggregate license URLs per publisher
+
+```{r}
+license_ind <- license_df %>% 
+  select(license_refs,  publisher) %>%
+  tidyr::unnest(license_refs) %>%
+  group_by(license_ref = .id, publisher) %>%
+  summarise(n_cases = sum(V1)) 
+```
+
+Which licenses would be tagged as open content licenses using our current approach?
+
+```{r}
+# current license patterns
+hoad::license_patterns
+```
+
+We normalize licenses URLs directing to `http` and tag the hybrid ones.
+
+```{r}
+license_hybrid <- license_ind %>%
+  ungroup %>%
+  mutate(license_ref = gsub("s://", "://", license_ref),
+         hybrid_license = ifelse(grepl(
+    paste(hoad::license_patterns$url, collapse = "|"),
+    license_ref
+  ), TRUE, FALSE))
+```
+
+Furthermore, Creative Commons URLs were normalized using the following approach.
+
+```{r}
+license_cc <- license_hybrid %>%
+  mutate(cc_type = license_ref) %>%
+  mutate(cc_type = gsub("http://creativecommons.org/licenses/", "cc-", cc_type)) %>%
+  mutate(cc_type = gsub("/3.0*", "", cc_type)) %>%
+  mutate(cc_type = gsub("/4.0", "", cc_type)) %>%
+  mutate(cc_type = gsub("/2.0*", "", cc_type)) %>%
+  mutate(cc_type = gsub("/uk/legalcode", "", cc_type)) %>%
+  mutate(cc_type = gsub("/igo", "", cc_type)) %>%
+  mutate(cc_type = gsub("/legalcode", "", cc_type)) %>%
+  mutate(cc_type = toupper(cc_type)) %>%
+  mutate(cc_type = gsub("CC-BY-NCND", "CC-BY-NC-ND", cc_type)) %>%
+  mutate(cc_type = tolower(cc_type)) %>%
+  mutate(cc_type = ifelse(grepl("*cc-", cc_type), cc_type, NA))
+```
+
+```{r}
+license_val <- license_cc %>%
+  group_by(license_ref, publisher, hybrid_license, cc_type) %>%
+  summarise(n_cases = sum(n_cases)) %>%
+  arrange(desc(n_cases))
+
+license_val
+```
+
+Let's export the table for manual validation:
+
+```{r}
+writexl::write_xlsx(license_val, "../inst/extdata/license_val.xlsx")
+```
