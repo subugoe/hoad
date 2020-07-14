@@ -6,76 +6,49 @@ on:
     types: [published, created, edited]
 
 jobs:
-  cicd:
-    runs-on: ubuntu-18.04
-    # env and container need to be the same in dockerfile
-    env:
-      # unfortunately this has to be updated by hand
-      LIB_PATH: "/usr/local/lib/R/site-library"
-    container:
-      # this freezes the r version
-      image: "rocker/rstudio:3.6.3-ubuntu18.04"
+  CICD:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: Rscript {0}
+    # this needs to be the same as in Dockerfile
+    container: subugoe/muggle-onbuild:latest
     steps:
       - uses: actions/checkout@v2
-      - name: Query dependencies
-        run: |
-          options(warn = 2)
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-        shell: Rscript {0}
-      - name: Cache R packages
-        uses: actions/cache@v1
+      - name: Cache R Packages
+        uses: actions/cache@v2
         with:
-          path: ${{ env.LIB_PATH }}
-          # key must be manually updated to match snapshot
-          key: 279-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: 279-
-      - name: Install System dependencies
+          # only cache the user library
+          path: ".github/library"
+          key: ${{ job.container.id}}-${{ hashFiles('DESCRIPTION') }}
+      - name: Install System Dependencies
+        run: muggle::install_sysdeps()
+      - name: Install R Dependencies
         env:
-          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
-        run: |
-          apt-get update
-          # TODO hack for missing time zone data base, bug in rocker?
-          apt-get install -y tzdata
-          # hack-fix for https://github.com/r-hub/sysreqsdb/issues/77
-          apt-get install -y software-properties-common
-          add-apt-repository -y ppa:cran/libgit2
-          # hack for missing sysdeps for ggalt as per https://github.com/hrbrmstr/ggalt/issues/22
-          apt-get install -y libproj-dev
-          Rscript -e "remotes::install_github('r-hub/sysreqs', ref='3860f2b512a9c3bd3db6791c2ff467a1158f4048')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
-      - name: Install Package Dependencies
-        run: |-
-          remotes::install_deps(dependencies = TRUE)
-        shell: Rscript {0}
+          # see builder.Dockerfile for explanation, this resets after this step
+          R_LIBS_SITE: $R_LIBS_APP_GH
+        run: remotes::install_deps(dependencies = TRUE)
       - name: Check
-        env:
-          _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: |
-          rcmdcheck::rcmdcheck(args = c("--no-manual"), error_on = "error", check_dir = "check")
-        # TODO must disallow warning again https://github.com/subugoe/hoad/issues/194
-        shell: Rscript {0}
-      - name: Test coverage
+        run: muggle::rcmdcheck2()
+      - name: Test Coverage
         run: covr::codecov()
-        shell: Rscript {0}
       - name: Build Package Website
         run: |
           # extra step is necessary to build index.md to integrate readme and landing page
           rmarkdown::render("pkgdown/index.Rmd")
           pkgdown::build_site(override = list(new_process = FALSE))
-        shell: Rscript {0}
-      - name: Copy dependencies to working directory
-        run: |
-          cp --recursive --force ${{ env.LIB_PATH }}/* .deps/
-      - name: Build and push docker image
-        uses: docker/build-push-action@v1
+      - uses: docker/build-push-action@v1
+        name: Build Dev Image
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-          repository: subugoe/hoad
-          tag_with_sha: true
+          repository: ${{ github.repository }}/dev
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          # this will set "latest" if master as per https://github.com/docker/build-push-action
           tag_with_ref: true
+          # we're relying on long shas only to keep things easy
+          tag_with_sha: false
+          tags: ${{ github.sha }}
           add_git_labels: true
           push: ${{ github.event_name != 'pull_request' }}
       - name: Setup GCP Cloud SDK

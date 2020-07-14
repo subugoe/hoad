@@ -1,7 +1,8 @@
-.git
-.github
-.gitignore
-vignettes/
-Dockerfile
-docs/
-vignettes/
+**
+!/R/**
+!/inst/**
+!/.github/library/***
+!/DESCRIPTION
+!/NAMESPACE
+!/LICENSE.md
+!/.Rbuildignore
