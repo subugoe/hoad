@@ -57,6 +57,8 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           credentials: ${{ secrets.GCP_SA_KEY }}
+          version: ${{ github.ref }}
+          promote: ${{ github.ref == 'refs/heads/master' }}
       - name: Deploy Shiny Application to shinyapps.io ref
         env:
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
