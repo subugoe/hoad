@@ -63,7 +63,7 @@ jobs:
         uses: GoogleCloudPlatform/github-actions/appengine-deploy@master
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          version: ${{ github.ref }}
+          version: ${{ github.sha }}
           promote: ${{ github.ref == 'refs/heads/master' }}
       - name: Deploy Shiny Application to shinyapps.io ref
         env:
