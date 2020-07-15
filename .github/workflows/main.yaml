@@ -8,11 +8,12 @@ on:
 jobs:
   CICD:
     runs-on: ubuntu-20.04
+    # this needs to be the same as in Dockerfile
+    container:
+      image: subugoe/muggle-onbuild:f60004c31979947dab53fbf9cfbb0e7f1c4bea55
     defaults:
       run:
         shell: Rscript {0}
-    # this needs to be the same as in Dockerfile
-    container: subugoe/muggle-onbuild:f60004c31979947dab53fbf9cfbb0e7f1c4bea55
     steps:
       - uses: actions/checkout@v2
       - name: Cache R Packages
@@ -59,6 +60,7 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
       - name: Deploy to GCP
+        shell: bash
         if: github.event_name != 'pull_request'
         run: |
           gcloud auth configure-docker --quiet
@@ -83,7 +85,6 @@ jobs:
           rsconnect::setAccountInfo(name = 'subugoe', token = Sys.getenv('SHINYAPPS_TOKEN'), secret = Sys.getenv('SHINYAPPS_SECRET'))
           app_name <- paste0("hoad-", gsub("/", "-", Sys.getenv('GITHUB_REF')))
           rsconnect::deployDoc(doc = "inst/app/dashboard.Rmd", appName = app_name)
-        shell: Rscript {0}
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/master'
         uses: maxheld83/ghpages@github-token
