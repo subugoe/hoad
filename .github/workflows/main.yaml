@@ -8,11 +8,12 @@ on:
 jobs:
   CICD:
     runs-on: ubuntu-20.04
+    # this needs to be the same as in Dockerfile
+    container:
+      image: subugoe/muggle-onbuild:f60004c31979947dab53fbf9cfbb0e7f1c4bea55
     defaults:
       run:
         shell: Rscript {0}
-    # this needs to be the same as in Dockerfile
-    container: subugoe/muggle-onbuild:f60004c31979947dab53fbf9cfbb0e7f1c4bea55
     steps:
       - uses: actions/checkout@v2
       - name: Cache R Packages
@@ -51,14 +52,40 @@ jobs:
           tags: ${{ github.sha }}
           add_git_labels: true
           push: ${{ github.event_name != 'pull_request' }}
-      - name: Setup GCP Cloud SDK
+      - name: Auth to GCP
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
+          version: "290.0.1"
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
-      - run: gcloud info
+      - uses: docker/build-push-action@v1
+        name: Push Image to GCR
+        with:
+          repository: ${{ secrets.GCP_PROJECT_ID }}/hoad
+          username: ${{ secrets.GCP_PROJECT_ID }}
+          password: ${{ secrets.GCP_SA_KEY }}
+          registry: gcr.io
+          # this will set "latest" if master as per https://github.com/docker/build-push-action
+          tag_with_ref: true
+          # we're relying on long shas only to keep things easy
+          tag_with_sha: false
+          tags: ${{ github.sha }}
+          add_git_labels: true
+          push: ${{ github.event_name != 'pull_request' }}
+      - name: Deploy to GCP
         shell: bash
+        if: github.event_name != 'pull_request'
+        run: |
+          gcloud auth configure-docker --quiet
+          gcloud app deploy --version=${{ github.sha }} --image-url=gcr.io/${{ secrets.GCP_PROJECT_ID }}/hoad
+      - name: Deploy to GCP
+        if: github.event_name != 'pull_request'
+        uses: GoogleCloudPlatform/github-actions/appengine-deploy@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          version: ${{ github.sha }}
+          promote: ${{ github.ref == 'refs/heads/master' }}
       - name: Deploy Shiny Application to shinyapps.io ref
         env:
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
@@ -70,7 +97,6 @@ jobs:
           rsconnect::setAccountInfo(name = 'subugoe', token = Sys.getenv('SHINYAPPS_TOKEN'), secret = Sys.getenv('SHINYAPPS_SECRET'))
           app_name <- paste0("hoad-", gsub("/", "-", Sys.getenv('GITHUB_REF')))
           rsconnect::deployDoc(doc = "inst/app/dashboard.Rmd", appName = app_name)
-        shell: Rscript {0}
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/master'
         uses: maxheld83/ghpages@github-token

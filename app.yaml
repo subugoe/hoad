@@ -1,0 +1,16 @@
+runtime: custom
+env: flex
+entrypoint: Rscript -e "hoad::runHOAD(shiny_args = list(port = Sys.getenv('PORT')))"
+network:
+  session_affinity: true
+resources:
+  cpu: 1
+  memory_gb: 0.75
+  disk_size_gb: 10
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 1
+  cool_down_period_sec: 180
+  cpu_utilization:
+    target_utilization: 0.8
+  target_concurrent_requests: 5
