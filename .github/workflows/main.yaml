@@ -64,3 +64,9 @@ jobs:
         uses: azure/login@v1.1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Deploy to Azure Web Apps for Containers
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: hoad
+          uses: azure/webapps-deploy@v2
+          images: docker.pkg.github.com/${{ github.repository }}/hoad-dev:${{ github.ref }}
