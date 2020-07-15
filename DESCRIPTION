@@ -18,13 +18,6 @@ Authors@R:
         comment = c(ORCID = "0000-0002-4703-5388")
       ),
       person(
-        given = "Jan",
-        family = "Höffler",
-        role = c("aut"),
-        email = "hoeffler@sub.uni-goettingen.de",
-        comment = c(ORCID = "0000-0002-8382-2071")
-      ),
-      person(
         given = "Henrieke",
         family = "Walter",
         role = c("aut"),
