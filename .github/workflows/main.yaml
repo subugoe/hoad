@@ -59,13 +59,25 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
+      - uses: docker/build-push-action@v1
+        name: Push Image to GCR
+        with:
+          repository: ${{ secrets.GCP_PROJECT_ID }}/hoad
+          username: ${{ secrets.GCP_PROJECT_ID }}
+          password: ${{ secrets.GCP_SA_KEY }}
+          registry: gcr.io
+          # this will set "latest" if master as per https://github.com/docker/build-push-action
+          tag_with_ref: true
+          # we're relying on long shas only to keep things easy
+          tag_with_sha: false
+          tags: ${{ github.sha }}
+          add_git_labels: true
+          push: ${{ github.event_name != 'pull_request' }}
       - name: Deploy to GCP
         shell: bash
         if: github.event_name != 'pull_request'
         run: |
           gcloud auth configure-docker --quiet
-          docker build --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/hoad .
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/hoad
           gcloud app deploy --version=${{ github.sha }} --image-url=gcr.io/${{ secrets.GCP_PROJECT_ID }}/hoad
       - name: Deploy to GCP
         if: github.event_name != 'pull_request'
