@@ -1,5 +1,6 @@
 runtime: custom
 env: flex
+entrypoint: Rscript -e "hoad::runHOAD(shiny_args = list(port = Sys.getenv('PORT')))"
 network:
   session_affinity: true
 resources:

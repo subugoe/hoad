@@ -60,6 +60,13 @@ jobs:
           export_default_credentials: true
       - name: Deploy to GCP
         if: github.event_name != 'pull_request'
+        run: |
+          gcloud auth configure-docker --quiet
+          docker build --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/hoad .
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/hoad
+          gcloud app deploy --version=${{ github.sha }} --image-url=gcr.io/${{ secrets.GCP_PROJECT_ID }}/hoad
+      - name: Deploy to GCP
+        if: github.event_name != 'pull_request'
         uses: GoogleCloudPlatform/github-actions/appengine-deploy@master
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
