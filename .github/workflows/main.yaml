@@ -95,5 +95,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: hoad
-          images: docker.pkg.github.com/${{ github.repository }}/hoad-dev:azure
+          images: ${{ github.repository }}/hoad-dev:azure
           startup-command: Rscript -e "hoad::runHOAD(shiny_args = list(port = 80, host = '0.0.0.0'))"
