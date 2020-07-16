@@ -69,8 +69,31 @@ jobs:
           login-server: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Auth Azure for GitHub Package Registry
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: hoad
+          general-settings-json: |
+            [
+              {
+                  "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+                  "value": "${{ secrets.GITHUB_TOKEN }}",
+                  "slotSetting": false
+              },
+              {
+                  "name": "DOCKER_REGISTRY_SERVER_URL",
+                  "value": "https://docker.pkg.github.com",
+                  "slotSetting": false
+              },
+              {
+                  "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+                  "value": "${{  github.actor  }}",
+                  "slotSetting": false
+              }
+            ]
       - name: Deploy to Azure Web Apps for Containers
         uses: azure/webapps-deploy@v2
         with:
           app-name: hoad
           images: docker.pkg.github.com/${{ github.repository }}/hoad-dev:azure
+          startup-command: Rscript -e "hoad::runHOAD(shiny_args = list(port = 80, host = '0.0.0.0'))"
