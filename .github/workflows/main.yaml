@@ -73,4 +73,4 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: hoad
-          images: docker.pkg.github.com/${{ github.repository }}/hoad-dev:${{ github.ref }}
+          images: docker.pkg.github.com/${{ github.repository }}/hoad-dev:azure
