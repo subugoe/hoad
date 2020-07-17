@@ -6,3 +6,4 @@
 !/NAMESPACE
 !/LICENSE.md
 !/.Rbuildignore
+!/init.sh
