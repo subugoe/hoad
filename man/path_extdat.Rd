@@ -10,7 +10,7 @@ path_extdat(x)
 \item{x}{\verb{[character(1)]} giving the filename or path to the file from \verb{inst/extdata/}}
 }
 \value{
-\verb{[character(1)]} giving the absolute path to \code{x}, as returned by \code{\link[fs:path_abs]{fs::path_abs()}}.
+\verb{[character(1)]} giving the absolute path to \code{x}, as returned by \code{\link[fs:path_math]{fs::path_abs()}}.
 }
 \description{
 Looks for \verb{inst/} in the working directory, otherwise wraps \code{\link[fs:path_package]{fs::path_package()}} with appropriate defaults for this package.

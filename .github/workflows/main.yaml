@@ -58,42 +58,10 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
-      # here are instructions for minimally scoped auth https://github.com/Azure/webapps-container-deploy
       - name: Log in to Azure
         uses: azure/login@v1.1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Log in to GitHub Package Registry
-        uses: azure/docker-login@v1
-        with:
-          login-server: docker.pkg.github.com
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Auth Azure for GitHub Package Registry
-        uses: azure/appservice-settings@v1
-        with:
-          app-name: hoad
-          app-settings-json: |
-            [
-              {
-                  "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
-                  "value": "${{ secrets.GITHUB_TOKEN }}",
-                  "slotSetting": false
-              },
-              {
-                  "name": "DOCKER_REGISTRY_SERVER_URL",
-                  "value": "https://docker.pkg.github.com",
-                  "slotSetting": false
-              },
-              {
-                  "name": "DOCKER_REGISTRY_SERVER_USERNAME",
-                  "value": "${{  github.actor  }}",
-                  "slotSetting": false
-              }
-            ]
-      - name: Deploy to Azure Web Apps for Containers
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: hoad
-          images: ${{ github.repository }}/hoad-dev:azure
-          startup-command: Rscript -e "hoad::runHOAD(shiny_args = list(port = 80, host = '0.0.0.0'))"
+      - name: test
+        run: |
+          az webapp list --query "[?state=='Running']"

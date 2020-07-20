@@ -6,4 +6,4 @@
 !/NAMESPACE
 !/LICENSE.md
 !/.Rbuildignore
-!/init.sh
+!/.azure/init.sh

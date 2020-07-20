@@ -17,4 +17,4 @@ hoad.code-workspace
 ^R/.scoap\.R$
 ^R/.unpaywall_integration\.R$
 .vscode
-init.sh
+.azure
