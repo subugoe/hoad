@@ -58,6 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
+      - uses: actions/checkout@v2
       - name: Log in to Azure
         uses: azure/login@v1.1
         with:
