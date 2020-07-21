@@ -48,7 +48,7 @@ jobs:
           add_git_labels: true
           push: ${{ github.event_name != 'pull_request' }}
       - name: Deploy to GitHub Pages
-        # if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         uses: maxheld83/ghpages@github-token
         env:
           BUILD_DIR: docs
