@@ -124,7 +124,7 @@ if (length(unique(jn_f()$publisher)) > 1) {
 # })
 ```
 
-Notice that only those hybrid open access journals were included where
+Notice we here only include those hybrid open access journals were included where
 academic institutions sponsored the open access publication according to the [Open APC initiative](https://github.com/openapc/openapc-de)
 and where publishers shared license information about immediate open access with [Crossref](https://github.com/CrossRef/rest-api-doc).
 
