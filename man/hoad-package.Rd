@@ -23,7 +23,6 @@ Useful links:
 Authors:
 \itemize{
   \item Najko Jahn \email{najko.jahn@gmail.com} (\href{https://orcid.org/0000-0001-5105-1463}{ORCID})
-  \item Jan Höffler \email{hoeffler@sub.uni-goettingen.de} (\href{https://orcid.org/0000-0002-8382-2071}{ORCID})
   \item Henrieke Walter \email{henrieke.walter@sub.uni-goettingen.de} (\href{https://orcid.org/0000-0003-3313-7364}{ORCID})
 }
 

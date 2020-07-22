@@ -1,5 +1,5 @@
 #' Color palettes
-#' Colors used in the hybrid open access dashboard, based on [metaR::ugoe_pal()]
+#' Colors used in the hybrid open access dashboard, based on [metar::ugoe_pal()]
 #' @family visualisation functions
 #' @name colors
 NULL

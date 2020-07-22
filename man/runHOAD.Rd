@@ -8,90 +8,67 @@ runHOAD(...)
 }
 \arguments{
 \item{...}{
-  Arguments passed on to \code{\link[shiny:runApp]{shiny::runApp}}
+  Arguments passed on to \code{\link[rmarkdown:run]{rmarkdown::run}}
   \describe{
-    \item{\code{appDir}}{The application to run. Should be one of the following:
-\itemize{
-\item A directory containing \code{server.R}, plus, either \code{ui.R} or
-a \code{www} directory that contains the file \code{index.html}.
-\item A directory containing \code{app.R}.
-\item An \code{.R} file containing a Shiny application, ending with an
-expression that produces a Shiny app object.
-\item A list with \code{ui} and \code{server} components.
-\item A Shiny app object created by \code{\link[shiny:shinyApp]{shinyApp()}}.
-}}
-    \item{\code{port}}{The TCP port that the application should listen on. If the
-\code{port} is not specified, and the \code{shiny.port} option is set (with
-\code{options(shiny.port = XX)}), then that port will be used. Otherwise,
-use a random port.}
-    \item{\code{launch.browser}}{If true, the system's default web browser will be
-launched automatically after the app is started. Defaults to true in
-interactive sessions only. This value of this parameter can also be a
-function to call with the application's URL.}
-    \item{\code{host}}{The IPv4 address that the application should listen on. Defaults
-to the \code{shiny.host} option, if set, or \code{"127.0.0.1"} if not. See
-Details.}
-    \item{\code{workerId}}{Can generally be ignored. Exists to help some editions of
-Shiny Server Pro route requests to the correct process.}
-    \item{\code{quiet}}{Should Shiny status messages be shown? Defaults to FALSE.}
-    \item{\code{display.mode}}{The mode in which to display the application. If set to
-the value \code{"showcase"}, shows application code and metadata from a
-\code{DESCRIPTION} file in the application directory alongside the
-application. If set to \code{"normal"}, displays the application normally.
-Defaults to \code{"auto"}, which displays the application in the mode given
-in its \code{DESCRIPTION} file, if any.}
-    \item{\code{test.mode}}{Should the application be launched in test mode? This is
-only used for recording or running automated tests. Defaults to the
-\code{shiny.testmode} option, or FALSE if the option is not set.}
+    \item{\code{file}}{Path to the R Markdown document to launch in a web browser.
+Defaults to \code{index.Rmd} in the current working directory, but may be
+\code{NULL} to skip launching a browser.}
+    \item{\code{dir}}{The directory from which to to read input documents. Defaults to
+the parent directory of \code{file}.}
+    \item{\code{default_file}}{The file to serve at the Shiny server's root URL. If
+\code{NULL} (the default), a sensible default is chosen (see Details)}
+    \item{\code{auto_reload}}{If \code{TRUE} (the default), automatically reload the
+Shiny application when the file currently being viewed is changed on disk.}
+    \item{\code{shiny_args}}{Additional arguments to \code{\link[shiny:runApp]{runApp}}.}
+    \item{\code{render_args}}{Additional arguments to \code{\link[rmarkdown]{render}}.}
   }}
 }
+\value{
+Invisible NULL.
+}
 \description{
-Runs a Shiny application. This function normally does not return; interrupt R
-to stop the application (usually by pressing Ctrl+C or Esc).
+Start a Shiny server for the given document, and render it for display.
 }
 \details{
-The host parameter was introduced in Shiny 0.9.0. Its default value of
-\code{"127.0.0.1"} means that, contrary to previous versions of Shiny, only
-the current machine can access locally hosted Shiny apps. To allow other
-clients to connect, use the value \code{"0.0.0.0"} instead (which was the
-value that was hard-coded into Shiny in 0.8.0 and earlier).
+The \code{run} function runs a Shiny document by starting a Shiny
+server associated with the document. The \code{shiny_args} parameter can be
+used to configure the server; see the \code{\link[shiny:runApp]{runApp}}
+documentation for details.
+
+Once the server is started, the document will be rendered using
+\code{\link[rmarkdown]{render}}. The server will initiate a render of the document
+whenever necessary, so it is not necessary to call \code{run} every time
+the document changes: if \code{auto_reload} is \code{TRUE}, saving the
+document will trigger a render. You can also manually trigger a render by
+reloading the document in a Web browser.
+
+The server will render any R Markdown (\code{.Rmd}) document in \code{dir};
+the \code{file} argument specifies only the initial document to be
+rendered and viewed. You can therefore link to other documents in the
+directory using standard Markdown syntax, e.g.
+\code{[Analysis Page 2](page2.Rmd)}.
+
+If \code{default_file} is not specified, nor is a file specified on the
+URL, then the default document to serve at \code{/} is chosen from (in
+order of preference):
+\itemize{
+  \item{If \code{dir} contains only one \code{Rmd}, that \code{Rmd}.}
+  \item{The file \file{index.Rmd}, if it exists in \code{dir}.}
+  \item{The first \code{Rmd} that has \code{runtime: shiny} in its YAML metadata.}
+  \item{The file \file{index.html} (or \file{index.htm}), if it exists in \code{dir}.}
+}
+
+If you wish to share R code between your documents, place it in a file
+named \code{global.R} in \code{dir}; it will be sourced into the global
+environment.
 }
 \examples{
 \dontrun{
-# Start app in the current working directory
-runApp()
+# Run the Shiny document "index.Rmd" in the current directory
+rmarkdown::run()
 
-# Start app in a subdirectory called myapp
-runApp("myapp")
-}
-
-## Only run this example in interactive R sessions
-if (interactive()) {
-  options(device.ask.default = FALSE)
-
-  # Apps can be run without a server.r and ui.r file
-  runApp(list(
-    ui = bootstrapPage(
-      numericInput('n', 'Number of obs', 100),
-      plotOutput('plot')
-    ),
-    server = function(input, output) {
-      output$plot <- renderPlot({ hist(runif(input$n)) })
-    }
-  ))
-
-
-  # Running a Shiny app object
-  app <- shinyApp(
-    ui = bootstrapPage(
-      numericInput('n', 'Number of obs', 100),
-      plotOutput('plot')
-    ),
-    server = function(input, output) {
-      output$plot <- renderPlot({ hist(runif(input$n)) })
-    }
-  )
-  runApp(app)
+# Run the Shiny document "shiny_doc.Rmd" on port 8241
+rmarkdown::run("shiny_doc.Rmd", shiny_args = list(port = 8241))
 }
 }
 \concept{CICD}

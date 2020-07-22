@@ -6,8 +6,8 @@ jobs:
     defaults:
       run:
         shell: Rscript {0}
-    # this needs to be the same as in Dockerfile
     container:
+      # this needs to be the same as in Dockerfile
       image: subugoe/muggle-onbuild:f60004c31979947dab53fbf9cfbb0e7f1c4bea55
     steps:
       - uses: actions/checkout@v2
