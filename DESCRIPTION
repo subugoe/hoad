@@ -49,14 +49,12 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 Suggests:
     rmarkdown,
-    knitr,
     jsonlite,
     ggalt,
     scales,
     forcats,
     cowplot,
     readxl,
-    bookdown,
     flexdashboard,
     viridis,
     plotly,
@@ -64,7 +62,7 @@ Suggests:
     DT,
     writexl,
     echarts4r,
-    metaR,
+    metar,
     DBI,
     dbplyr,
     haven,
@@ -90,4 +88,4 @@ Imports:
     ggplot2,
     rlang
 Remotes:
-    subugoe/metaR@5543b34c49b339c8e91217912d07662415384cbe
+    subugoe/metar@7ccc2a0

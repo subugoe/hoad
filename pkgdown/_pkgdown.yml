@@ -17,7 +17,7 @@ authors:
     href: https://github.com/openapc
     html: <img src="reference/figures/openAPC_01+.png" height="15">
 template:
-  package: metaR
+  package: metar
   opengraph:
     twitter:
       site: "@subugoe"
