@@ -7,8 +7,8 @@
 "_PACKAGE"
 
 #' Start hoad web application
-#' @inheritDotParams shiny::runApp
-#' @inherit shiny::runApp
+#' @inheritDotParams rmarkdown::run
+#' @inherit rmarkdown::run
 #' @family CICD
 #' @export
 runHOAD <- function(...) {
