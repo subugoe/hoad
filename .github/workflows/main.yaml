@@ -8,7 +8,7 @@ jobs:
         shell: Rscript {0}
     container:
       # this needs to be the same as in Dockerfile
-      image: subugoe/muggle-buildtime-onbuild:9acfa4d9633250bdb85de69a803d426ecb7a14a1
+      image: subugoe/muggle-buildtime-onbuild:a7876ed9ad79909bcf8ff04d1d8c30503bdb8b0a
     steps:
       - uses: actions/checkout@v2
       - name: Cache R Packages
@@ -52,7 +52,7 @@ jobs:
         uses: docker/build-push-action@v1
         with:
           repository: ${{ github.repository }}/hoad-runtime
-          target: buildtime
+          target: runtime
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
@@ -67,11 +67,11 @@ jobs:
         uses: azure/login@v1.1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Deploy to Azure
+      - name: Deploy to Azure Webapps
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          shinycaas::az_webapp_config(
-            name = "hoad",
-            deployment_container_image_name = "docker.pkg.github.com/subugoe/shinycaas/oldfaithful:${{ github.sha }}",
+          muggle::az_webapp_config_muggle(
             plan = "hoad",
             resource_group = "hoad",
             subscription = "f0dd3a37-0a4e-4e7f-9c9b-cb9f60146edc"
@@ -82,3 +82,9 @@ jobs:
         env:
           BUILD_DIR: docs
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  sleep:
+    name: Sleep to let GITHUB_TOKEN persist
+    needs: CICD
+    runs-on: ubuntu-20.04
+    steps:
+      - run: sleep 3m
