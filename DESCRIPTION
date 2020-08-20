@@ -69,7 +69,6 @@ Suggests:
     lubridate,
     modelr,
     reprex,
-    rsconnect,
     rvest,
     selectr,
     httr,
