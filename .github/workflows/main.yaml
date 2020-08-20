@@ -88,4 +88,4 @@ jobs:
     needs: CICD
     runs-on: ubuntu-20.04
     steps:
-      - run: sleep 3m
+      - run: sleep 2m
