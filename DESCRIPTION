@@ -62,7 +62,6 @@ Suggests:
     DT,
     writexl,
     echarts4r,
-    metar,
     DBI,
     dbplyr,
     haven,
@@ -74,7 +73,8 @@ Suggests:
     httr,
     purrr,
     covr,
-    testthat
+    testthat,
+    subugoetheme
 URL: https://subugoe.github.io/hoad, https://github.com/subugoe/hoad/
 BugReports: https://github.com/subugoe/hoad/issues
 RoxygenNote: 7.1.1
@@ -87,4 +87,4 @@ Imports:
     ggplot2,
     rlang
 Remotes:
-    subugoe/metar@7ccc2a0
+    subugoe/subugoetheme@1.0.0
