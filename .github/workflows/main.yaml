@@ -7,11 +7,9 @@ jobs:
       run:
         shell: Rscript {0}
     container:
-      # update muggle here, and 2 lines below (!)
+      # update muggle here and in Dockerfile
       image: subugoe/muggle-buildtime-onbuild:9ee02c2d9b32cab07681288de9995dc3d4124e4d
     env:
-      # update muggle here too (!)
-      MUGGLE_TAG: 9ee02c2d9b32cab07681288de9995dc3d4124e4d
       MUGGLE_PKG_NAME: ${{ github.event.repository.name }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -43,7 +41,6 @@ jobs:
         with:
           repository: ${{ github.repository }}/{{ env.MUGGLE_PKG_NAME }}-buildtime
           target: buildtime
-          build_args: MUGGLE_TAG=${{ env.MUGGLE_TAG }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
@@ -59,7 +56,6 @@ jobs:
         with:
           repository: ${{ github.repository }}/{{ env.MUGGLE_PKG_NAME }}-runtime
           target: runtime
-          build_args: MUGGLE_TAG=${{ env.MUGGLE_TAG }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
