@@ -6,9 +6,13 @@ jobs:
     defaults:
       run:
         shell: Rscript {0}
+    env:
+      # update muggle here
+      MUGGLE_TAG: "9ee02c2d9b32cab07681288de9995dc3d4124e4d"
+      MUGGLE_PKG_NAME: ${{ github.event.repository.name }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     container:
-      # this needs to be the same as in Dockerfile
-      image: subugoe/muggle-buildtime-onbuild:a7876ed9ad79909bcf8ff04d1d8c30503bdb8b0a
+      image: subugoe/muggle-buildtime-onbuild:{{ env.MUGGLE_TAG }}
     steps:
       - uses: actions/checkout@v2
       - name: Cache R Packages
@@ -25,7 +29,7 @@ jobs:
           R_LIBS_SITE: $R_LIBS_RUNTIME_GH
         run: remotes::install_deps(dependencies = TRUE)
       - name: Check
-        run: muggle::rcmdcheck2()
+        run: devtools::check()
       - name: Test Coverage
         run: covr::codecov()
       - name: Build Package Website
@@ -36,8 +40,9 @@ jobs:
       - name: Build Buildtime Image
         uses: docker/build-push-action@v1
         with:
-          repository: ${{ github.repository }}/hoad-buildtime
+          repository: ${{ github.repository }}/{{ env.MUGGLE_PKG_NAME }}-buildtime
           target: buildtime
+          build_args: MUGGLE_TAG=${{ env.MUGGLE_TAG }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
@@ -51,8 +56,9 @@ jobs:
       - name: Build Runtime Image
         uses: docker/build-push-action@v1
         with:
-          repository: ${{ github.repository }}/hoad-runtime
+          repository: ${{ github.repository }}/{{ env.MUGGLE_PKG_NAME }}-runtime
           target: runtime
+          build_args: MUGGLE_TAG=${{ env.MUGGLE_TAG }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
@@ -68,11 +74,8 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Deploy to Azure Webapps
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           muggle::az_webapp_config_muggle(
-            name = "hoad",
             plan = "hoad",
             resource_group = "hoad",
             subscription = "f0dd3a37-0a4e-4e7f-9c9b-cb9f60146edc"
@@ -82,10 +85,3 @@ jobs:
         uses: maxheld83/ghpages@github-token
         env:
           BUILD_DIR: docs
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  sleep:
-    name: Sleep to let GITHUB_TOKEN persist
-    needs: CICD
-    runs-on: ubuntu-20.04
-    steps:
-      - run: sleep 2m
