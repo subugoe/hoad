@@ -1,18 +1,19 @@
 on: push
 
+env:
+  # update muggle here
+  MUGGLE_TAG: 9ee02c2d9b32cab07681288de9995dc3d4124e4d
+  MUGGLE_PKG_NAME: ${{ github.event.repository.name }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   CICD:
     runs-on: ubuntu-20.04
     defaults:
       run:
         shell: Rscript {0}
-    env:
-      # update muggle here
-      MUGGLE_TAG: 9ee02c2d9b32cab07681288de9995dc3d4124e4d
-      MUGGLE_PKG_NAME: ${{ github.event.repository.name }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     container:
-      image: subugoe/muggle-buildtime-onbuild:{{ env.MUGGLE_TAG }}
+      image: subugoe/muggle-buildtime-onbuild:${{ env.MUGGLE_TAG }}
     steps:
       - uses: actions/checkout@v2
       - name: Cache R Packages
