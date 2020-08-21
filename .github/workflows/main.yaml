@@ -40,7 +40,7 @@ jobs:
       - name: Build Buildtime Image
         uses: docker/build-push-action@v1
         with:
-          repository: ${{ github.repository }}/{{ env.MUGGLE_PKG_NAME }}-buildtime
+          repository: ${{ github.repository }}/${{ env.MUGGLE_PKG_NAME }}-buildtime
           target: buildtime
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
@@ -55,7 +55,7 @@ jobs:
       - name: Build Runtime Image
         uses: docker/build-push-action@v1
         with:
-          repository: ${{ github.repository }}/{{ env.MUGGLE_PKG_NAME }}-runtime
+          repository: ${{ github.repository }}/${{ env.MUGGLE_PKG_NAME }}-runtime
           target: runtime
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
