@@ -76,7 +76,8 @@ jobs:
           muggle::az_webapp_config_muggle(
             plan = "hoad",
             resource_group = "hoad",
-            subscription = "f0dd3a37-0a4e-4e7f-9c9b-cb9f60146edc"
+            subscription = "f0dd3a37-0a4e-4e7f-9c9b-cb9f60146edc",
+            restart = TRUE
           )
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/master'
