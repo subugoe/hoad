@@ -7,7 +7,7 @@
 \alias{colors_license_unpaywall}
 \alias{colors_source_disclosure}
 \title{Color palettes
-Colors used in the hybrid open access dashboard, based on \code{\link[metar:ugoe_pal]{metar::ugoe_pal()}}}
+Colors used in the hybrid open access dashboard, based on \code{\link[subugoetheme:ugoe_pal]{subugoetheme::ugoe_pal()}}}
 \format{
 An object of class \code{character} of length 6.
 
@@ -24,7 +24,7 @@ colors_source_disclosure
 }
 \description{
 Color palettes
-Colors used in the hybrid open access dashboard, based on \code{\link[metar:ugoe_pal]{metar::ugoe_pal()}}
+Colors used in the hybrid open access dashboard, based on \code{\link[subugoetheme:ugoe_pal]{subugoetheme::ugoe_pal()}}
 }
 \section{Functions}{
 \itemize{

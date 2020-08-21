@@ -28,7 +28,8 @@ jobs:
           R_LIBS_SITE: $R_LIBS_RUNTIME_GH
         run: remotes::install_deps(dependencies = TRUE)
       - name: Check
-        run: devtools::check()
+        # TODO error out on all but note again https://github.com/subugoe/hoad/issues/194
+        run: devtools::check(error_on = "error")
       - name: Test Coverage
         run: covr::codecov()
       - name: Build Package Website
