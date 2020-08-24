@@ -84,11 +84,5 @@ jobs:
         uses: maxheld83/ghpages@github-token
         env:
           BUILD_DIR: docs
-      # - name: Sleep to let GITHUB_TOKEN persist
-      #   run: Sys.sleep(600)
-  sleep:
-    name: Sleep to let GITHUB_TOKEN persist
-    needs: CICD
-    runs-on: ubuntu-20.04
-    steps:
-      - run: sleep 10m
+      - name: Sleep to let GITHUB_TOKEN persist
+        run: Sys.sleep(1)
