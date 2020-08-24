@@ -74,7 +74,8 @@ Suggests:
     purrr,
     covr,
     testthat,
-    subugoetheme
+    subugoetheme,
+    shinycaas
 URL: https://subugoe.github.io/hoad, https://github.com/subugoe/hoad/
 BugReports: https://github.com/subugoe/hoad/issues
 RoxygenNote: 7.1.1
@@ -87,4 +88,5 @@ Imports:
     ggplot2,
     rlang
 Remotes:
-    subugoe/subugoetheme@1.0.0
+    subugoe/subugoetheme@1.0.0,
+    subugoe/shinycaas
