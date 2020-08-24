@@ -85,4 +85,4 @@ jobs:
         env:
           BUILD_DIR: docs
       - name: Sleep to let GITHUB_TOKEN persist
-        run: Sys.sleep(60)
+        run: Sys.sleep(120)
