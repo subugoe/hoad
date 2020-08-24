@@ -89,4 +89,4 @@ Imports:
     rlang
 Remotes:
     subugoe/subugoetheme@1.0.0,
-    subugoe/shinycaas
+    subugoe/shinycaas@31684600b286d5da5639a430a4b83a04de36bd34
