@@ -1,6 +1,6 @@
 # Newsletter abonnieren
 
-In unserem deutschsprachigen Newsletter informieren wir Sie über neue Entwicklungen und Veranstaltungen rund um das Projekt.
+In unserem deutschsprachigen Newsletter `hoad@sub.uni-goettingen.de` informieren wir Sie über neue Entwicklungen und Veranstaltungen rund um das Projekt.
 
 <form method="post" action="https://listserv.gwdg.de/mailman/subscribe/hoad">
   <div class="form-group">
