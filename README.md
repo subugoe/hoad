@@ -1,6 +1,6 @@
 <!-- badges: start -->
 [![Main](https://github.com/subugoe/hoad/workflows/.github/workflows/main.yaml/badge.svg)](https://github.com/subugoe/hoad/actions)
-[![Codecov test coverage](https://codecov.io/gh/subugoe/hoad/branch/master/graph/badge.svg)](https://codecov.io/gh/subugoe/hoad?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/subugoe/hoad/branch/master/graph/badge.svg?token=rbmMyt4C1L)](https://codecov.io/gh/subugoe/hoad)
 [![CRAN status](https://www.r-pkg.org/badges/version/hoad)](https://CRAN.R-project.org/package=hoad)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
