@@ -3,13 +3,17 @@
 In unserem deutschsprachigen Newsletter informieren wir Sie über neue Entwicklungen und Veranstaltungen rund um das Projekt.
 
 <form method="post" action="https://listserv.gwdg.de/mailman/subscribe/hoad">
+  <input type="hidden" name="sub_form_token" value="1612971602::1b28f042c6df3b702be48e8fbff2c7f61c44d071">
+  </input>
   <div class="form-group">
-    <label for="InputEmail">Email addresse</label>
-    <input name="email" type="email" class="form-control" id="InputEmail" placeholder="Email">
+  <!-- the lacking indentation below is necessary, probably because of https://github.com/r-lib/pkgdown/issues/1381 -->
+  <!-- muggle::build_site2() solves this problem for vignettes, but not for other mds. -->
+  <label for="InputEmail">Email addresse</label>
+  <input name="email" type="email" class="form-control" id="InputEmail" placeholder="Email">
   </div>
   <div class="form-group">
-    <label for="InputName">Name</label>
-    <input name="fullname" type="text" class="form-control" id="InputName" placeholder="Name (optional)">
+  <label for="InputName">Name</label>
+  <input name="fullname" type="text" class="form-control" id="InputName" placeholder="Name (optional)">
   </div>
   <button type="submit" class="btn btn-default" name="email-button" value=
   "Subscribe">Abonnieren</button>
