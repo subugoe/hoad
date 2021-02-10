@@ -1,6 +1,6 @@
 Package: hoad
 Title: Hybrid Open Access Dashboard
-Version: 1.0.0
+Version: 1.0.1.9000
 Authors@R:
     c(
       person(
@@ -41,7 +41,8 @@ Authors@R:
         role = c("dtc")
       )
     )
-Description: Analytics to increase cost transparency in business model transformation towards open access publishing.
+Description: 
+    Analytics to increase cost transparency in business model transformation towards open access publishing.
 License: AGPL-3
 Encoding: UTF-8
 Language: en
@@ -62,7 +63,6 @@ Suggests:
     DT,
     writexl,
     echarts4r,
-    metar,
     DBI,
     dbplyr,
     haven,
@@ -75,10 +75,12 @@ Suggests:
     httr,
     purrr,
     covr,
-    testthat
+    testthat,
+    subugoetheme,
+    shinycaas
 URL: https://subugoe.github.io/hoad, https://github.com/subugoe/hoad/
 BugReports: https://github.com/subugoe/hoad/issues
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.1.9999
 Imports:
     dplyr,
     checkmate,
@@ -88,4 +90,5 @@ Imports:
     ggplot2,
     rlang
 Remotes:
-    subugoe/metar@7ccc2a0
+  subugoe/subugoetheme@1.1.1,
+  subugoe/shinycaas@1.0.0

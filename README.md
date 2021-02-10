@@ -1,12 +1,24 @@
-# hoad
-
 <!-- badges: start -->
 [![Main](https://github.com/subugoe/hoad/workflows/.github/workflows/main.yaml/badge.svg)](https://github.com/subugoe/hoad/actions)
+[![Codecov test coverage](https://codecov.io/gh/subugoe/hoad/branch/master/graph/badge.svg)](https://codecov.io/gh/subugoe/hoad?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/hoad)](https://CRAN.R-project.org/package=hoad)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Codecov test coverage](https://codecov.io/gh/subugoe/hoad/branch/master/graph/badge.svg)](https://codecov.io/gh/subugoe/hoad?branch=master)
 <!-- badges: end -->
 
+<div class="jumbotron">
+  <h1>Hybrid OA Dashboard</h1>
+  <p>
+    Bibliometric data analytics to increase cost transparency in hybrid open access transformation contracts.
+  </p>
+  <p>
+    <a class="btn btn-danger btn-lg" href="articles/interactive.html" role="button">
+      Try out the dashboard
+    </a>
+    <a class="btn btn-primary btn-lg" href="newsletter.html" role="button">
+      Sign up to the newsletter (german only)
+    </a>
+  </p>
+</div>
 
 ## Overview
 
@@ -26,21 +38,3 @@ The project is based on data gathered by the [Crossref](http://www.crossref.org/
 The package is at the [Göttingen State and University Libary](https://www.sub.uni-goettingen.de/) as part of the [DFG](https://www.dfg.de)-funded eponymous Hybrid Open Access Dashboard project.
 
 An early prototype of the application, including the interactive web frontend is available at https://subugoe.github.io/hoad/.
-
-
-## Installation
-
-```r
-remotes::install_github("subugoe/hoad")
-```
-
-
-## Getting Started
-
-```r
-library(hoad)
-```
-
-You can start the dashboard locally, by running `runHOAD()`.
-
-More functions and data will be exposed in the future for modular reuse.

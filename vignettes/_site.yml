@@ -1,5 +1,0 @@
-output:
-  bookdown::html_document2:
-    number_sections: false
-    df_print: paged
-    toc: yes

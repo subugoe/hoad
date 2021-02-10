@@ -4,7 +4,7 @@ output:
   flexdashboard::flex_dashboard:
     orientation: rows
     vertical_layout: fill
-    css: !expr metar::subugoe_template()$assets$css
+    css: !expr subugoetheme::pkgdown_template()$assets$css
 runtime: shiny
 ---
 

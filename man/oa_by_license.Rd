@@ -12,10 +12,11 @@ oa_by_license_plot()
 \description{
 Open Access Articles by Year and License
 }
-\section{Functions}{
+\section{Related Functions and Methods}{
+\subsection{Functions}{
 \itemize{
 \item \code{oa_by_license_plot}: Plot by License and Year
-}}
+}}}
 
 \examples{
 oa_by_license()

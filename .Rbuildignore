@@ -7,7 +7,6 @@
 Dockerfile
 .dockerignore
 ^\.github$
-^\.deps$
 .rstudio
 hoad.code-workspace
 ^R/.add_emails\.R$
@@ -17,3 +16,5 @@ hoad.code-workspace
 ^R/.scoap\.R$
 ^R/.unpaywall_integration\.R$
 .vscode
+.azure
+^\.Rproj\.user$

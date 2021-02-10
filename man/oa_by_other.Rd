@@ -17,10 +17,11 @@ oa_by_other_plot(x = oa_by_other())
 \description{
 \emph{Additional} license information (compared to \code{\link[=oa_by_license]{oa_by_license()}}) as detected by Unpaywall.
 }
-\section{Functions}{
+\section{Related Functions and Methods}{
+\subsection{Functions}{
 \itemize{
 \item \code{oa_by_other_plot}: plotting
-}}
+}}}
 
 \examples{
 oa_by_other()
