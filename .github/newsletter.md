@@ -2,6 +2,10 @@
 
 In unserem deutschsprachigen Newsletter informieren wir Sie über neue Entwicklungen und Veranstaltungen rund um das Projekt.
 
+<div class="alert alert-info" role="alert">
+  Sollte das unten stehende Formular nicht funktionieren, können Sie sich <a href="https://listserv.gwdg.de/mailman/listinfo/hoad" style="color:#FFFFFF;font-weight:bold">hier direkt bei der GWDG für den Newsletter anmelden</a>.
+</div>
+
 <form method="post" action="https://listserv.gwdg.de/mailman/subscribe/hoad">
   <input type="hidden" name="sub_form_token" value="1612971602::1b28f042c6df3b702be48e8fbff2c7f61c44d071">
   </input>
