@@ -10,8 +10,7 @@ In unserem deutschsprachigen Newsletter informieren wir Sie über neue Entwicklu
   <input type="hidden" name="sub_form_token" value="1612971602::1b28f042c6df3b702be48e8fbff2c7f61c44d071">
   </input>
   <div class="form-group">
-  <!-- the lacking indentation below is necessary, probably because of https://github.com/r-lib/pkgdown/issues/1381 -->
-  <!-- muggle::build_site2() solves this problem for vignettes, but not for other mds. -->
+  <!-- the lacking indentation below is necessary see https://github.com/subugoe/hoad/issues/272 -->
   <label for="InputEmail">Email addresse</label>
   <input name="email" type="email" class="form-control" id="InputEmail" placeholder="Email">
   </div>
