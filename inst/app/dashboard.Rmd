@@ -51,14 +51,17 @@ selectizeInput(
   inputId = "publishers",
   label = "Selected Publishers",
   choices = c(All = "", levels(hybrid_df$publisher)),
-  multiple = TRUE,
+  multiple = TRUE
 )
 selectizeInput(
   inputId = "journals",
   label = "Selected Journals",
   choices = c(All = "", sort(unique(hybrid_df$journal_title))),
-  multiple = TRUE
-)
+  multiple = TRUE,
+  # by default, selection gets cut by 1000
+  options = list(maxOptions = length(unique(hybrid_df$journal_title)))
+  )
+
 
 # publisher filter
 jn_filtered <- reactive({
