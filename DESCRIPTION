@@ -1,6 +1,6 @@
 Package: hoad
 Title: Hybrid Open Access Dashboard
-Version: 1.0.1.9000
+Version: 2.0.0.9000
 Authors@R:
     c(
       person(
