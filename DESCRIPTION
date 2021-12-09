@@ -49,46 +49,12 @@ Language: en
 LazyData: true
 Roxygen: list(markdown = TRUE)
 Suggests:
-    rmarkdown,
-    jsonlite,
-    ggalt,
-    scales,
-    forcats,
-    cowplot,
-    readxl,
-    flexdashboard,
-    viridis,
-    plotly,
-    shiny,
-    DT,
-    writexl,
-    echarts4r,
-    DBI,
-    dbplyr,
-    haven,
-    lubridate,
-    modelr,
-    reprex,
-    rsconnect,
-    rvest,
-    selectr,
-    httr,
-    purrr,
-    covr,
     testthat,
-    subugoetheme,
-    shinycaas
+    subugoetheme
 URL: https://subugoe.github.io/hoad, https://github.com/subugoe/hoad/
 BugReports: https://github.com/subugoe/hoad/issues
 RoxygenNote: 7.1.1.9999
 Imports:
-    dplyr,
-    checkmate,
-    magrittr,
-    readr,
-    fs,
-    ggplot2,
-    rlang
-Remotes:
-  subugoe/subugoetheme@1.1.1,
-  subugoe/shinycaas@1.0.0
+    fs
+Remotes: 
+    subugoe/subugoetheme@1.1.1

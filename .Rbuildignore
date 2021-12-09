@@ -17,4 +17,5 @@ hoad.code-workspace
 ^R/.unpaywall_integration\.R$
 .vscode
 .azure
+.radian_history
 ^\.Rproj\.user$
