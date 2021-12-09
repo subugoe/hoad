@@ -18,52 +18,26 @@ authors:
     html: <img src="reference/figures/openAPC_01+.png" height="15">
 template:
   package: subugoetheme
-  params:
-    docsearch:
-      api_key: 13f4fe309e30d18dcf23516610160625
-      index_name: hoad
+home:
+  links:
+  - text: Read project description
+    href: https://www.sub.uni-goettingen.de/en/projects-research/project-details/projekt/hybrid-oa-dashboards/
+development:
+  version_label: danger
+  version_tooltip: "Alpha Release"
 navbar:
   structure:
-    left: [dashboard]
-    right: [about, github]
+    left:  [home, reference, app, example]
+    right: [support, github]
   components:
-    dashboard:
-      text: "Dashboard"
-      icon: "fa fa-tachometer"
-      href: articles/interactive.html
-    about:
-      text: "About"
+    support:
+      text: Support
       menu:
-        - text: "English"
-        - text: "Project Description"
-          icon: "fa fa-external-link-alt"
-          href: https://www.sub.uni-goettingen.de/en/projects-research/project-details/projekt/hybrid-oa-dashboards/
-        - text: ----
-        - text: "Deutsch"
-        - text: "Projektbeschreibung"
-          icon: "fa fa-external-link-alt"
-          href: https://www.sub.uni-goettingen.de/projekte-forschung/projektdetails/projekt/hybrid-oa-dashboards/
-        - text: Only available in german
-        - text: "Newsletter"
-          icon: "fa fa-envelope-open-text"
-          href: newsletter.html
-        - text: "Webinare"
-          icon: "fa fa-chalkboard-teacher"
-          href: webinars.html
-reference:
-  - title: ETL
-    desc: Extract, transform, load
-  - contents:
-      - has_concept("ETL functions")
-  - title: Visualisation
-    desc: Plotting functions
-  - contents:
-      - has_concept("visualisation functions")
-  - title: Data
-    desc: Functions to document data
-  - contents:
-      - has_concept("data")
-  - title: CICD
-    desc: Functions to run and deploy the dashboard
-  - contents:
-      - has_concept("CICD")
+      - text: "German"
+      - text: ----
+      - text: "Newsletter"
+        icon: "fa fa-envelope-open-text"
+        href: newsletter.html
+      - text: "Webinare"
+        icon: "fa fa-chalkboard-teacher"
+        href: webinars.html
